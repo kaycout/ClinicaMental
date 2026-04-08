@@ -37,7 +37,7 @@ export default function LoginScreen() {
             </View>
 
             <Text style={styles.title}>Clínica SEP</Text>
-            <Text style={styles.subtitle}>Acesso ao sistema clínico</Text>
+            <Text style={styles.subtitle}>Bem-vindo ao sistema da Clínica SEP</Text>
 
             <View style={styles.fieldBlock}>
               <Text style={styles.label}>Usuário</Text>
