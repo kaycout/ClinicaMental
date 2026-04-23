@@ -1,10 +1,55 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { router } from 'expo-router';
 import { Screen } from '@/components/clinic-ui';
 
 export default function RedefinirSenhaScreen() {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  async function enviarPorEmail() {
+    if (!email.trim()) {
+      Alert.alert('Atenção', 'Digite seu e-mail primeiro.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch('http://SEU_IP:3000/redefinir-senha', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.message || 'Erro ao enviar link.');
+      }
+
+      Alert.alert(
+        'Sucesso',
+        'O link de recuperação foi enviado para seu e-mail.'
+      );
+
+      router.replace('/'); // volta pro login depois de enviar
+
+    } catch (error: any) {
+      Alert.alert('Erro', error.message || 'Não foi possível enviar o e-mail.');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <Screen>
@@ -32,13 +77,21 @@ export default function RedefinirSenhaScreen() {
             />
           </View>
 
-          <TouchableOpacity style={styles.button} activeOpacity={0.85}>
-            <Text style={styles.buttonText}>Enviar link</Text>
+          <TouchableOpacity
+            style={styles.button}
+            activeOpacity={0.85}
+            onPress={enviarPorEmail}
+            disabled={loading}
+          >
+            <Text style={styles.buttonText}>
+              {loading ? 'Enviando...' : 'Enviar link'}
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.replace('/')}>
+          <TouchableOpacity onPress={() => router.replace('/tela-login')}>
             <Text style={styles.backText}>Voltar para o login</Text>
           </TouchableOpacity>
+
         </View>
       </View>
     </Screen>

@@ -59,7 +59,8 @@ const styles = StyleSheet.create
     wrapper: { 
     width: '100%', 
     maxWidth: 650, 
-    alignSelf: 'center' 
+    alignSelf: 'center',
+    paddingTop: 20, // para o nome "clinica mental não ficar no topo no android.
 }, 
     wrapperDesktop: { 
     flexDirection: 'row', 

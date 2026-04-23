@@ -8,6 +8,7 @@ import {
   TextInput,
   View,
   useWindowDimensions,
+  TouchableOpacity
 } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,12 +17,21 @@ export default function LoginScreen() {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 900;
 
-  const [usuario, setUsuario] = useState('');
+  const [cpf, setCpf] = useState('');
   const [senha, setSenha] = useState('');
+  const [tipoUsuario, setTipoUsuario] = useState('estagiario');
+
+  function handleLogin() {
+    if (tipoUsuario === 'admin') {
+      router.replace('/acesso-administrador');
+    } else {
+      router.replace('/(tabs)');
+    }
+  }
 
   return (
     <LinearGradient
-      colors={['#DCEEDF', '#D9EBE6' , '#DCEEDF']}
+      colors={['#DCEEDF', '#D9EBE6', '#DCEEDF']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.background}
@@ -32,24 +42,57 @@ export default function LoginScreen() {
       >
         <View style={[styles.wrapper, isDesktop && styles.wrapperDesktop]}>
           <View style={[styles.card, isDesktop && styles.cardDesktop]}>
+
             <View style={styles.logoCircle}>
               <Text style={styles.psi}>Ψ</Text>
             </View>
 
             <Text style={styles.title}>Clínica SEP</Text>
-            <Text style={styles.subtitle}>Bem-vindo ao sistema da Clínica SEP</Text>
+            <Text style={styles.subtitle}>
+              Bem-vindo ao sistema da Clínica SEP
+            </Text>
 
+            {/* CPF */}
             <View style={styles.fieldBlock}>
-              <Text style={styles.label}>Usuário</Text>
+              <Text style={styles.label}>CPF</Text>
               <TextInput
-                value={usuario}
-                onChangeText={setUsuario}
-                placeholder="Digite seu usuário"
+                value={cpf}
+                onChangeText={setCpf}
+                placeholder="Digite seu CPF"
                 placeholderTextColor="#8B90A0"
+                keyboardType="numeric"
                 style={styles.input}
               />
             </View>
 
+            {/* Tipo de usuário */}
+            <View style={styles.fieldBlock}>
+              <Text style={styles.label}>Tipo de acesso</Text>
+
+              <View style={styles.tipoContainer}>
+                <TouchableOpacity
+                  style={[
+                    styles.tipoButton,
+                    tipoUsuario === 'admin' && styles.tipoSelecionado
+                  ]}
+                  onPress={() => setTipoUsuario('admin')}
+                >
+                  <Text style={styles.tipoTexto}>Admin</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.tipoButton,
+                    tipoUsuario === 'estagiario' && styles.tipoSelecionado
+                  ]}
+                  onPress={() => setTipoUsuario('estagiario')}
+                >
+                  <Text style={styles.tipoTexto}>Estagiário</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Senha */}
             <View style={styles.fieldBlock}>
               <Text style={styles.label}>Senha</Text>
               <TextInput
@@ -62,17 +105,20 @@ export default function LoginScreen() {
               />
             </View>
 
-            <Pressable style={styles.primaryButton} onPress={() => router.replace('/(tabs)')}>
+            {/* Botão entrar */}
+            <Pressable style={styles.primaryButton} onPress={handleLogin}>
               <Text style={styles.primaryButtonText}>Entrar</Text>
             </Pressable>
 
-            <Pressable onPress={() => router.push("/cadastro")}>
+            {/* Links */}
+            <Pressable onPress={() => router.push('/cadastro')}>
               <Text style={styles.link}>Criar conta</Text>
             </Pressable>
 
             <Pressable onPress={() => router.push('/redefinir-senha')}>
               <Text style={styles.linkMuted}>Esqueci minha senha</Text>
             </Pressable>
+
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -134,7 +180,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 30,
     fontWeight: '800',
-    color: '#17243F',
+    color: '#112B5C',
     marginBottom: 6,
   },
   subtitle: {
@@ -162,6 +208,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#1F2430',
   },
+
+  /* BOTÃO */
   primaryButton: {
     height: 58,
     borderRadius: 18,
@@ -176,6 +224,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '800',
   },
+
+  /* LINKS */
   link: {
     textAlign: 'center',
     fontSize: 16,
@@ -188,5 +238,27 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     color: '#0e0e0e',
+  },
+
+  /* TIPO USUÁRIO */
+  tipoContainer: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  tipoButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#D7DCE5',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  tipoSelecionado: {
+    backgroundColor: '#538477',
+  },
+  tipoTexto: {
+    fontWeight: '700',
+    color: '#232A39',
   },
 });

@@ -18,7 +18,10 @@ export default function NovoAgendamentoScreen() {
 
   return (
     <Screen>
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={[styles.wrapper, isDesktop && styles.wrapperDesktop]}>
           <View style={[styles.mainContent, isDesktop && styles.mainContentDesktop]}>
             <BrandHeader title="Novo Agendamento" centered={isDesktop} />
@@ -31,6 +34,7 @@ export default function NovoAgendamentoScreen() {
                 placeholder="Ana Silva"
                 options={[
                   { label: 'Ana Silva', value: 'ana-silva' },
+                  { label: 'Renan Ferreira', value: 'renan-ferreira' },
                   { label: 'Lucas Mendes', value: 'lucas-mendes' },
                   { label: 'Maria Clara Souza', value: 'maria-clara' },
                   { label: 'Pedro Henrique', value: 'pedro-henrique' },
@@ -44,6 +48,8 @@ export default function NovoAgendamentoScreen() {
                 placeholder="Paulo Oliveira"
                 options={[
                   { label: 'Paulo Oliveira', value: 'paulo-oliveira' },
+                  { label: 'Renato Alves', value: 'renato-alves' },
+                  { label: 'Patrícia Melo', value: 'patricia-melo' },
                   { label: 'Mariana Costa', value: 'mariana-costa' },
                   { label: 'João Santos', value: 'joao-santos' },
                 ]}
@@ -126,10 +132,13 @@ export default function NovoAgendamentoScreen() {
                 <Switch value={automatico} onValueChange={setAutomatico} />
               </View>
 
-              <PrimaryButton label="Agendar Consulta" onPress={() => router.push('/agendamento-sucesso')}/>
+              <PrimaryButton
+                label="Agendar Consulta"
+                onPress={() => router.push('/agendamento-sucesso')}
+              />
             </View>
           </View>
-        </View>s
+        </View>
       </ScrollView>
     </Screen>
   );
@@ -138,6 +147,7 @@ export default function NovoAgendamentoScreen() {
 const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: 24,
+    paddingTop: 20,
   },
   wrapper: {
     width: '100%',

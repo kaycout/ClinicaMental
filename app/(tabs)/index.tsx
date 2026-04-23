@@ -1,8 +1,12 @@
 import React from 'react';
+// importando componentes básicos de layout e interação
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+// importando navegação
 import { router } from 'expo-router';
-import { BrandHeader, COLORS, ListRow, Screen, SectionCard, useResponsive } from '@/components/clinic-ui';
+// importando componentes personalizados do projeto (header, cores, layout etc)
+import { BrandHeader, COLORS, Screen, SectionCard, useResponsive } from '@/components/clinic-ui';
 
+// lista simulada com os atendimentos do dia
 const agendaHoje = [
   { horario: '08:00', paciente: 'Ana Silva', estagiario: 'Paulo Oliveira', sala: 'Sala 1', status: 'Confirmada' },
   { horario: '09:00', paciente: 'Lucas Mendes', estagiario: 'Carla Souza', sala: 'Sala 2', status: 'Pendente' },
@@ -10,38 +14,80 @@ const agendaHoje = [
   { horario: '11:00', paciente: 'Pedro Lima', estagiario: 'Fernanda Alves', sala: 'Sala 3', status: 'Falta' },
 ];
 
+// função que define a cor do status dependendo do tipo
 function getStatusStyle(status: string) {
   switch (status) {
-    case 'Confirmada': return { backgroundColor: '#DCEEDF' };
-    case 'Pendente': return { backgroundColor: '#F3E7C8' };
-    case 'Remarcada': return { backgroundColor: '#D9EBE6' };
-    case 'Falta': return { backgroundColor: '#F3DDD4' };
-    default: return { backgroundColor: '#E8EEEE' };
+    case 'Confirmada': return { backgroundColor: '#DCEEDF' }; // verde claro
+    case 'Pendente': return { backgroundColor: '#F3E7C8' }; // amarelo
+    case 'Remarcada': return { backgroundColor: '#D9EBE6' }; // azul/verde claro
+    case 'Falta': return { backgroundColor: '#F3DDD4' }; // vermelho claro
+    default: return { backgroundColor: '#E8EEEE' }; // padrão
   }
 }
 
+// componente principal da tela de agenda
 export default function AgendaScreen() {
+
+  // hook pra saber se está em tela grande (desktop/tablet)
   const { isDesktop } = useResponsive();
+
   return (
+    // componente base da tela (layout padrão do app)
     <Screen>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+
+      {/* scroll pra permitir rolar a tela */}
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+
+        {/* container central */}
         <View style={[styles.wrapper, isDesktop && styles.wrapperDesktop]}>
+
+          {/* parte principal da tela */}
           <View style={styles.main}>
+
+            {/* header com título */}
             <BrandHeader title="Agenda SEP" centered={isDesktop} />
+
+            {/* card que agrupa a agenda */}
             <SectionCard title="Agenda do Dia" tone="teal">
+
+              {/* percorrendo a lista de atendimentos */}
               {agendaHoje.map((item, index) => (
+
+                // card de cada horário
                 <View key={index} style={styles.scheduleCard}>
+
+                  {/* horário do atendimento */}
                   <Text style={styles.time}>{item.horario}</Text>
+
+                  {/* informações do atendimento */}
                   <View style={styles.scheduleInfo}>
-                    <Text style={styles.patient}>{item.paciente}</Text>
-                    <Text style={styles.meta}>{item.estagiario}</Text>
-                    <Text style={styles.meta}>{item.sala}</Text>
+                    <Text style={styles.patient}>{item.paciente}</Text> {/* nome do paciente */}
+                    <Text style={styles.meta}>{item.estagiario}</Text> {/* estagiário responsável */}
+                    <Text style={styles.meta}>{item.sala}</Text> {/* sala */}
                   </View>
-                  <View style={[styles.statusBadge, getStatusStyle(item.status)]}><Text style={styles.statusText}>{item.status}</Text></View>
+
+                  {/* badge de status com cor dinâmica */}
+                  <View style={[styles.statusBadge, getStatusStyle(item.status)]}>
+                    <Text style={styles.statusText}>{item.status}</Text>
+                  </View>
+
                 </View>
               ))}
             </SectionCard>
-            <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/novo-agendamento')}><Text style={styles.actionButtonText}>+ Novo Agendamento</Text></TouchableOpacity>
+
+            {/* botão pra criar novo agendamento */}
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => router.push('/novo-agendamento')}
+            >
+              <Text style={styles.actionButtonText}>
+                + Novo Agendamento
+              </Text>
+            </TouchableOpacity>
+
           </View>
         </View>
       </ScrollView>
@@ -49,83 +95,117 @@ export default function AgendaScreen() {
   );
 }
 
-const styles = StyleSheet.create
+// estilos da tela
+const styles = StyleSheet.create({
 
-({ content: { paddingBottom: 24 },
-    wrapper: { 
+  // espaçamento geral do conteúdo
+  content: {
+    paddingBottom: 24,
+    paddingTop: 20,
+  },
+
+  // container central com largura máxima
+  wrapper: {
     width: '100%',
-    maxWidth: 850, 
-    alignSelf: 'center' 
+    maxWidth: 850,
+    alignSelf: 'center'
   },
 
-  wrapperDesktop: { 
+  // ajuste de layout pra telas grandes
+  wrapperDesktop: {
     flexDirection: 'row',
-    gap: 20, 
-    alignItems: 'flex-start' 
+    gap: 20,
+    alignItems: 'flex-start'
   },
 
-  main: { 
-    flex: 1.4 },
-    side: { flex: 1 
+  // área principal da tela
+  main: {
+    flex: 1.4
   },
 
+  // card de cada atendimento
   scheduleCard: {
-    backgroundColor: COLORS.white, 
+    backgroundColor: COLORS.white,
     borderWidth: 1,
     borderColor: '#E1EBE8',
     borderRadius: 18,
-    padding: 12, 
+    padding: 12,
     marginBottom: 8
-  }, 
-  
-  time: { 
-    fontSize: 16, 
+  },
+
+  // estilo do horário
+  time: {
+    fontSize: 16,
     fontWeight: '800',
     color: COLORS.primary,
-    marginBottom: 6 
+    marginBottom: 6
   },
 
-  scheduleInfo: { 
-    gap: 2 
-  }, 
-
-  patient: { 
-    fontSize: 16, 
-    fontWeight: '700', 
-    color: COLORS.text 
+  // container das infos (paciente, sala, etc)
+  scheduleInfo: {
+    gap: 2
   },
 
-  meta: { 
-    fontSize: 14, 
-    color: COLORS.muted 
+  // nome do paciente
+  patient: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: COLORS.text
   },
 
-  statusBadge: { 
-    marginTop: 10, 
-    alignSelf: 'flex-start', 
-    paddingHorizontal: 10, 
+  // infos secundárias (estagiário e sala)
+  meta: {
+    fontSize: 14,
+    color: COLORS.muted
+  },
+
+  // badge do status
+  statusBadge: {
+    marginTop: 10,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: 999 
+    borderRadius: 999
   },
 
-  statusText: { 
-    fontSize: 12, 
-    fontWeight: '700', 
-    color: COLORS.text 
+  // texto do status
+  statusText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: COLORS.text
   },
 
-  actionButton: { 
+  // botão de novo agendamento
+  actionButton: {
     backgroundColor: COLORS.primary,
-    minHeight: 54, 
+    minHeight: 54,
     borderRadius: 14,
-    justifyContent: 'center', 
-    alignItems: 'center' 
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12
   },
 
-  actionButtonText: { 
+  // texto do botão
+  actionButtonText: {
     color: '#fff',
-    fontSize: 17, 
-    fontWeight: '700' 
-  } 
+    fontSize: 17,
+    fontWeight: '700'
+  },
 
+  // estilo do botão sair (não usado ainda aqui)
+  logoutButton: {
+    backgroundColor: '#E74C3C',
+    minHeight: 50,
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10
+  },
+
+  // texto do botão sair
+  logoutText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700'
+  }
 });
