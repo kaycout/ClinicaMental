@@ -1,205 +1,159 @@
+// arquivo app/cadastro.tsx
+// aqui eu organizei essa tela e deixei os comentários explicando minha parte do código
 import React, { useState } from 'react';
-// importando componentes básicos
 import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
+  TouchableOpacity,
   View,
   useWindowDimensions,
-  TouchableOpacity,
 } from 'react-native';
-// importando navegação
 import { router } from 'expo-router';
-// importando fundo com gradiente
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 
-// tela de cadastro de usuário (admin ou estagiário) :contentReference[oaicite:0]{index=0}
 export default function CadastroScreen() {
-
-  // pegando largura da tela pra responsividade
   const { width } = useWindowDimensions();
-
-  // verificando se está em desktop
   const isDesktop = width >= 900;
 
-  // states para armazenar os dados do formulário
-  const [nome, setNome] = useState('');
-  const [cpf, setCpf] = useState('');
-
-  // tipo de usuário (admin ou estagiário)
-  const [tipoUsuario, setTipoUsuario] = useState<'admin' | 'estagiario'>('estagiario');
-
-  // senha e confirmação
-  const [senha, setSenha] = useState('');
-  const [confirmarSenha, setConfirmarSenha] = useState('');
+  const [tipoUsuario, setTipoUsuario] = useState<'admin' | 'estagiario'>('admin');
 
   return (
-    // fundo da tela com gradiente
     <LinearGradient
-      colors={['#DCEEDF', '#D9EBE6', '#DCEEDF']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+      colors={['#F4FBF8', '#EAF6F1', '#F8FCFA']}
       style={styles.background}
     >
-
-      {/* evita o teclado cobrir os campos */}
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={styles.keyboard}
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
       >
+        <View style={[styles.wrapper, isDesktop && styles.wrapperDesktop]}>
+          <View style={[styles.card, isDesktop && styles.cardDesktop]}>
 
-        {/* scroll para telas menores */}
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
+            {/* logo */}
+            <View style={styles.logoArea}>
+              <Text style={styles.psi}>Ψ</Text>
 
-          {/* container principal */}
-          <View style={[styles.wrapper, isDesktop && styles.wrapperDesktop]}>
-
-            {/* card do formulário */}
-            <View style={[styles.card, isDesktop && styles.cardDesktop]}>
-              
-              {/* logo da clínica */}
-              <View style={styles.logoCircle}>
-                <Text style={styles.psi}>Ψ</Text>
+              <View>
+                <Text style={styles.logoText}>SEP</Text>
+                <Text style={styles.logoSubtitle}>CLÍNICA DE PSICOLOGIA</Text>
               </View>
-
-              {/* título */}
-              <Text style={styles.title}>Cadastro SEP</Text>
-
-              {/* descrição */}
-              <Text style={styles.subtitle}>
-                Cadastro de acesso para administrador ou estagiário da clínica
-              </Text>
-
-              {/* campo nome */}
-              <View style={styles.fieldBlock}>
-                <Text style={styles.label}>Nome completo</Text>
-                <TextInput
-                  value={nome}
-                  onChangeText={setNome}
-                  placeholder="Digite seu nome completo"
-                  placeholderTextColor="#8B90A0"
-                  style={styles.input}
-                />
-              </View>
-
-              {/* campo cpf */}
-              <View style={styles.fieldBlock}>
-                <Text style={styles.label}>CPF</Text>
-                <TextInput
-                  value={cpf}
-                  onChangeText={setCpf}
-                  placeholder="Digite seu CPF"
-                  placeholderTextColor="#8B90A0"
-                  keyboardType="numeric"
-                  style={styles.input}
-                />
-              </View>
-
-              {/* seleção do tipo de usuário */}
-              <View style={styles.fieldBlock}>
-                <Text style={styles.label}>Tipo de acesso</Text>
-
-                <View style={styles.tipoContainer}>
-
-                  {/* botão admin */}
-                  <TouchableOpacity
-                    style={[
-                      styles.tipoButton,
-                      tipoUsuario === 'admin' && styles.tipoSelecionado
-                    ]}
-                    onPress={() => setTipoUsuario('admin')}
-                  >
-                    <Text style={[
-                      styles.tipoTexto,
-                      tipoUsuario === 'admin' && styles.tipoTextoSelecionado
-                    ]}>
-                      Admin
-                    </Text>
-                  </TouchableOpacity>
-
-                  {/* botão estagiário */}
-                  <TouchableOpacity
-                    style={[
-                      styles.tipoButton,
-                      tipoUsuario === 'estagiario' && styles.tipoSelecionado
-                    ]}
-                    onPress={() => setTipoUsuario('estagiario')}
-                  >
-                    <Text style={[
-                      styles.tipoTexto,
-                      tipoUsuario === 'estagiario' && styles.tipoTextoSelecionado
-                    ]}>
-                      Estagiário
-                    </Text>
-                  </TouchableOpacity>
-
-                </View>
-              </View>
-
-              {/* campo senha */}
-              <View style={styles.fieldBlock}>
-                <Text style={styles.label}>Senha</Text>
-                <TextInput
-                  value={senha}
-                  onChangeText={setSenha}
-                  placeholder="Crie sua senha"
-                  placeholderTextColor="#8B90A0"
-                  secureTextEntry
-                  style={styles.input}
-                />
-              </View>
-
-              {/* confirmar senha */}
-              <View style={styles.fieldBlock}>
-                <Text style={styles.label}>Confirmar senha</Text>
-                <TextInput
-                  value={confirmarSenha}
-                  onChangeText={setConfirmarSenha}
-                  placeholder="Digite novamente sua senha"
-                  placeholderTextColor="#8B90A0"
-                  secureTextEntry
-                  style={styles.input}
-                />
-              </View>
-
-              {/* botão cadastrar */}
-              <Pressable
-                style={styles.primaryButton}
-
-                // após cadastrar, vai para tela de sucesso
-                onPress={() => router.replace('/cadastro-sucesso')}
-              >
-                <Text style={styles.primaryButtonText}>Cadastrar</Text>
-              </Pressable>
-
-              {/* voltar para login */}
-              <Pressable onPress={() => router.replace('/tela-login')}>
-                <Text style={styles.link}>Voltar para login</Text>
-              </Pressable>
-
             </View>
+
+            {/* etapas */}
+            <View style={styles.stepsContainer}>
+              <View style={styles.stepItem}>
+                <View style={styles.stepActive}>
+                  <Text style={styles.stepActiveText}>1</Text>
+                </View>
+                <Text style={styles.stepLabelActive}>Tipo de conta</Text>
+              </View>
+
+              <View style={styles.stepLine} />
+
+              <View style={styles.stepItem}>
+                <View style={styles.stepInactive}>
+                  <Text style={styles.stepInactiveText}>2</Text>
+                </View>
+                <Text style={styles.stepLabel}>Dados pessoais</Text>
+              </View>
+
+              <View style={styles.stepLine} />
+
+              <View style={styles.stepItem}>
+                <View style={styles.stepInactive}>
+                  <Text style={styles.stepInactiveText}>3</Text>
+                </View>
+                <Text style={styles.stepLabel}>Dados de acesso</Text>
+              </View>
+
+              <View style={styles.stepLine} />
+
+              <View style={styles.stepItem}>
+                <View style={styles.stepInactive}>
+                  <Text style={styles.stepInactiveText}>4</Text>
+                </View>
+                <Text style={styles.stepLabel}>Concluir</Text>
+              </View>
+            </View>
+
+            {/* título */}
+            <Text style={styles.title}>Criar conta</Text>
+            <Text style={styles.subtitle}>
+              Selecione o tipo de conta que deseja criar
+            </Text>
+
+            {/* opção administrador */}
+            <TouchableOpacity
+              activeOpacity={0.85}
+              style={[
+                styles.optionCard,
+                tipoUsuario === 'admin' && styles.optionCardSelected,
+              ]}
+              onPress={() => setTipoUsuario('admin')}
+            >
+              <View style={styles.iconCircle}>
+                <Ionicons name="person-outline" size={38} color="#0C706E" />
+              </View>
+
+              <View style={styles.optionTextArea}>
+                <Text style={styles.optionTitle}>Administrador</Text>
+                <Text style={styles.optionDescription}>
+                  Acesso completo ao sistema, com todas as permissões.
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            {/* opção estagiário */}
+            <TouchableOpacity
+              activeOpacity={0.85}
+              style={[
+                styles.optionCard,
+                tipoUsuario === 'estagiario' && styles.optionCardSelected,
+              ]}
+              onPress={() => setTipoUsuario('estagiario')}
+            >
+              <View style={styles.iconCircle}>
+                <Ionicons name="school-outline" size={38} color="#0C706E" />
+              </View>
+
+              <View style={styles.optionTextArea}>
+                <Text style={styles.optionTitle}>Estagiário</Text>
+                <Text style={styles.optionDescription}>
+                  Acesso para gerenciar atendimentos e pacientes sob supervisão.
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            {/* continuar */}
+            <TouchableOpacity
+              style={styles.primaryButton}
+              activeOpacity={0.85}
+              onPress={() => router.push('/dados-pessoais')}
+            >
+            
+              <Text style={styles.primaryButtonText}>Continuar</Text>
+            </TouchableOpacity>
+
+            {/* voltar login */}
+            <View style={styles.loginRow}>
+              <Text style={styles.loginText}>Já tem uma conta? </Text>
+
+              <TouchableOpacity onPress={() => router.replace('/')}>
+                <Text style={styles.loginLink}>Faça login</Text>
+              </TouchableOpacity>
+            </View>
+
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>
+      </ScrollView>
     </LinearGradient>
   );
 }
 
-// estilos da tela
 const styles = StyleSheet.create({
-
   background: {
-    flex: 1,
-  },
-
-  keyboard: {
     flex: 1,
   },
 
@@ -220,128 +174,205 @@ const styles = StyleSheet.create({
 
   card: {
     width: '100%',
-    backgroundColor: '#E8EBF2',
-    borderRadius: 34,
-    paddingHorizontal: 22,
-    paddingVertical: 28,
-    shadowColor: '#b3e0ef',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 18,
+    paddingHorizontal: 24,
+    paddingVertical: 30,
+    shadowColor: '#A6BDB8',
     shadowOpacity: 0.18,
-    shadowRadius: 16,
+    shadowRadius: 22,
     shadowOffset: { width: 0, height: 8 },
-    elevation: 6,
+    elevation: 8,
   },
 
   cardDesktop: {
-    maxWidth: 470,
+    maxWidth: 520,
   },
 
-  logoCircle: {
-    width: 126,
-    height: 126,
-    borderRadius: 63,
-    backgroundColor: '#F7F9FC',
-    borderWidth: 2,
-    borderColor: '#D8E4F5',
-    alignSelf: 'center',
+  logoArea: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 18,
+    gap: 12,
+    marginBottom: 32,
   },
 
   psi: {
-    fontSize: 66,
+    fontSize: 62,
     fontWeight: '700',
-    color: '#23252E',
+    color: '#0C706E',
+    lineHeight: 70,
+  },
+
+  logoText: {
+    fontSize: 30,
+    fontWeight: '900',
+    color: '#0C706E',
+  },
+
+  logoSubtitle: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: '#0C706E',
+  },
+
+  stepsContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 28,
+  },
+
+  stepItem: {
+    alignItems: 'center',
+    width: 74,
+  },
+
+  stepActive: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: '#0C706E',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+
+  stepActiveText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '900',
+  },
+
+  stepInactive: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: '#EEF3F1',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+
+  stepInactiveText: {
+    color: '#5F6F6C',
+    fontSize: 12,
+    fontWeight: '900',
+  },
+
+  stepLabelActive: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: '#1B3431',
+    textAlign: 'center',
+  },
+
+  stepLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#7B8986',
+    textAlign: 'center',
+  },
+
+  stepLine: {
+    flex: 1,
+    height: 2,
+    backgroundColor: '#E3EBE8',
+    marginTop: 12,
   },
 
   title: {
     textAlign: 'center',
-    fontSize: 28,
-    fontWeight: '800',
-    color: '#112B5C',
-    marginBottom: 6,
+    fontSize: 22,
+    fontWeight: '900',
+    color: '#171717',
+    marginBottom: 8,
   },
 
   subtitle: {
     textAlign: 'center',
     fontSize: 14,
-    color: '#6E7485',
-    marginBottom: 24,
+    color: '#7A8583',
+    marginBottom: 28,
   },
 
-  fieldBlock: {
-    marginBottom: 16,
-  },
-
-  label: {
-    fontSize: 15,
-    fontWeight: '800',
-    color: '#232A39',
-    marginBottom: 8,
-  },
-
-  input: {
-    minHeight: 56,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: '#D7DCE5',
-    paddingHorizontal: 18,
-    fontSize: 16,
-    color: '#1F2430',
-  },
-
-  tipoContainer: {
+  optionCard: {
     flexDirection: 'row',
-    gap: 10,
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E2E8E6',
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    marginBottom: 18,
+    shadowColor: '#A6BDB8',
+    shadowOpacity: 0.14,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 4,
   },
 
-  tipoButton: {
-    flex: 1,
-    minHeight: 52,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: '#D7DCE5',
+  optionCardSelected: {
+    borderColor: '#0C706E',
+  },
+
+  iconCircle: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#EEF8F6',
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: 18,
   },
 
-  tipoSelecionado: {
-    backgroundColor: '#538477',
-    borderColor: '#538477',
+  optionTextArea: {
+    flex: 1,
   },
 
-  tipoTexto: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#232A39',
+  optionTitle: {
+    fontSize: 16,
+    fontWeight: '900',
+    color: '#171717',
+    marginBottom: 6,
   },
 
-  tipoTextoSelecionado: {
-    color: '#FFFFFF',
+  optionDescription: {
+    fontSize: 13,
+    color: '#5F6F6C',
+    lineHeight: 18,
   },
 
   primaryButton: {
-    height: 58,
-    borderRadius: 18,
-    backgroundColor: '#538477',
+    height: 50,
+    borderRadius: 8,
+    backgroundColor: '#0C706E',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 6,
-    marginBottom: 18,
+    marginBottom: 22,
   },
 
   primaryButtonText: {
     color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: '800',
+    fontSize: 15,
+    fontWeight: '900',
   },
 
-  link: {
-    textAlign: 'center',
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#538477',
+  loginRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  loginText: {
+    fontSize: 13,
+    color: '#5F6F6C',
+  },
+
+  loginLink: {
+    fontSize: 13,
+    fontWeight: '900',
+    color: '#0C706E',
   },
 });

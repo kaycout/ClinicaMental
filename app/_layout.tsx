@@ -1,28 +1,46 @@
 import { Stack } from 'expo-router';
-// importando a barra de status (aquela de cima do celular)
+// aqui eu importo a barra de status do celular
 import { StatusBar } from 'expo-status-bar';
 
-// esse é o layout principal do app (a raiz de tudo)
+// esse é o layout principal do app, onde eu organizo todas as rotas da pasta app
 export default function RootLayout() {
   return (
     <>
-      {/* aqui eu configuro todas as telas do app usando stack navigation */}
-      <Stack screenOptions={{ headerShown: false }}>
+      {/* aqui eu deixo o index como primeira tela, porque o index é o meu login */}
+      <Stack initialRouteName="index" screenOptions={{ headerShown: false }}>
 
-        {/* index é a tela inicial do app (no meu caso, login) */}
-        <Stack.Screen name="index" />
+        {/* tela inicial do app: login */}
+        <Stack.Screen name="login" />
 
-        {/* tela de cadastro de usuário */}
+        {/* tela de escolha do tipo de cadastro */}
         <Stack.Screen name="cadastro" />
 
-        {/* outra tela de login (acabei criando separada, mas pode ser redundante) */}
-        <Stack.Screen name="tela-login" />
+        {/* tela de dados pessoais do cadastro */}
+        <Stack.Screen name="dados-pessoais" />
 
-        {/* grupo de abas (onde fica agenda, pacientes, salas, etc) */}
+        {/* tela de dados de acesso do cadastro */}
+        <Stack.Screen name="dados-acesso" />
+
+        {/* tela de cadastro realizado com sucesso */}
+        <Stack.Screen name="cadastro-sucesso" />
+
+        {/* tela para redefinir senha */}
+        <Stack.Screen name="redefinir-senha" />
+
+        {/* grupo de abas do usuário comum, onde ficam agenda, pacientes, salas, avisos e perfil */}
         <Stack.Screen name="(tabs)" />
+
+        {/* tela principal do administrador */}
+        <Stack.Screen name="acesso-administrador" />
+
+        {/* calendário do administrador */}
+        <Stack.Screen name="calendario-administrador" />
 
         {/* tela de criação de novo agendamento */}
         <Stack.Screen name="novo-agendamento" />
+
+        {/* tela exibida depois que o agendamento é feito */}
+        <Stack.Screen name="agendamento-sucesso" />
 
         {/* tela de detalhes do paciente */}
         <Stack.Screen name="paciente-detalhe" />

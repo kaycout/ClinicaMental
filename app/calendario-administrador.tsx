@@ -1,3 +1,5 @@
+// arquivo app/calendario-administrador.tsx
+// aqui eu organizei essa tela e deixei os comentários explicando minha parte do código
 import React, { useMemo, useState } from 'react';
 import {
   ScrollView,

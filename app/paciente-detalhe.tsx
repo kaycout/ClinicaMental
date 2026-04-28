@@ -1,3 +1,5 @@
+// arquivo app/paciente-detalhe.tsx
+// aqui eu organizei essa tela e deixei os comentários explicando minha parte do código
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BrandHeader, ListRow, Screen, SectionCard, useResponsive } from '@/components/clinic-ui';

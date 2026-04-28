@@ -1,3 +1,5 @@
+// arquivo app/(tabs)/salas.tsx
+// aqui eu organizei essa tela e deixei os comentários explicando minha parte do código
 import React from 'react';
 // importando componentes básicos
 import { ScrollView, StyleSheet, Text, View } from 'react-native';

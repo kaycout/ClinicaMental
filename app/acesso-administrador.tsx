@@ -1,3 +1,5 @@
+// arquivo app/acesso-administrador.tsx
+// aqui eu organizei essa tela e deixei os comentários explicando minha parte do código
 import React from 'react';
 // importando componentes básicos de layout
 import {
@@ -129,7 +131,7 @@ export default function AdminDashboardScreen() {
               style={styles.backButton}
 
               // aqui eu volto pro login (logout)
-              onPress={() => router.replace('/tela-login')}
+              onPress={() => router.replace('/')}
             >
               <Text style={styles.backButtonText}>Sair do painel</Text>
             </TouchableOpacity>

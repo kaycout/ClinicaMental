@@ -1,63 +1,88 @@
+// arquivo app/agendamento-sucesso.tsx
+// aqui eu organizei essa tela de sucesso no mesmo estilo da tela de login
+
 import React from 'react';
+
 // importando componentes básicos
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from 'react-native';
+
 // importando ícones
 import { Ionicons } from '@expo/vector-icons';
+
 // importando navegação
 import { router } from 'expo-router';
-// componente base do projeto
-import { Screen } from '@/components/clinic-ui';
 
-// tela exibida após um agendamento ser concluído com sucesso
+// tela exibida quando o agendamento for realizado com sucesso
 export default function AgendamentoSucessoScreen() {
-  return (
-    // estrutura base da tela
-    <Screen>
+  // aqui eu pego a largura da tela pra ajustar melhor no mobile e desktop
+  const { width } = useWindowDimensions();
+  const isMobile = width < 700;
 
-      {/* container principal centralizado */}
-      <View style={styles.container}>
+  return (
+    // fundo principal da tela
+    <View style={styles.screen}>
+
+      {/* container centralizado */}
+      <View style={[styles.container, isMobile && styles.containerMobile]}>
+
+        {/* logo no topo, igual o estilo da tela de login */}
+        <View style={styles.logoArea}>
+          <Text style={styles.psi}>Ψ</Text>
+          <Text style={styles.logoText}>SEP</Text>
+          <Text style={styles.logoSub}>CLÍNICA DE PSICOLOGIA</Text>
+        </View>
+
+        {/* título da tela */}
+        <Text style={styles.title}>Agendamento realizado!</Text>
+
+        {/* subtítulo explicando o que aconteceu */}
+        <Text style={styles.subtitle}>
+          O agendamento foi salvo com sucesso no sistema.
+        </Text>
 
         {/* card central */}
-        <View style={styles.card}>
+        <View style={[styles.card, isMobile && styles.cardMobile]}>
 
-          {/* círculo com ícone de sucesso */}
+          {/* círculo com ícone de confirmação */}
           <View style={styles.iconCircle}>
-            <Ionicons name="checkmark" size={54} color="#FFFFFF" />
+            <Ionicons name="checkmark" size={46} color="#FFFFFF" />
           </View>
 
-          {/* título */}
-          <Text style={styles.title}>
-            Agendamento realizado com sucesso
+          {/* mensagem principal */}
+          <Text style={styles.cardTitle}>
+            Tudo certo!
           </Text>
 
           {/* descrição */}
-          <Text style={styles.subtitle}>
-            A confirmação será enviada por e-mail.
+          <Text style={styles.cardSubtitle}>
+            A confirmação do agendamento já está registrada e poderá ser acompanhada na agenda.
           </Text>
 
-          {/* botão principal (voltar para home/agenda) */}
+          {/* botão principal */}
           <TouchableOpacity
             style={styles.primaryButton}
-
-            // aqui eu volto para a área principal do app (tabs)
             onPress={() => router.replace('/(tabs)')}
-
             activeOpacity={0.85}
           >
+            <Ionicons name="calendar-outline" size={21} color="#FFFFFF" />
             <Text style={styles.primaryButtonText}>
-              Voltar para o início
+              Voltar para agenda
             </Text>
           </TouchableOpacity>
 
-          {/* botão secundário (fazer novo agendamento) */}
+          {/* botão secundário */}
           <TouchableOpacity
             style={styles.secondaryButton}
-
-            // aqui eu mando direto para criar outro agendamento
             onPress={() => router.replace('/novo-agendamento')}
-
             activeOpacity={0.85}
           >
+            <Ionicons name="add-outline" size={22} color="#0C706E" />
             <Text style={styles.secondaryButtonText}>
               Novo agendamento
             </Text>
@@ -65,95 +90,149 @@ export default function AgendamentoSucessoScreen() {
 
         </View>
       </View>
-    </Screen>
+    </View>
   );
 }
 
 // estilos da tela
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: '#EEF8F4',
+  },
 
-  // container principal
   container: {
     flex: 1,
-    backgroundColor: '#EAF5EF',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    paddingHorizontal: 24,
+    paddingVertical: 32,
   },
 
-  // card central
+  containerMobile: {
+    justifyContent: 'flex-start',
+    paddingTop: 74,
+  },
+
+  logoArea: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+
+  psi: {
+    fontSize: 72,
+    color: '#0C706E',
+    fontWeight: '900',
+    lineHeight: 76,
+  },
+
+  logoText: {
+    fontSize: 34,
+    color: '#0C706E',
+    fontWeight: '900',
+    marginTop: -4,
+  },
+
+  logoSub: {
+    fontSize: 11,
+    color: '#0C706E',
+    fontWeight: '900',
+    letterSpacing: 0.5,
+  },
+
+  title: {
+    fontSize: 25,
+    fontWeight: '900',
+    color: '#0C706E',
+    textAlign: 'center',
+    marginBottom: 6,
+  },
+
+  subtitle: {
+    fontSize: 15,
+    color: '#64748B',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+
   card: {
     width: '100%',
-    maxWidth: 500,
-    backgroundColor: '#F3F6FB',
-    borderRadius: 32,
-    padding: 28,
+    maxWidth: 430,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 14,
+    padding: 24,
     alignItems: 'center',
+    shadowColor: '#94A3B8',
+    shadowOpacity: 0.14,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 4,
   },
 
-  // círculo do ícone
+  cardMobile: {
+    padding: 22,
+  },
+
   iconCircle: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-    backgroundColor: '#5D8F81',
+    width: 82,
+    height: 82,
+    borderRadius: 41,
+    backgroundColor: '#0C706E',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 22,
+    marginBottom: 18,
   },
 
-  // título
-  title: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: '#112B5C',
+  cardTitle: {
+    fontSize: 22,
+    fontWeight: '900',
+    color: '#0C706E',
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 8,
   },
 
-  // subtítulo
-  subtitle: {
-    fontSize: 16,
-    color: '#6B7280',
+  cardSubtitle: {
+    fontSize: 14,
+    color: '#64748B',
     textAlign: 'center',
-    marginBottom: 28,
-    maxWidth: 340,
+    lineHeight: 20,
+    marginBottom: 24,
   },
 
-  // botão principal
   primaryButton: {
     width: '100%',
-    minHeight: 58,
-    borderRadius: 18,
-    backgroundColor: '#5D8F81',
+    minHeight: 52,
+    borderRadius: 8,
+    backgroundColor: '#0C706E',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 14,
+    gap: 8,
+    marginBottom: 12,
   },
 
-  // texto do botão principal
   primaryButtonText: {
-    fontSize: 17,
-    fontWeight: '800',
     color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '900',
   },
 
-  // botão secundário
   secondaryButton: {
     width: '100%',
-    minHeight: 54,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: '#BFD6CF',
+    minHeight: 50,
+    borderRadius: 8,
     backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#D7E5E1',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 8,
   },
 
-  // texto do botão secundário
   secondaryButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#4E7C70',
+    color: '#0C706E',
+    fontSize: 15,
+    fontWeight: '900',
   },
 });

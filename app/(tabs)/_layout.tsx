@@ -1,91 +1,90 @@
 import React from 'react';
-// importando o sistema de abas do expo router
+// aqui eu importo o Tabs, que é a navegação de baixo no mobile
 import { Tabs } from 'expo-router';
-// importando os ícones que vão aparecer nas abas
+// aqui eu importo os ícones usados nas abas
 import { Ionicons } from '@expo/vector-icons';
+// aqui eu uso a largura da tela para saber se está no desktop ou mobile
+import { useWindowDimensions } from 'react-native';
 
-// esse componente define o layout com abas (tipo menu inferior do app)
+// esse layout controla somente as telas que estão dentro da pasta tabs
 export default function TabLayout() {
+  // aqui eu pego a largura da tela
+  const { width } = useWindowDimensions();
+
+  // se a tela for grande, eu considero como desktop
+  const isDesktop = width >= 900;
+
   return (
     <Tabs
       screenOptions={{
-        // escondendo o header padrão (aquele topo automático)
+        // aqui eu escondo o cabeçalho padrão, porque as telas já têm o próprio layout
         headerShown: false,
-
-        // cor do ícone quando está selecionado
-        tabBarActiveTintColor: '#4E9EB3',
-
-        // cor do ícone quando não está selecionado
+        tabBarActiveTintColor: '#0C706E',
         tabBarInactiveTintColor: '#819392',
 
-        // estilizando a barra de navegação inferior
-        tabBarStyle: { height: 68, paddingBottom: 8, paddingTop: 8 },
+        // no desktop eu escondo a barra de baixo, porque uso a sidebar lateral
+        tabBarStyle: isDesktop
+          ? { display: 'none' }
+          : { height: 68, paddingBottom: 8, paddingTop: 8 },
 
-        // estilizando o texto das abas
+        // aqui eu deixo o texto da aba mais organizado
         tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
       }}
     >
-
-      {/* aba principal (agenda) */}
+      {/* primeira aba: agenda */}
       <Tabs.Screen
         name="index"
         options={{
           title: 'Agenda',
-          // ícone da aba agenda
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="calendar-outline" size={size} color={color} />
-          )
+          ),
         }}
       />
 
-      {/* aba de pacientes */}
+      {/* segunda aba: pacientes */}
       <Tabs.Screen
         name="pacientes"
         options={{
           title: 'Pacientes',
-          // ícone da aba pacientes
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people-outline" size={size} color={color} />
-          )
+          ),
         }}
       />
 
-      {/* aba de salas */}
+      {/* terceira aba: salas */}
       <Tabs.Screen
         name="salas"
         options={{
           title: 'Salas',
-          // ícone da aba salas
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="business-outline" size={size} color={color} />
-          )
+          ),
         }}
       />
 
-      {/* aba de notificações/avisos */}
+      {/* quarta aba: avisos */}
       <Tabs.Screen
         name="notificacoes"
         options={{
           title: 'Avisos',
-          // ícone da aba notificações
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="notifications-outline" size={size} color={color} />
-          )
+          ),
         }}
       />
 
-      {/* aba de perfil do usuário */}
+      {/* quinta aba: perfil */}
       <Tabs.Screen
         name="perfil"
         options={{
           title: 'Perfil',
-          // ícone da aba perfil
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" size={size} color={color} />
-          )
+          ),
         }}
       />
-
     </Tabs>
   );
 }

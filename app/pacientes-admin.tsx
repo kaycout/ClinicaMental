@@ -1,3 +1,5 @@
+// arquivo app/pacientes-admin.tsx
+// aqui eu organizei essa tela e deixei os comentários explicando minha parte do código
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
