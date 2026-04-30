@@ -30,6 +30,14 @@ export default function DadosPessoaisScreen() {
       colors={['#F4FBF8', '#EAF6F1', '#F8FCFA']}
       style={styles.background}
     >
+      {(
+        <View style={styles.backgroundDecor}>
+          <View style={styles.blurCircleOne} />
+          <View style={styles.blurCircleTwo} />
+          <View style={styles.blurCircleThree} />
+        </View>
+      )}
+
       <ScrollView contentContainerStyle={styles.scrollContent}>
 
         <View style={[styles.wrapper, isDesktop && styles.wrapperDesktop]}>
@@ -72,7 +80,7 @@ export default function DadosPessoaisScreen() {
                 <View style={styles.stepInactive}>
                   <Text style={styles.stepInactiveText}>3</Text>
                 </View>
-                <Text style={styles.stepLabel}>Dados de acesso</Text>
+                <Text style={styles.stepLabel}>Dados acesso</Text>
               </View>
 
               <View style={styles.stepLine} />
@@ -185,8 +193,44 @@ export default function DadosPessoaisScreen() {
   );
 }
 
+
 const styles = StyleSheet.create({
   background: { flex: 1 },
+
+  backgroundDecor: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+
+  blurCircleOne: {
+    position: 'absolute',
+    width: 520,
+    height: 520,
+    borderRadius: 260,
+    backgroundColor: 'rgba(12, 112, 110, 0.08)',
+    top: -120,
+    left: -120,
+  },
+
+  blurCircleTwo: {
+    position: 'absolute',
+    width: 600,
+    height: 600,
+    borderRadius: 300,
+    backgroundColor: 'rgba(166, 189, 184, 0.18)',
+    right: -180,
+    bottom: -180,
+  },
+
+  blurCircleThree: {
+    position: 'absolute',
+    width: 380,
+    height: 380,
+    borderRadius: 190,
+    backgroundColor: 'rgba(255, 255, 255, 0.65)',
+    right: 220,
+    top: 120,
+  },
 
   scrollContent: {
     flexGrow: 1,
@@ -204,7 +248,11 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
 
-  cardDesktop: { maxWidth: 520 },
+  cardDesktop: {
+  width: '100%',
+  maxWidth: 520, // igual da tela de criar conta
+  padding: 24,   // reduz um pouco também
+},
 
   logoArea: {
     flexDirection: 'row',
@@ -214,11 +262,16 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
 
-  psi: { fontSize: 60, color: '#0C706E' },
+  psi: { fontSize: 60, color: '#0C706E', fontWeight: '700' },
 
-  logoText: { fontSize: 26, fontWeight: '900', color: '#0C706E' },
+  logoText: { fontSize: 28, fontWeight: '900', color: '#0C706E' },
 
-  logoSubtitle: { fontSize: 10, color: '#0C706E' },
+  logoSubtitle: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: '#0C706E',
+    letterSpacing: 0.4,
+  },
 
   stepsContainer: {
     flexDirection: 'row',
@@ -258,11 +311,11 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
 
-  stepActiveText: { color: '#fff', fontWeight: '800' },
-  stepInactiveText: { color: '#777' },
+  stepActiveText: { color: '#fff', fontWeight: '400' },
+  stepInactiveText: { color: '#777', fontWeight: '400' },
 
-  stepLabel: { fontSize: 10, color: '#7B8986' },
-  stepLabelActive: { fontSize: 10, fontWeight: '800' },
+  stepLabel: { fontSize: 10, color: '#7B8986', fontWeight: '400' },
+  stepLabelActive: { fontSize: 10, fontWeight: '400', color: '#1B3431' },
 
   stepLine: {
     flex: 1,
@@ -272,7 +325,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 22,
-    fontWeight: '900',
+    fontWeight: '400',
     textAlign: 'center',
     marginBottom: 6,
   },
@@ -287,7 +340,7 @@ const styles = StyleSheet.create({
 
   label: {
     fontSize: 12,
-    fontWeight: '800',
+    fontWeight: '400',
     marginBottom: 4,
   },
 
@@ -317,32 +370,40 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', gap: 10 },
 
   buttonsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-  },
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginTop: 24,
+},
 
   primaryButton: {
-    flex: 1,
-    height: 50,
-    backgroundColor: '#0C706E',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 10,
-  },
+  width: 140, // menor igual o outro layout
+  height: 44,
+  backgroundColor: '#0C706E',
+  borderRadius: 6,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
 
-  primaryText: { color: '#fff', fontWeight: '800' },
+  primaryText: {
+  color: '#fff',
+  fontWeight: '400',
+  fontSize: 13, // menor também
+},
 
   secondaryButton: {
-    flex: 1,
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#DCE5E2',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  width: 100, // menor igual dados de acesso
+  height: 44, // diminui altura
+  borderWidth: 1,
+  borderColor: '#DCE5E2',
+  borderRadius: 6,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
 
-  secondaryText: { fontWeight: '700' },
+  secondaryText: {
+  fontWeight: '400',
+  fontSize: 13, // menor
+  color: '#1B3431',
+},
+
 });

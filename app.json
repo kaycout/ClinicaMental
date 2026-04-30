@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "ClinicaMentalTeste",
-    "slug": "ClinicaMentalTeste",
+    "name": "ClinicaMentalSEP",
+    "slug": "ClinicaMentalSEP",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "clinicamentalteste",
+    "scheme": "ClinicaMentalSEP",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

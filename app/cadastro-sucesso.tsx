@@ -22,6 +22,14 @@ export default function CadastroSucessoScreen() {
       colors={['#F4FBF8', '#EAF6F1', '#F8FCFA']}
       style={styles.background}
     >
+      {(
+        <View style={styles.backgroundDecor}>
+          <View style={styles.blurCircleOne} />
+          <View style={styles.blurCircleTwo} />
+          <View style={styles.blurCircleThree} />
+        </View>
+      )}
+
       <View style={[styles.wrapper, isDesktop && styles.wrapperDesktop]}>
         <View style={[styles.card, isDesktop && styles.cardDesktop]}>
 
@@ -37,7 +45,7 @@ export default function CadastroSucessoScreen() {
 
             {/* círculo com check de sucesso */}
             <View style={styles.iconCircle}>
-              <Ionicons name="checkmark" size={60} color="#FFFFFF" />
+              <Ionicons name="checkmark" size={54} color="#FFFFFF" />
             </View>
 
           </View>
@@ -77,6 +85,41 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  backgroundDecor: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+
+  blurCircleOne: {
+    position: 'absolute',
+    width: 520,
+    height: 520,
+    borderRadius: 260,
+    backgroundColor: 'rgba(12, 112, 110, 0.08)',
+    top: -120,
+    left: -120,
+  },
+
+  blurCircleTwo: {
+    position: 'absolute',
+    width: 600,
+    height: 600,
+    borderRadius: 300,
+    backgroundColor: 'rgba(166, 189, 184, 0.18)',
+    right: -180,
+    bottom: -180,
+  },
+
+  blurCircleThree: {
+    position: 'absolute',
+    width: 380,
+    height: 380,
+    borderRadius: 190,
+    backgroundColor: 'rgba(255, 255, 255, 0.65)',
+    right: 220,
+    top: 120,
+  },
+
   wrapper: {
     flex: 1,
     justifyContent: 'center',
@@ -91,13 +134,13 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     backgroundColor: '#FFFFFF',
-    borderRadius: 22,
+    borderRadius: 18,
     paddingHorizontal: 28,
     paddingVertical: 32,
     alignItems: 'center',
     shadowColor: '#A6BDB8',
-    shadowOpacity: 0.25,
-    shadowRadius: 20,
+    shadowOpacity: 0.18,
+    shadowRadius: 22,
     shadowOffset: { width: 0, height: 8 },
     elevation: 8,
   },
@@ -116,9 +159,9 @@ const styles = StyleSheet.create({
 
   // círculo principal com o check
   iconCircle: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
+    width: 106,
+    height: 106,
+    borderRadius: 53,
     backgroundColor: '#0C706E',
     justifyContent: 'center',
     alignItems: 'center',
@@ -166,7 +209,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 24,
-    fontWeight: '900',
+    fontWeight: '400',
     color: '#171717',
     marginBottom: 10,
     textAlign: 'center',
@@ -185,7 +228,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 44,
     backgroundColor: '#0C706E',
-    borderRadius: 8,
+    borderRadius: 6,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 14,
@@ -193,13 +236,13 @@ const styles = StyleSheet.create({
 
   primaryText: {
     color: '#FFFFFF',
-    fontWeight: '900',
+    fontWeight: '400',
     fontSize: 14,
   },
 
   secondaryText: {
     fontSize: 13,
     color: '#0C706E',
-    fontWeight: '800',
+    fontWeight: '400',
   },
 });

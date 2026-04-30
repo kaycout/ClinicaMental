@@ -24,8 +24,16 @@ export default function CadastroScreen() {
       colors={['#F4FBF8', '#EAF6F1', '#F8FCFA']}
       style={styles.background}
     >
+      {(
+        <View style={styles.backgroundDecor}>
+          <View style={styles.blurCircleOne} />
+          <View style={styles.blurCircleTwo} />
+          <View style={styles.blurCircleThree} />
+        </View>
+      )}
+
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[styles.scrollContent, isDesktop && styles.scrollContentDesktop]}
         showsVerticalScrollIndicator={false}
       >
         <View style={[styles.wrapper, isDesktop && styles.wrapperDesktop]}>
@@ -157,11 +165,50 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  backgroundDecor: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+
+  blurCircleOne: {
+    position: 'absolute',
+    width: 520,
+    height: 520,
+    borderRadius: 260,
+    backgroundColor: 'rgba(12, 112, 110, 0.08)',
+    top: -120,
+    left: -120,
+  },
+
+  blurCircleTwo: {
+    position: 'absolute',
+    width: 600,
+    height: 600,
+    borderRadius: 300,
+    backgroundColor: 'rgba(166, 189, 184, 0.18)',
+    right: -180,
+    bottom: -180,
+  },
+
+  blurCircleThree: {
+    position: 'absolute',
+    width: 380,
+    height: 380,
+    borderRadius: 190,
+    backgroundColor: 'rgba(255, 255, 255, 0.65)',
+    right: 220,
+    top: 120,
+  },
+
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
     paddingHorizontal: 22,
     paddingVertical: 28,
+  },
+
+  scrollContentDesktop: {
+    paddingVertical: 0,
   },
 
   wrapper: {
@@ -186,7 +233,9 @@ const styles = StyleSheet.create({
   },
 
   cardDesktop: {
-    maxWidth: 520,
+    maxWidth: 620,
+    paddingHorizontal: 34,
+    paddingVertical: 34,
   },
 
   logoArea: {
@@ -210,11 +259,13 @@ const styles = StyleSheet.create({
     color: '#0C706E',
   },
 
+  // Nome "Clínia de psicologia"
   logoSubtitle: {
-    fontSize: 9,
-    fontWeight: '800',
-    color: '#0C706E',
-  },
+  fontSize: 11,        // aumenta um pouco do nome
+  fontWeight: '500',   //deixa mais visível 
+  color: '#0C706E',
+  letterSpacing: 0.5,  // melhora a leitura
+},
 
   stepsContainer: {
     flexDirection: 'row',
@@ -240,7 +291,7 @@ const styles = StyleSheet.create({
   stepActiveText: {
     color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: '900',
+    fontWeight: '400',
   },
 
   stepInactive: {
@@ -256,19 +307,19 @@ const styles = StyleSheet.create({
   stepInactiveText: {
     color: '#5F6F6C',
     fontSize: 12,
-    fontWeight: '900',
+    fontWeight: '400',
   },
 
   stepLabelActive: {
     fontSize: 10,
-    fontWeight: '800',
+    fontWeight: '400',
     color: '#1B3431',
     textAlign: 'center',
   },
 
   stepLabel: {
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: '400',
     color: '#7B8986',
     textAlign: 'center',
   },
@@ -283,7 +334,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     fontSize: 22,
-    fontWeight: '900',
+    fontWeight: '400',
     color: '#171717',
     marginBottom: 8,
   },
@@ -332,7 +383,7 @@ const styles = StyleSheet.create({
 
   optionTitle: {
     fontSize: 16,
-    fontWeight: '900',
+    fontWeight: '400',
     color: '#171717',
     marginBottom: 6,
   },
@@ -356,7 +407,7 @@ const styles = StyleSheet.create({
   primaryButtonText: {
     color: '#FFFFFF',
     fontSize: 15,
-    fontWeight: '900',
+    fontWeight: '400',
   },
 
   loginRow: {
@@ -372,7 +423,7 @@ const styles = StyleSheet.create({
 
   loginLink: {
     fontSize: 13,
-    fontWeight: '900',
+    fontWeight: '400',
     color: '#0C706E',
   },
 });

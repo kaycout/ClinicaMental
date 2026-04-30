@@ -24,6 +24,14 @@ export default function DadosAcessoScreen() {
 
   return (
     <LinearGradient colors={['#F4FBF8', '#EAF6F1', '#F8FCFA']} style={styles.background}>
+      {(
+        <View style={styles.backgroundDecor}>
+          <View style={styles.blurCircleOne} />
+          <View style={styles.blurCircleTwo} />
+          <View style={styles.blurCircleThree} />
+        </View>
+      )}
+
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={[styles.wrapper, isDesktop && styles.wrapperDesktop]}>
           <View style={[styles.card, isDesktop && styles.cardDesktop]}>
@@ -61,7 +69,7 @@ export default function DadosAcessoScreen() {
                 <View style={styles.stepActive}>
                   <Text style={styles.stepActiveText}>3</Text>
                 </View>
-                <Text style={styles.stepLabelActive}>Dados de acesso</Text>
+                <Text style={styles.stepLabelActive}>Dados acesso</Text>
               </View>
 
               <View style={styles.stepLine} />
@@ -159,6 +167,42 @@ export default function DadosAcessoScreen() {
 const styles = StyleSheet.create({
   background: { flex: 1 },
 
+  // fundo com bolhas igual login
+  backgroundDecor: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+
+  blurCircleOne: {
+    position: 'absolute',
+    width: 520,
+    height: 520,
+    borderRadius: 260,
+    backgroundColor: 'rgba(12, 112, 110, 0.08)',
+    top: -120,
+    left: -120,
+  },
+
+  blurCircleTwo: {
+    position: 'absolute',
+    width: 600,
+    height: 600,
+    borderRadius: 300,
+    backgroundColor: 'rgba(166, 189, 184, 0.18)',
+    right: -180,
+    bottom: -180,
+  },
+
+  blurCircleThree: {
+    position: 'absolute',
+    width: 380,
+    height: 380,
+    borderRadius: 190,
+    backgroundColor: 'rgba(255, 255, 255, 0.65)',
+    right: 220,
+    top: 120,
+  },
+
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
@@ -167,11 +211,13 @@ const styles = StyleSheet.create({
 
   wrapper: { width: '100%' },
 
-  wrapperDesktop: { alignItems: 'center' },
+  wrapperDesktop: {
+    alignItems: 'center',
+  },
 
   card: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 18,
+    borderRadius: 14,
     padding: 24,
     shadowColor: '#A6BDB8',
     shadowOpacity: 0.18,
@@ -180,14 +226,18 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
 
-  cardDesktop: { maxWidth: 520 },
+  cardDesktop: {
+    width: '100%',
+    maxWidth: 520,
+    padding: 28,
+  },
 
   logoArea: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
-    marginBottom: 25,
+    marginBottom: 22,
   },
 
   psi: {
@@ -198,21 +248,22 @@ const styles = StyleSheet.create({
   },
 
   logoText: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: '900',
     color: '#0C706E',
   },
 
   logoSubtitle: {
-    fontSize: 9,
-    fontWeight: '800',
+    fontSize: 11,
+    fontWeight: '500',
     color: '#0C706E',
+    letterSpacing: 0.4,
   },
 
   stepsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 25,
+    marginBottom: 22,
   },
 
   stepItem: {
@@ -252,13 +303,13 @@ const styles = StyleSheet.create({
 
   stepActiveText: {
     color: '#fff',
-    fontWeight: '900',
+    fontWeight: '400',
     fontSize: 12,
   },
 
   stepInactiveText: {
     color: '#777',
-    fontWeight: '800',
+    fontWeight: '400',
     fontSize: 12,
   },
 
@@ -270,7 +321,7 @@ const styles = StyleSheet.create({
 
   stepLabelActive: {
     fontSize: 10,
-    fontWeight: '800',
+    fontWeight: '400',
     color: '#1B3431',
     textAlign: 'center',
   },
@@ -284,7 +335,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 22,
-    fontWeight: '900',
+    fontWeight: '400',
     textAlign: 'center',
     color: '#171717',
     marginBottom: 6,
@@ -294,7 +345,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#7A8583',
     fontSize: 13,
-    marginBottom: 22,
+    marginBottom: 20,
   },
 
   form: {
@@ -303,7 +354,7 @@ const styles = StyleSheet.create({
 
   label: {
     fontSize: 12,
-    fontWeight: '800',
+    fontWeight: '400',
     color: '#1E3A38',
     marginBottom: 6,
   },
@@ -312,9 +363,9 @@ const styles = StyleSheet.create({
     height: 46,
     borderWidth: 1,
     borderColor: '#DCE5E2',
-    borderRadius: 8,
+    borderRadius: 6,
     paddingHorizontal: 12,
-    marginBottom: 16,
+    marginBottom: 14,
     fontSize: 14,
     color: '#1F2F2D',
   },
@@ -325,9 +376,9 @@ const styles = StyleSheet.create({
     height: 46,
     borderWidth: 1,
     borderColor: '#DCE5E2',
-    borderRadius: 8,
+    borderRadius: 6,
     paddingHorizontal: 12,
-    marginBottom: 8,
+    marginBottom: 10,
   },
 
   inputFlex: {
@@ -336,48 +387,23 @@ const styles = StyleSheet.create({
     color: '#1F2F2D',
   },
 
-  strengthRow: {
-    marginBottom: 16,
-  },
-
-  strengthText: {
-    fontSize: 11,
-    fontWeight: '800',
-    color: '#D35555',
-    marginBottom: 4,
-  },
-
-  strengthBar: {
-    width: 105,
-    height: 5,
-    borderRadius: 999,
-    backgroundColor: '#F0D6D6',
-  },
-
-  strengthFill: {
-    width: 42,
-    height: 5,
-    borderRadius: 999,
-    backgroundColor: '#D35555',
-  },
-
   rulesBox: {
     backgroundColor: '#F2FAF8',
-    borderRadius: 8,
-    padding: 14,
-    marginTop: 4,
+    borderRadius: 6,
+    padding: 12,
+    marginTop: 6,
   },
 
   rulesTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    marginBottom: 10,
+    marginBottom: 8,
   },
 
   rulesTitle: {
     fontSize: 13,
-    fontWeight: '900',
+    fontWeight: '400',
     color: '#0C706E',
   },
 
@@ -385,47 +411,49 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    marginBottom: 7,
+    marginBottom: 6,
   },
 
   ruleText: {
     fontSize: 12,
     color: '#566B67',
-    fontWeight: '700',
+    fontWeight: '400',
   },
 
   buttonsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 26,
+    marginTop: 24,
   },
 
   secondaryButton: {
     width: 100,
-    height: 48,
+    height: 44,
     borderWidth: 1,
     borderColor: '#DCE5E2',
-    borderRadius: 8,
+    borderRadius: 6,
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   secondaryText: {
-    fontWeight: '800',
+    fontWeight: '400',
     color: '#1B3431',
+    fontSize: 13, // menor
   },
 
   primaryButton: {
-    width: 150,
-    height: 48,
+    width: 140,
+    height: 44,
     backgroundColor: '#0C706E',
-    borderRadius: 8,
+    borderRadius: 6,
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   primaryText: {
     color: '#fff',
-    fontWeight: '900',
+    fontWeight: '400',
+    fontSize: 13, // menor também
   },
 });

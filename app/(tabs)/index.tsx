@@ -14,6 +14,7 @@ import {
 
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // lista simulada dos atendimentos do dia
 const atendimentos = [
@@ -102,285 +103,328 @@ export default function AgendaScreen() {
   const isMobile = width < 900;
 
   return (
-    <View style={styles.screen}>
+    <LinearGradient
+      colors={['#F4FBF8', '#EAF6F1', '#F8FCFA']}
+      style={styles.background}
+    >
+      {/* fundo com bolas */}
+      <View style={styles.backgroundDecor}>
+        <View style={styles.blurCircleOne} />
+        <View style={styles.blurCircleTwo} />
+        <View style={styles.blurCircleThree} />
+      </View>
 
-      {/* sidebar só aparece no desktop */}
-      {!isMobile && (
-        <View style={styles.sidebar}>
+      <View style={styles.screen}>
 
-          {/* logo */}
-          <View style={styles.logoBox}>
-            <Text style={styles.psi}>Ψ</Text>
+        {/* sidebar só aparece no desktop */}
+        {!isMobile && (
+          <View style={styles.sidebar}>
 
-            <View>
-              <Text style={styles.logoText}>SEP</Text>
-              <Text style={styles.logoSub}>Clínica de Psicologia</Text>
-            </View>
-          </View>
+            {/* logo */}
+            <View style={styles.logoBox}>
+              <Text style={styles.psi}>Ψ</Text>
 
-          {/* itens do menu */}
-          {menuItems.map(([icon, label, path]) => (
-            <TouchableOpacity
-              key={label}
-              style={[
-                styles.menuItem,
-                label === 'Agenda' && styles.menuActive,
-              ]}
-              onPress={() => router.push(path as any)}
-            >
-              <Ionicons
-                name={icon as any}
-                size={22}
-                color={label === 'Agenda' ? '#0C706E' : '#5E6B78'}
-              />
-
-              <Text
-                style={[
-                  styles.menuText,
-                  label === 'Agenda' && styles.menuTextActive,
-                ]}
-              >
-                {label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-
-          {/* botão sair */}
-          <TouchableOpacity style={styles.logout} onPress={() => router.replace('/')}>
-            <Ionicons name="exit-outline" size={22} color="#5E6B78" />
-            <Text style={styles.menuText}>Sair</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {/* conteúdo principal */}
-      <ScrollView
-        style={[styles.content, isMobile && styles.contentMobile]}
-        showsVerticalScrollIndicator={false}
-      >
-
-        {/* topo da página */}
-        <View style={[styles.topRow, isMobile && styles.topRowMobile]}>
-          <View style={styles.titleBox}>
-            <Text style={styles.pageTitle}>Agenda</Text>
-            <Text style={styles.pageSubtitle}>
-              Visualize e gerencie os atendimentos do dia
-            </Text>
-          </View>
-
-          {/* informações extras só no desktop */}
-          {!isMobile && (
-            <View style={styles.topRight}>
-              <TouchableOpacity style={styles.dateButton}>
-                <Ionicons name="chevron-back-outline" size={20} color="#1F2937" />
-              </TouchableOpacity>
-
-              <View style={styles.dateBox}>
-                <Text style={styles.dateText}>09 de abril de 2025</Text>
-                <Text style={styles.dateSub}>Quarta-feira</Text>
-              </View>
-
-              <TouchableOpacity style={styles.dateButton}>
-                <Ionicons name="chevron-forward-outline" size={20} color="#1F2937" />
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.todayButton}>
-                <Text style={styles.todayText}>Hoje</Text>
-              </TouchableOpacity>
-
-              <Ionicons name="notifications-outline" size={26} color="#334155" />
-
-              <View style={styles.userBox}>
-                <View style={styles.avatarUser}>
-                  <Text style={styles.avatarUserText}>JS</Text>
-                </View>
-
-                <View>
-                  <Text style={styles.userName}>João Silva</Text>
-                  <Text style={styles.userRole}>Estagiário</Text>
-                </View>
+              <View>
+                <Text style={styles.logoText}>SEP</Text>
+                <Text style={styles.logoSub}>Clínica de Psicologia</Text>
               </View>
             </View>
-          )}
-        </View>
 
-        {/* data no mobile */}
-        {isMobile && (
-          <View style={styles.mobileDateBox}>
-            <TouchableOpacity style={styles.mobileDateArrow}>
-              <Ionicons name="chevron-back-outline" size={20} color="#0C706E" />
-            </TouchableOpacity>
+            {/* itens do menu */}
+            <View style={styles.menuArea}>
+              {menuItems.map(([icon, label, path]) => (
+                <TouchableOpacity
+                  key={label}
+                  style={[
+                    styles.menuItem,
+                    label === 'Agenda' && styles.menuActive,
+                  ]}
+                  onPress={() => router.push(path as any)}
+                >
+                  <Ionicons
+                    name={icon as any}
+                    size={20}
+                    color={label === 'Agenda' ? '#0C706E' : '#70808A'}
+                  />
 
-            <View style={styles.mobileDateCenter}>
-              <Text style={styles.mobileDateText}>09 de abril de 2025</Text>
-              <Text style={styles.mobileDateSub}>Quarta-feira</Text>
+                  <Text
+                    style={[
+                      styles.menuText,
+                      label === 'Agenda' && styles.menuTextActive,
+                    ]}
+                  >
+                    {label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
             </View>
 
-            <TouchableOpacity style={styles.mobileDateArrow}>
-              <Ionicons name="chevron-forward-outline" size={20} color="#0C706E" />
+            {/* botão sair */}
+            <TouchableOpacity style={styles.logout} onPress={() => router.replace('/')}>
+              <Ionicons name="exit-outline" size={20} color="#70808A" />
+              <Text style={styles.menuText}>Sair</Text>
             </TouchableOpacity>
           </View>
         )}
 
-        {/* botão novo agendamento */}
-        <TouchableOpacity
-          style={[styles.newButton, isMobile && styles.newButtonMobile]}
-          onPress={() => router.push('/novo-agendamento')}
+        {/* conteúdo principal */}
+        <ScrollView
+          style={[styles.content, isMobile && styles.contentMobile]}
+          contentContainerStyle={styles.contentContainer}
+          showsVerticalScrollIndicator={false}
         >
-          <Ionicons name="add" size={22} color="#FFFFFF" />
-          <Text style={styles.newButtonText}>Novo Agendamento</Text>
-        </TouchableOpacity>
 
-        {/* filtros */}
-        <View style={[styles.filtersRow, isMobile && styles.filtersRowMobile]}>
-          <TouchableOpacity style={[styles.filterBox, isMobile && styles.filterBoxMobile]}>
-            <Text style={styles.filterText}>Todas as salas</Text>
-            <Ionicons name="chevron-down-outline" size={18} color="#334155" />
-          </TouchableOpacity>
+          {/* topo da página */}
+          <View style={[styles.topRow, isMobile && styles.topRowMobile]}>
+            <View style={styles.titleBox}>
+              <Text style={styles.pageTitle}>Agenda</Text>
+              <Text style={styles.pageSubtitle}>
+                Acompanhe seus atendimentos e registre informações permitidas.
+              </Text>
+            </View>
 
-          <TouchableOpacity style={[styles.filterBox, isMobile && styles.filterBoxMobile]}>
-            <Text style={styles.filterText}>Profissionais</Text>
-            <Ionicons name="chevron-down-outline" size={18} color="#334155" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[styles.filterBox, isMobile && styles.filterBoxMobile]}>
-            <Text style={styles.filterText}>Status</Text>
-            <Ionicons name="chevron-down-outline" size={18} color="#334155" />
-          </TouchableOpacity>
-        </View>
-
-        {/* card principal da agenda */}
-        <View style={styles.listCard}>
-          <View style={styles.listHeader}>
-            <Text style={styles.listTitle}>Agenda do Dia</Text>
-          </View>
-
-          {/* lista dos atendimentos */}
-          {atendimentos.map((item, index) => (
-            <View
-              key={index}
-              style={[
-                styles.appointmentRow,
-                isMobile && styles.appointmentRowMobile,
-              ]}
-            >
-              {/* barrinha colorida do status */}
-              <View style={[styles.leftBar, getBarStyle(item.status)]} />
-
-              {/* horário */}
-              <View style={[styles.timeBox, isMobile && styles.timeBoxMobile]}>
-                <Text style={styles.time}>{item.horario}</Text>
-                <Text style={styles.timeSub}>1h de sessão</Text>
-              </View>
-
-              {/* avatar */}
-              <View style={styles.avatar}>
-                <Text style={styles.avatarText}>{item.iniciais}</Text>
-              </View>
-
-              {/* dados do paciente */}
-              <View style={[styles.patientBox, isMobile && styles.patientBoxMobile]}>
-                <Text style={styles.patientName}>{item.paciente}</Text>
-
-                <Text style={styles.patientMeta}>
-                  {item.idade} • {item.tipo}
-                </Text>
-
-                <Text style={styles.patientMeta}>
-                  Responsável: {item.responsavel}
-                </Text>
-              </View>
-
-              {/* profissional e sala */}
-              <View style={[styles.infoBox, isMobile && styles.infoBoxMobile]}>
-                <View style={styles.infoLine}>
-                  <Ionicons name="person-outline" size={16} color="#334155" />
-                  <Text style={styles.infoText}>{item.profissional}</Text>
-                </View>
-
-                <View style={styles.infoLine}>
-                  <Ionicons name="business-outline" size={16} color="#334155" />
-                  <Text style={styles.infoText}>{item.sala}</Text>
-                </View>
-              </View>
-
-              {/* status */}
-              <View style={[styles.statusBadge, getStatusStyle(item.status)]}>
-                <Ionicons
-                  name={getStatusIcon(item.status) as any}
-                  size={14}
-                  color={getStatusColor(item.status)}
-                />
-
-                <Text style={[styles.statusText, { color: getStatusColor(item.status) }]}>
-                  {item.status}
-                </Text>
-              </View>
-
-              {/* ações só aparecem no desktop */}
-              {!isMobile && (
-                <View style={styles.actions}>
-                  <TouchableOpacity style={styles.actionButton}>
-                    <Ionicons name="eye-outline" size={18} color="#0C706E" />
-                    <Text style={styles.actionText}>Ver detalhes</Text>
+            {/* informações extras só no desktop */}
+            {!isMobile && (
+              <View style={styles.topRight}>
+                <View style={styles.dateNavigation}>
+                  <TouchableOpacity style={styles.dateButton}>
+                    <Ionicons name="chevron-back-outline" size={18} color="#0F3F3D" />
                   </TouchableOpacity>
 
-                  <TouchableOpacity
-                    style={[
-                      styles.actionButton,
-                      item.status === 'Falta' && styles.actionDangerButton,
-                    ]}
-                  >
-                    <Ionicons
-                      name={
-                        item.status === 'Falta'
-                          ? 'close-circle-outline'
-                          : 'checkmark-circle-outline'
-                      }
-                      size={18}
-                      color={item.status === 'Falta' ? '#B91C1C' : '#0C706E'}
-                    />
+                  <View style={styles.dateBox}>
+                    <Text style={styles.dateText}>09 de abril de 2025</Text>
+                    <Text style={styles.dateSub}>Quarta-feira</Text>
+                  </View>
 
-                    <Text
+                  <TouchableOpacity style={styles.dateButton}>
+                    <Ionicons name="chevron-forward-outline" size={18} color="#0F3F3D" />
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity style={styles.todayButton}>
+                  <Text style={styles.todayText}>Hoje</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.notificationButton}>
+                  <Ionicons name="notifications-outline" size={20} color="#0C706E" />
+                </TouchableOpacity>
+
+                <View style={styles.userBox}>
+                  <View style={styles.avatarUser}>
+                    <Text style={styles.avatarUserText}>JS</Text>
+                  </View>
+
+                  <View>
+                    <Text style={styles.userName}>João Silva</Text>
+                    <Text style={styles.userRole}>Estagiário</Text>
+                  </View>
+                </View>
+              </View>
+            )}
+          </View>
+
+          {/* data no mobile */}
+          {isMobile && (
+            <View style={styles.mobileDateBox}>
+              <TouchableOpacity style={styles.mobileDateArrow}>
+                <Ionicons name="chevron-back-outline" size={20} color="#0C706E" />
+              </TouchableOpacity>
+
+              <View style={styles.mobileDateCenter}>
+                <Text style={styles.mobileDateText}>09 de abril de 2025</Text>
+                <Text style={styles.mobileDateSub}>Quarta-feira</Text>
+              </View>
+
+              <TouchableOpacity style={styles.mobileDateArrow}>
+                <Ionicons name="chevron-forward-outline" size={20} color="#0C706E" />
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* botão novo agendamento */}
+          <TouchableOpacity
+            style={[styles.newButton, isMobile && styles.newButtonMobile]}
+            onPress={() => router.push('/novo-agendamento')}
+          >
+            <Ionicons name="add" size={20} color="#FFFFFF" />
+            <Text style={styles.newButtonText}>Solicitar agendamento</Text>
+          </TouchableOpacity>
+
+          {/* cards de resumo */}
+          <View style={[styles.statsRow, isMobile && styles.statsRowMobile]}>
+            <StatCard icon="calendar-outline" value="12" label="Atendimentos" color="#EAF6F2" />
+            <StatCard icon="checkmark-done-outline" value="6" label="Confirmados" color="#E7F7EF" />
+            <StatCard icon="time-outline" value="3" label="Pendentes" color="#FFF5D6" />
+            <StatCard icon="alert-circle-outline" value="1" label="Faltas" color="#FFE8E8" />
+          </View>
+
+          {/* filtros */}
+          <View style={[styles.filtersRow, isMobile && styles.filtersRowMobile]}>
+            <TouchableOpacity style={[styles.filterBox, isMobile && styles.filterBoxMobile]}>
+              <Text style={styles.filterText}>Minhas salas</Text>
+              <Ionicons name="chevron-down-outline" size={17} color="#64748B" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={[styles.filterBox, isMobile && styles.filterBoxMobile]}>
+              <Text style={styles.filterText}>Meus atendimentos</Text>
+              <Ionicons name="chevron-down-outline" size={17} color="#64748B" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={[styles.filterBox, isMobile && styles.filterBoxMobile]}>
+              <Text style={styles.filterText}>Status</Text>
+              <Ionicons name="chevron-down-outline" size={17} color="#64748B" />
+            </TouchableOpacity>
+          </View>
+
+          {/* card principal da agenda */}
+          <View style={styles.listCard}>
+            <View style={styles.listHeader}>
+              <View>
+                <Text style={styles.listTitle}>Atendimentos do dia</Text>
+                <Text style={styles.listSubtitle}>Visualização do estagiário</Text>
+              </View>
+
+              <View style={styles.permissionBadge}>
+                <Ionicons name="shield-checkmark-outline" size={15} color="#0C706E" />
+                <Text style={styles.permissionText}>Acesso limitado</Text>
+              </View>
+            </View>
+
+            {/* lista dos atendimentos */}
+            {atendimentos.map((item, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.appointmentRow,
+                  isMobile && styles.appointmentRowMobile,
+                ]}
+              >
+                {/* barrinha colorida do status */}
+                <View style={[styles.leftBar, getBarStyle(item.status)]} />
+
+                {/* horário */}
+                <View style={[styles.timeBox, isMobile && styles.timeBoxMobile]}>
+                  <Text style={styles.time}>{item.horario}</Text>
+                  <Text style={styles.timeSub}>1h de sessão</Text>
+                </View>
+
+                {/* avatar */}
+                <View style={styles.avatar}>
+                  <Text style={styles.avatarText}>{item.iniciais}</Text>
+                </View>
+
+                {/* dados do paciente */}
+                <View style={[styles.patientBox, isMobile && styles.patientBoxMobile]}>
+                  <Text style={styles.patientName}>{item.paciente}</Text>
+
+                  <Text style={styles.patientMeta}>
+                    {item.idade} • {item.tipo}
+                  </Text>
+
+                  <Text style={styles.patientMeta}>
+                    Responsável: {item.responsavel}
+                  </Text>
+                </View>
+
+                {/* profissional e sala */}
+                <View style={[styles.infoBox, isMobile && styles.infoBoxMobile]}>
+                  <View style={styles.infoLine}>
+                    <Ionicons name="person-outline" size={15} color="#64748B" />
+                    <Text style={styles.infoText}>{item.profissional}</Text>
+                  </View>
+
+                  <View style={styles.infoLine}>
+                    <Ionicons name="business-outline" size={15} color="#64748B" />
+                    <Text style={styles.infoText}>{item.sala}</Text>
+                  </View>
+                </View>
+
+                {/* status */}
+                <View style={[styles.statusBadge, getStatusStyle(item.status)]}>
+                  <Ionicons
+                    name={getStatusIcon(item.status) as any}
+                    size={13}
+                    color={getStatusColor(item.status)}
+                  />
+
+                  <Text style={[styles.statusText, { color: getStatusColor(item.status) }]}>
+                    {item.status}
+                  </Text>
+                </View>
+
+                {/* ações só aparecem no desktop */}
+                {!isMobile && (
+                  <View style={styles.actions}>
+                    <TouchableOpacity style={styles.actionButton}>
+                      <Ionicons name="eye-outline" size={17} color="#0C706E" />
+                      <Text style={styles.actionText}>Detalhes</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
                       style={[
-                        styles.actionText,
-                        item.status === 'Falta' && styles.actionDangerText,
+                        styles.actionButton,
+                        item.status === 'Falta' && styles.actionDangerButton,
                       ]}
                     >
-                      {item.status === 'Falta' ? 'Registrar falta' : 'Registrar'}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+                      <Ionicons
+                        name={
+                          item.status === 'Falta'
+                            ? 'close-circle-outline'
+                            : 'checkmark-circle-outline'
+                        }
+                        size={17}
+                        color={item.status === 'Falta' ? '#B91C1C' : '#0C706E'}
+                      />
 
-              {/* botão simples no mobile */}
-              {isMobile && (
-                <TouchableOpacity style={styles.mobileDetailsButton}>
-                  <Text style={styles.mobileDetailsText}>Ver detalhes</Text>
-                </TouchableOpacity>
-              )}
+                      <Text
+                        style={[
+                          styles.actionText,
+                          item.status === 'Falta' && styles.actionDangerText,
+                        ]}
+                      >
+                        {item.status === 'Falta' ? 'Registrar falta' : 'Registrar'}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+
+                {/* botão simples no mobile */}
+                {isMobile && (
+                  <View style={styles.mobileActions}>
+                    <TouchableOpacity style={styles.mobileDetailsButton}>
+                      <Text style={styles.mobileDetailsText}>Ver detalhes</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={[
+                        styles.mobileDetailsButton,
+                        item.status === 'Falta' && styles.mobileDangerButton,
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.mobileDetailsText,
+                          item.status === 'Falta' && styles.mobileDangerText,
+                        ]}
+                      >
+                        {item.status === 'Falta' ? 'Registrar falta' : 'Registrar'}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+            ))}
+
+            {/* rodapé do card */}
+            <View style={styles.footerInfo}>
+              <Text style={styles.footerInfoText}>
+                Exibindo somente atendimentos vinculados ao estagiário.
+              </Text>
             </View>
-          ))}
-
-          {/* rodapé do card */}
-          <View style={styles.footerInfo}>
-            <Text style={styles.footerInfoText}>
-              Exibindo 6 de 12 atendimentos do dia
-            </Text>
           </View>
-        </View>
-
-        {/* cards de resumo */}
-        <View style={[styles.statsRow, isMobile && styles.statsRowMobile]}>
-          <StatCard icon="calendar-outline" value="12" label="Total" color="#E8F4F1" />
-          <StatCard icon="checkmark-done-outline" value="6" label="Confirmados" color="#DDF7EA" />
-          <StatCard icon="time-outline" value="3" label="Pendentes" color="#FFF4C7" />
-          <StatCard icon="sync-outline" value="1" label="Remarcado" color="#D8EEF6" />
-          <StatCard icon="close-outline" value="1" label="Falta" color="#FFE2E2" />
-          <StatCard icon="close-circle-outline" value="1" label="Cancelado" color="#E5E7EB" />
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    </LinearGradient>
   );
 }
 
@@ -405,19 +449,19 @@ function getBarStyle(status: string) {
 // aqui eu retorno a cor do texto do status
 function getStatusColor(status: string) {
   if (status === 'Confirmada') return '#0C706E';
-  if (status === 'Pendente') return '#B7791F';
+  if (status === 'Pendente') return '#A66B00';
   if (status === 'Remarcada') return '#2C7DA0';
   if (status === 'Falta') return '#B91C1C';
-  return '#374151';
+  return '#64748B';
 }
 
 // aqui eu retorno o ícone do status
 function getStatusIcon(status: string) {
-  if (status === 'Confirmada') return 'checkmark-circle';
+  if (status === 'Confirmada') return 'checkmark-circle-outline';
   if (status === 'Pendente') return 'time-outline';
   if (status === 'Remarcada') return 'sync-outline';
   if (status === 'Falta') return 'close-circle-outline';
-  return 'close-circle-outline';
+  return 'remove-circle-outline';
 }
 
 // componente dos cards de estatística
@@ -425,7 +469,7 @@ function StatCard({ icon, value, label, color }: any) {
   return (
     <View style={styles.statCard}>
       <View style={[styles.statIcon, { backgroundColor: color }]}>
-        <Ionicons name={icon} size={24} color="#0C706E" />
+        <Ionicons name={icon} size={21} color="#0C706E" />
       </View>
 
       <View>
@@ -437,71 +481,114 @@ function StatCard({ icon, value, label, color }: any) {
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
+
+  backgroundDecor: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+  },
+
+  blurCircleOne: {
+    position: 'absolute',
+    width: 420,
+    height: 420,
+    borderRadius: 210,
+    backgroundColor: 'rgba(12,112,110,0.08)',
+    top: -120,
+    left: -120,
+  },
+
+  blurCircleTwo: {
+    position: 'absolute',
+    width: 520,
+    height: 520,
+    borderRadius: 260,
+    backgroundColor: 'rgba(166,189,184,0.18)',
+    right: -180,
+    bottom: -160,
+  },
+
+  blurCircleThree: {
+    position: 'absolute',
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    right: 100,
+    top: 120,
+  },
+
   screen: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#F6F8FB',
+    backgroundColor: 'transparent',
   },
 
   sidebar: {
-    width: 235,
+    width: 245,
     backgroundColor: '#FFFFFF',
     borderRightWidth: 1,
-    borderRightColor: '#E5E7EB',
+    borderRightColor: '#E6ECEA',
   },
 
   logoBox: {
-    height: 115,
+    height: 118,
     backgroundColor: '#0C706E',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 22,
+    paddingHorizontal: 24,
     gap: 10,
+    borderBottomRightRadius: 18,
   },
 
   psi: {
-    fontSize: 52,
+    fontSize: 50,
     color: '#FFFFFF',
     fontWeight: '700',
   },
 
   logoText: {
-    fontSize: 32,
+    fontSize: 30,
     color: '#FFFFFF',
-    fontWeight: '900',
+    fontWeight: '700',
   },
 
   logoSub: {
     fontSize: 12,
-    color: '#FFFFFF',
+    color: '#EAF6F2',
+    marginTop: 2,
+  },
+
+  menuArea: {
+    paddingTop: 18,
   },
 
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
-    paddingVertical: 15,
-    paddingHorizontal: 24,
+    gap: 13,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
     marginHorizontal: 12,
-    borderRadius: 8,
+    borderRadius: 12,
     marginTop: 4,
   },
 
   menuActive: {
-    backgroundColor: '#E8F4F1',
-    borderLeftWidth: 3,
-    borderLeftColor: '#0C706E',
+    backgroundColor: '#EAF6F2',
   },
 
   menuText: {
-    fontSize: 16,
-    color: '#475569',
-    fontWeight: '600',
+    fontSize: 15,
+    color: '#4B5F68',
+    fontWeight: '400',
   },
 
   menuTextActive: {
     color: '#0C706E',
-    fontWeight: '900',
+    fontWeight: '600',
   },
 
   logout: {
@@ -510,25 +597,30 @@ const styles = StyleSheet.create({
     left: 26,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
+    gap: 13,
   },
 
   content: {
     flex: 1,
     paddingHorizontal: 34,
-    paddingTop: 28,
+    paddingTop: 30,
+  },
+
+  contentContainer: {
+    paddingBottom: 34,
   },
 
   contentMobile: {
     paddingHorizontal: 16,
-    paddingTop: 64,
+    paddingTop: 48,
   },
 
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 20,
+    marginBottom: 22,
+    gap: 18,
   },
 
   topRowMobile: {
@@ -542,79 +634,96 @@ const styles = StyleSheet.create({
 
   pageTitle: {
     fontSize: 30,
-    fontWeight: '900',
-    color: '#111827',
+    fontWeight: '600',
+    color: '#152322',
     marginBottom: 6,
   },
 
   pageSubtitle: {
     fontSize: 15,
-    color: '#64748B',
+    color: '#6B7C83',
     lineHeight: 21,
   },
 
   topRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 14,
+    gap: 12,
+  },
+
+  dateNavigation: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
   dateButton: {
-    width: 45,
-    height: 54,
+    width: 42,
+    height: 48,
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#DDE8E5',
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   dateBox: {
-    width: 190,
-    height: 54,
+    width: 185,
+    height: 48,
     backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#DDE8E5',
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   dateText: {
-    fontSize: 15,
-    fontWeight: '900',
-    color: '#111827',
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#152322',
   },
 
   dateSub: {
-    fontSize: 13,
-    color: '#64748B',
+    fontSize: 12,
+    color: '#6B7C83',
+    marginTop: 2,
   },
 
   todayButton: {
-    height: 50,
-    paddingHorizontal: 18,
+    height: 46,
+    paddingHorizontal: 17,
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    borderRadius: 8,
+    borderColor: '#DDE8E5',
+    borderRadius: 12,
     justifyContent: 'center',
   },
 
   todayText: {
-    fontWeight: '900',
-    color: '#111827',
+    fontWeight: '500',
+    color: '#152322',
+  },
+
+  notificationButton: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#DDE8E5',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   userBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 11,
   },
 
   avatarUser: {
-    width: 44,
-    height: 44,
+    width: 43,
+    height: 43,
     borderRadius: 22,
     backgroundColor: '#DDEDEA',
     alignItems: 'center',
@@ -622,30 +731,31 @@ const styles = StyleSheet.create({
   },
 
   avatarUserText: {
-    fontWeight: '900',
+    fontWeight: '600',
     color: '#0C706E',
   },
 
   userName: {
-    fontSize: 16,
-    fontWeight: '900',
-    color: '#111827',
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#152322',
   },
 
   userRole: {
-    fontSize: 13,
-    color: '#64748B',
+    fontSize: 12,
+    color: '#6B7C83',
+    marginTop: 2,
   },
 
   mobileDateBox: {
     minHeight: 58,
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#DDE8E5',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 14,
   },
 
   mobileDateArrow: {
@@ -662,26 +772,26 @@ const styles = StyleSheet.create({
 
   mobileDateText: {
     fontSize: 14,
-    fontWeight: '900',
-    color: '#111827',
+    fontWeight: '600',
+    color: '#152322',
   },
 
   mobileDateSub: {
     fontSize: 12,
-    color: '#64748B',
+    color: '#6B7C83',
     marginTop: 2,
   },
 
   newButton: {
     alignSelf: 'flex-end',
     backgroundColor: '#0C706E',
-    minHeight: 50,
-    borderRadius: 8,
-    paddingHorizontal: 22,
+    minHeight: 46,
+    borderRadius: 12,
+    paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 10,
+    gap: 9,
     marginBottom: 18,
   },
 
@@ -691,13 +801,56 @@ const styles = StyleSheet.create({
 
   newButtonText: {
     color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '900',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+
+  statsRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 18,
+  },
+
+  statsRowMobile: {
+    flexDirection: 'column',
+  },
+
+  statCard: {
+    flex: 1,
+    minHeight: 76,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#E0E9E6',
+    padding: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+
+  statIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  statValue: {
+    fontSize: 22,
+    fontWeight: '600',
+    color: '#152322',
+  },
+
+  statLabel: {
+    fontSize: 12,
+    color: '#6B7C83',
+    marginTop: 2,
   },
 
   filtersRow: {
     flexDirection: 'row',
-    gap: 14,
+    gap: 12,
     marginBottom: 18,
   },
 
@@ -707,13 +860,13 @@ const styles = StyleSheet.create({
   },
 
   filterBox: {
-    width: 220,
-    height: 48,
+    width: 215,
+    height: 46,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#DDE8E5',
     backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    paddingHorizontal: 16,
+    borderRadius: 13,
+    paddingHorizontal: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -724,41 +877,69 @@ const styles = StyleSheet.create({
   },
 
   filterText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#334155',
+    fontSize: 13,
+    fontWeight: '400',
+    color: '#4B5F68',
   },
 
   listCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    borderRadius: 18,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: '#E0E9E6',
   },
 
   listHeader: {
-    height: 54,
-    backgroundColor: '#6EA6AF',
-    justifyContent: 'center',
+    minHeight: 70,
+    backgroundColor: '#EAF6F2',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 18,
+    paddingVertical: 14,
+    flexDirection: 'row',
+    gap: 12,
   },
 
   listTitle: {
     fontSize: 18,
-    fontWeight: '900',
-    color: '#FFFFFF',
+    fontWeight: '600',
+    color: '#0C706E',
+  },
+
+  listSubtitle: {
+    fontSize: 12,
+    color: '#6B7C83',
+    marginTop: 2,
+  },
+
+  permissionBadge: {
+    minHeight: 32,
+    borderRadius: 18,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#D8EAE5',
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+
+  permissionText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#0C706E',
   },
 
   appointmentRow: {
     minHeight: 112,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: '#EEF2F1',
     paddingHorizontal: 22,
     paddingVertical: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 18,
+    gap: 17,
     position: 'relative',
   },
 
@@ -773,15 +954,15 @@ const styles = StyleSheet.create({
   leftBar: {
     position: 'absolute',
     left: 0,
-    top: 16,
-    bottom: 16,
-    width: 4,
+    top: 18,
+    bottom: 18,
+    width: 3,
     borderTopRightRadius: 4,
     borderBottomRightRadius: 4,
   },
 
   timeBox: {
-    width: 88,
+    width: 82,
   },
 
   timeBoxMobile: {
@@ -789,34 +970,34 @@ const styles = StyleSheet.create({
   },
 
   time: {
-    fontSize: 24,
-    fontWeight: '900',
+    fontSize: 23,
+    fontWeight: '600',
     color: '#0C706E',
   },
 
   timeSub: {
-    fontSize: 13,
-    color: '#64748B',
+    fontSize: 12,
+    color: '#6B7C83',
     marginTop: 2,
   },
 
   avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     backgroundColor: '#E1F2EF',
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   avatarText: {
-    fontSize: 18,
-    fontWeight: '900',
+    fontSize: 16,
+    fontWeight: '600',
     color: '#0C706E',
   },
 
   patientBox: {
-    width: 240,
+    width: 225,
   },
 
   patientBoxMobile: {
@@ -824,20 +1005,20 @@ const styles = StyleSheet.create({
   },
 
   patientName: {
-    fontSize: 17,
-    fontWeight: '900',
-    color: '#111827',
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#152322',
   },
 
   patientMeta: {
-    fontSize: 13,
-    color: '#475569',
+    fontSize: 12,
+    color: '#5B6D75',
     marginTop: 3,
     lineHeight: 18,
   },
 
   infoBox: {
-    width: 190,
+    width: 175,
     gap: 7,
   },
 
@@ -853,148 +1034,121 @@ const styles = StyleSheet.create({
   },
 
   infoText: {
-    fontSize: 14,
-    color: '#111827',
+    fontSize: 13,
+    color: '#4B5F68',
   },
 
   statusBadge: {
-    minHeight: 34,
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
+    minHeight: 32,
+    borderRadius: 18,
+    paddingHorizontal: 11,
+    paddingVertical: 6,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 7,
+    gap: 6,
     justifyContent: 'center',
   },
 
   confirmedBadge: {
-    backgroundColor: '#DDF7EA',
+    backgroundColor: '#E3F7EE',
   },
 
   pendingBadge: {
-    backgroundColor: '#FFF4C7',
+    backgroundColor: '#FFF3CC',
   },
 
   rescheduledBadge: {
-    backgroundColor: '#D8EEF6',
+    backgroundColor: '#E0F2F8',
   },
 
   missedBadge: {
-    backgroundColor: '#FFE2E2',
+    backgroundColor: '#FFE5E5',
   },
 
   canceledBadge: {
-    backgroundColor: '#E5E7EB',
+    backgroundColor: '#EEF2F3',
   },
 
   statusText: {
-    fontSize: 13,
-    fontWeight: '900',
+    fontSize: 12,
+    fontWeight: '500',
   },
 
   actions: {
     marginLeft: 'auto',
     flexDirection: 'row',
-    gap: 12,
+    gap: 10,
     alignItems: 'center',
   },
 
   actionButton: {
-    height: 42,
-    paddingHorizontal: 14,
-    borderRadius: 7,
+    height: 40,
+    paddingHorizontal: 13,
+    borderRadius: 11,
     borderWidth: 1,
     borderColor: '#0C706E',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 7,
+    backgroundColor: '#FFFFFF',
   },
 
   actionText: {
-    fontSize: 14,
-    fontWeight: '800',
+    fontSize: 13,
+    fontWeight: '500',
     color: '#0C706E',
   },
 
   actionDangerButton: {
-    borderColor: '#B91C1C',
+    borderColor: '#E8A3A3',
   },
 
   actionDangerText: {
     color: '#B91C1C',
   },
 
-  mobileDetailsButton: {
+  mobileActions: {
     width: '100%',
-    minHeight: 42,
-    borderRadius: 8,
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 4,
+  },
+
+  mobileDetailsButton: {
+    flex: 1,
+    minHeight: 41,
+    borderRadius: 11,
     borderWidth: 1,
     borderColor: '#0C706E',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 4,
+    backgroundColor: '#FFFFFF',
   },
 
   mobileDetailsText: {
-    fontSize: 14,
-    fontWeight: '900',
+    fontSize: 13,
+    fontWeight: '500',
     color: '#0C706E',
+  },
+
+  mobileDangerButton: {
+    borderColor: '#E8A3A3',
+  },
+
+  mobileDangerText: {
+    color: '#B91C1C',
   },
 
   footerInfo: {
     minHeight: 54,
-    backgroundColor: '#E8F6F7',
+    backgroundColor: '#F8FCFA',
     paddingHorizontal: 18,
     justifyContent: 'center',
   },
 
   footerInfoText: {
-    color: '#0C706E',
-    fontSize: 14,
-  },
-
-  statsRow: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: 18,
-    marginBottom: 30,
-  },
-
-  statsRowMobile: {
-    flexDirection: 'column',
-  },
-
-  statCard: {
-    flex: 1,
-    minHeight: 78,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    padding: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-
-  statIcon: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  statValue: {
-    fontSize: 22,
-    fontWeight: '900',
-    color: '#111827',
-  },
-
-  statLabel: {
+    color: '#6B7C83',
     fontSize: 13,
-    color: '#64748B',
   },
 
   confirmedBar: {
@@ -1014,6 +1168,6 @@ const styles = StyleSheet.create({
   },
 
   canceledBar: {
-    backgroundColor: '#64748B',
+    backgroundColor: '#94A3B8',
   },
 });

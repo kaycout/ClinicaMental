@@ -71,6 +71,10 @@ export default function RedefinirSenhaScreen() {
       colors={['#F4FBF8', '#EAF6F1', '#F8FCFA']}
       style={styles.background}
     >
+      <View style={styles.circleLeft} />
+      <View style={styles.circleCenter} />
+      <View style={styles.circleRight} />
+
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.keyboard}
@@ -79,9 +83,14 @@ export default function RedefinirSenhaScreen() {
           <View style={[styles.card, isDesktop && styles.cardDesktop]}>
 
             {/* logo do sistema */}
-            <Text style={styles.psi}>Ψ</Text>
-            <Text style={styles.logoText}>SEP</Text>
-            <Text style={styles.logoSubtitle}>CLÍNICA DE PSICOLOGIA</Text>
+            <View style={styles.logoArea}>
+              <Text style={styles.psi}>Ψ</Text>
+
+              <View>
+                <Text style={styles.logoText}>SEP</Text>
+                <Text style={styles.logoSubtitle}>CLÍNICA DE PSICOLOGIA</Text>
+              </View>
+            </View>
 
             {/* título da tela */}
             <Text style={styles.title}>Redefinir senha</Text>
@@ -139,6 +148,37 @@ export default function RedefinirSenhaScreen() {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+    overflow: 'hidden',
+  },
+
+  circleLeft: {
+    position: 'absolute',
+    width: 520,
+    height: 520,
+    borderRadius: 260,
+    backgroundColor: 'rgba(207, 229, 224, 0.75)',
+    top: -155,
+    left: -120,
+  },
+
+  circleCenter: {
+    position: 'absolute',
+    width: 370,
+    height: 370,
+    borderRadius: 185,
+    backgroundColor: 'rgba(255, 255, 255, 0.78)',
+    top: 140,
+    right: 250,
+  },
+
+  circleRight: {
+    position: 'absolute',
+    width: 430,
+    height: 430,
+    borderRadius: 215,
+    backgroundColor: 'rgba(207, 229, 224, 0.65)',
+    bottom: -120,
+    right: -25,
   },
 
   keyboard: {
@@ -158,38 +198,53 @@ const styles = StyleSheet.create({
 
   card: {
     width: '100%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    paddingHorizontal: 32,
+    paddingTop: 48,
+    paddingBottom: 36,
     alignItems: 'center',
+    shadowColor: '#A6BDB8',
+    shadowOpacity: 0.25,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
   },
 
   cardDesktop: {
     maxWidth: 430,
   },
 
-  psi: {
-    fontSize: 82,
-    fontWeight: '700',
-    color: '#0C706E',
-    lineHeight: 90,
+  logoArea: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 26,
   },
+
+  psi: {
+  fontSize: 64,
+  fontWeight: '700', // negrito do simbolo 
+  color: '#0C706E',
+  lineHeight: 68,
+  marginRight: 10,
+},
 
   logoText: {
-    fontSize: 34,
-    fontWeight: '900',
-    color: '#0C706E',
-    marginTop: -6,
-  },
+  fontSize: 24,
+  fontWeight: '700', // <- voltou o negrito aqui
+  color: '#0C706E',
+},
 
   logoSubtitle: {
-    fontSize: 11,
-    fontWeight: '800',
+    fontSize: 10,
+    fontWeight: '400',
     color: '#0C706E',
     marginTop: -2,
-    marginBottom: 28,
   },
 
   title: {
     fontSize: 23,
-    fontWeight: '900',
+    fontWeight: '400',
     color: '#0C706E',
     marginBottom: 6,
     textAlign: 'center',
@@ -197,6 +252,7 @@ const styles = StyleSheet.create({
 
   subtitle: {
     fontSize: 14,
+    fontWeight: '400',
     color: '#6F7D7A',
     marginBottom: 24,
     textAlign: 'center',
@@ -205,15 +261,6 @@ const styles = StyleSheet.create({
 
   formCard: {
     width: '100%',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    paddingHorizontal: 22,
-    paddingVertical: 22,
-    shadowColor: '#A6BDB8',
-    shadowOpacity: 0.25,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 8,
   },
 
   fieldBlock: {
@@ -222,7 +269,7 @@ const styles = StyleSheet.create({
 
   label: {
     fontSize: 12,
-    fontWeight: '800',
+    fontWeight: '400',
     color: '#1E3A38',
     marginBottom: 8,
   },
@@ -257,12 +304,12 @@ const styles = StyleSheet.create({
   primaryButtonText: {
     color: '#FFFFFF',
     fontSize: 15,
-    fontWeight: '900',
+    fontWeight: '400',
   },
 
   backText: {
     fontSize: 12,
-    fontWeight: '900',
+    fontWeight: '400',
     color: '#0C706E',
     textAlign: 'center',
   },
