@@ -1,209 +1,231 @@
-// arquivo app/agendamento-sucesso.tsx
-// aqui eu organizei essa tela de sucesso no mesmo estilo da tela de login
+// arquivo app/agendamento-sucesso.tsx 
 
+// importação principal do React, pois é necessário para criar componentes React Native.
 import React from 'react';
 
-// importando componentes básicos
+// componentes nativos do React são usados nesta tela
 import {
+  // usado para criar estilos na tela
   StyleSheet,
+  // componente de texto
   Text,
+  // botão com clique e efeito ao toque
   TouchableOpacity,
+  // componente base de estrutura e layout
   View,
+  // hook que pega largura e altura da tela em tempo real
+  // usado para responsividade entre mobile e desktop 
   useWindowDimensions,
+
 } from 'react-native';
 
-// importando ícones
+// biblioteca de ícones do Expo
+// usado para exibir ícones visuais na interface da tela
 import { Ionicons } from '@expo/vector-icons';
 
-// importando navegação
+// router pra navegação entre telas
 import { router } from 'expo-router';
 
-// tela exibida quando o agendamento for realizado com sucesso
+// componente principal da tela de sucesso
 export default function AgendamentoSucessoScreen() {
-  // aqui eu pego a largura da tela pra ajustar melhor no mobile e desktop
+  // define se é mobile ou desktop baseado na largura da tela
   const { width } = useWindowDimensions();
+
+  // considera se é mobile quando a tela é menor que 700
   const isMobile = width < 700;
 
   return (
-    // fundo principal da tela
+    // container principal da tela
     <View style={styles.screen}>
+      {/* elementos decorativos de fundo (bolas) */}
+      <View style={styles.circleLeft} />
+      <View style={styles.circleRightTop} />
+      <View style={styles.circleRightBottom} />
 
-      {/* container centralizado */}
-      <View style={[styles.container, isMobile && styles.containerMobile]}>
-
-        {/* logo no topo, igual o estilo da tela de login */}
+      {/* card central */}
+      <View style={[styles.card, isMobile && styles.cardMobile]}>
+        
+        {/* área da logo */}
         <View style={styles.logoArea}>
           <Text style={styles.psi}>Ψ</Text>
-          <Text style={styles.logoText}>SEP</Text>
-          <Text style={styles.logoSub}>CLÍNICA DE PSICOLOGIA</Text>
+
+          <View>
+            <Text style={styles.logoText}>SEP</Text>
+            <Text style={styles.logoSub}>CLÍNICA DE PSICOLOGIA</Text>
+          </View>
         </View>
 
-        {/* título da tela */}
+        {/* círculo com ícone de sucesso */}
+        <View style={styles.iconCircle}>
+          <Ionicons name="checkmark" size={42} color="#FFFFFF" />
+        </View>
+
+        {/* título principal */}
         <Text style={styles.title}>Agendamento realizado!</Text>
 
-        {/* subtítulo explicando o que aconteceu */}
+        {/* mensagem de confirmação */}
         <Text style={styles.subtitle}>
           O agendamento foi salvo com sucesso no sistema.
         </Text>
 
-        {/* card central */}
-        <View style={[styles.card, isMobile && styles.cardMobile]}>
+        {/* botão principal (voltar pra agenda) */}
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={() => router.replace('/(tabs)')}
+          activeOpacity={0.85}
+        >
+          <Ionicons name="calendar-outline" size={20} color="#FFFFFF" />
+          <Text style={styles.primaryButtonText}>Voltar para agenda</Text>
+        </TouchableOpacity>
 
-          {/* círculo com ícone de confirmação */}
-          <View style={styles.iconCircle}>
-            <Ionicons name="checkmark" size={46} color="#FFFFFF" />
-          </View>
-
-          {/* mensagem principal */}
-          <Text style={styles.cardTitle}>
-            Tudo certo!
-          </Text>
-
-          {/* descrição */}
-          <Text style={styles.cardSubtitle}>
-            A confirmação do agendamento já está registrada e poderá ser acompanhada na agenda.
-          </Text>
-
-          {/* botão principal */}
-          <TouchableOpacity
-            style={styles.primaryButton}
-            onPress={() => router.replace('/(tabs)')}
-            activeOpacity={0.85}
-          >
-            <Ionicons name="calendar-outline" size={21} color="#FFFFFF" />
-            <Text style={styles.primaryButtonText}>
-              Voltar para agenda
-            </Text>
-          </TouchableOpacity>
-
-          {/* botão secundário */}
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={() => router.replace('/novo-agendamento')}
-            activeOpacity={0.85}
-          >
-            <Ionicons name="add-outline" size={22} color="#0C706E" />
-            <Text style={styles.secondaryButtonText}>
-              Novo agendamento
-            </Text>
-          </TouchableOpacity>
-
-        </View>
+        {/* botão secundário (criar novo agendamento) */}
+        <TouchableOpacity
+          style={styles.secondaryButton}
+          onPress={() => router.replace('/novo-agendamento')}
+          activeOpacity={0.85}
+        >
+          <Ionicons name="add-outline" size={22} color="#087A73" />
+          <Text style={styles.secondaryButtonText}>Novo agendamento</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-// estilos da tela
+// criação centralizada dos estilos da tela
+// aqui ficam todas as estilizações da interface organizadas por seção
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    backgroundColor: '#EEF8F4',
+    flex: 1, // ocupa a tela inteira
+    backgroundColor: '#F7FCFA', // fundo bem clarinho
+    justifyContent: 'center', // centraliza verticalmente
+    alignItems: 'center', // centraliza horizontalmente
+    paddingHorizontal: 24, // espaçamento lateral
   },
 
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 32,
+  // bolha decorativa da esquerda
+  circleLeft: {
+    position: 'absolute',
+    width: 520,
+    height: 520,
+    borderRadius: 260,
+    backgroundColor: '#DCEFEB',
+    opacity: 0.85,
+    left: -150,
+    top: -125,
   },
 
-  containerMobile: {
-    justifyContent: 'flex-start',
-    paddingTop: 74,
+  // bolha decorativa superior direita
+  circleRightTop: {
+    position: 'absolute',
+    width: 390,
+    height: 390,
+    borderRadius: 195,
+    backgroundColor: '#FFFFFF',
+    opacity: 0.95,
+    right: 240,
+    top: 160,
   },
 
-  logoArea: {
-    alignItems: 'center',
-    marginBottom: 24,
+  // bolha decorativa inferior direita
+  circleRightBottom: {
+    position: 'absolute',
+    width: 470,
+    height: 470,
+    borderRadius: 235,
+    backgroundColor: '#DCEFEB',
+    opacity: 0.85,
+    right: -95,
+    bottom: -185,
   },
 
-  psi: {
-    fontSize: 72,
-    color: '#0C706E',
-    fontWeight: '900',
-    lineHeight: 76,
-  },
-
-  logoText: {
-    fontSize: 34,
-    color: '#0C706E',
-    fontWeight: '900',
-    marginTop: -4,
-  },
-
-  logoSub: {
-    fontSize: 11,
-    color: '#0C706E',
-    fontWeight: '900',
-    letterSpacing: 0.5,
-  },
-
-  title: {
-    fontSize: 25,
-    fontWeight: '900',
-    color: '#0C706E',
-    textAlign: 'center',
-    marginBottom: 6,
-  },
-
-  subtitle: {
-    fontSize: 15,
-    color: '#64748B',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-
+  // card central onde fica o conteúdo
   card: {
     width: '100%',
-    maxWidth: 430,
+    maxWidth: 430, // limita largura no desktop
     backgroundColor: '#FFFFFF',
     borderRadius: 14,
-    padding: 24,
+    paddingHorizontal: 32,
+    paddingVertical: 36,
     alignItems: 'center',
-    shadowColor: '#94A3B8',
-    shadowOpacity: 0.14,
-    shadowRadius: 18,
+    shadowColor: '#6B8F86',
+    shadowOpacity: 0.10,
+    shadowRadius: 20,
     shadowOffset: { width: 0, height: 8 },
     elevation: 4,
   },
 
+  // ajuste de padding para mobile
   cardMobile: {
-    padding: 22,
+    paddingHorizontal: 24,
+    paddingVertical: 32,
   },
 
+  // área da logo
+  logoArea: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 26,
+  },
+
+  // símbolo ψ
+  psi: {
+    fontSize: 50,
+    color: '#087A73',
+    fontWeight: '700',
+    lineHeight: 58,
+  },
+
+  // texto SEP
+  logoText: {
+    fontSize: 30,
+    color: '#087A73',
+    fontWeight: '700',
+  },
+
+  // subtítulo da logo
+  logoSub: {
+    fontSize: 12,
+    color: '#087A73',
+    letterSpacing: 0.3,
+  },
+
+  // círculo do ícone de sucesso
   iconCircle: {
-    width: 82,
-    height: 82,
-    borderRadius: 41,
-    backgroundColor: '#0C706E',
+    width: 78,
+    height: 78,
+    borderRadius: 39,
+    backgroundColor: '#087A73',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 18,
+    marginBottom: 20,
   },
 
-  cardTitle: {
-    fontSize: 22,
-    fontWeight: '900',
-    color: '#0C706E',
+  // título principal
+  title: {
+    fontSize: 24,
+    fontWeight: '500',
+    color: '#087A73',
     textAlign: 'center',
     marginBottom: 8,
   },
 
-  cardSubtitle: {
+  // texto de apoio
+  subtitle: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#6B7C86',
     textAlign: 'center',
     lineHeight: 20,
-    marginBottom: 24,
+    marginBottom: 26,
   },
 
+  // botão principal (verde)
   primaryButton: {
     width: '100%',
-    minHeight: 52,
+    minHeight: 48,
     borderRadius: 8,
-    backgroundColor: '#0C706E',
+    backgroundColor: '#087A73',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -211,15 +233,17 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 
+  // texto do botão principal
   primaryButtonText: {
     color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '900',
+    fontSize: 15,
+    fontWeight: '500',
   },
 
+  // botão secundário (outline)
   secondaryButton: {
     width: '100%',
-    minHeight: 50,
+    minHeight: 48,
     borderRadius: 8,
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
@@ -230,9 +254,10 @@ const styles = StyleSheet.create({
     gap: 8,
   },
 
+  // texto do botão secundário
   secondaryButtonText: {
-    color: '#0C706E',
+    color: '#087A73',
     fontSize: 15,
-    fontWeight: '900',
+    fontWeight: '500',
   },
 });

@@ -15,6 +15,10 @@ import {
   useWindowDimensions,
 } from 'react-native';
 
+// importando imagem
+import { Image } from 'react-native';
+
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import SelectField from '@/components/ui/selectField';
 
@@ -37,26 +41,154 @@ export default function NovoAgendamentoScreen() {
   const [automatico, setAutomatico] = useState(true);
 
   return (
-    <View style={styles.screen}>
-
+    <LinearGradient
+      colors={['#F7FCFA', '#EEF8F5', '#F9FCFB']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.screen}
+    >
       {/* sidebar aparece apenas no desktop */}
-      {isDesktop && (
-        <View style={styles.sidebar}>
-          <View style={styles.logoBox}>
-            <Text style={styles.psi}>Ψ</Text>
-            <View>
-              <Text style={styles.logoText}>SEP</Text>
-              <Text style={styles.logoSub}>Clínica de Psicologia</Text>
-            </View>
-          </View>
+{isDesktop && (
+  <View style={styles.sidebar}>
 
-          <MenuItem icon="home-outline" label="Agenda" path="/(tabs)" />
-          <MenuItem icon="people-outline" label="Pacientes" path="/pacientes" />
-          <MenuItem icon="business-outline" label="Salas" path="/salas" />
-          <MenuItem icon="notifications-outline" label="Avisos" path="/notificacoes" />
-          <MenuItem icon="person-outline" label="Perfil" path="/perfil" />
-        </View>
-      )}
+    {/* logo */}
+    <View style={styles.logoBox}>
+
+      <Text style={styles.psi}>Ψ</Text>
+
+      <View>
+        <Text style={styles.logoText}>SEP</Text>
+
+        <Text style={styles.logoSub}>
+          Clínica de Psicologia
+        </Text>
+      </View>
+    </View>
+
+    {/* menu lateral */}
+    <View style={styles.menuArea}>
+
+      {/* administrador */}
+      <TouchableOpacity
+        style={styles.menuItem}
+        onPress={() => router.push('/acesso-administrador')}
+      >
+        <Image
+          source={require('../assets/images/administrador.png')}
+          style={styles.menuIcon}
+        />
+
+        <Text style={styles.menuText}>
+          Administrador
+        </Text>
+      </TouchableOpacity>
+
+      {/* label */}
+      <Text style={styles.menuLabel}>
+        GERENCIAMENTO
+      </Text>
+
+      {/* agendamentos */}
+      <TouchableOpacity
+        style={[
+          styles.menuItem,
+          styles.menuActive,
+        ]}
+        onPress={() => router.push('/calendario-administrador')}
+      >
+        <Image
+          source={require('../assets/images/agendamento.png')}
+          style={styles.menuIcon}
+        />
+
+        <Text
+          style={[
+            styles.menuText,
+            styles.menuTextActive,
+          ]}
+        >
+          Agendamentos
+        </Text>
+      </TouchableOpacity>
+
+      {/* pacientes */}
+      <TouchableOpacity
+        style={styles.menuItem}
+        onPress={() => router.push('/pacientes-admin')}
+      >
+        <Image
+          source={require('../assets/images/paciente.png')}
+          style={styles.menuIcon}
+        />
+
+        <Text style={styles.menuText}>
+          Pacientes
+        </Text>
+      </TouchableOpacity>
+
+      {/* salas */}
+      <TouchableOpacity
+        style={styles.menuItem}
+        onPress={() => router.push('/salas-admin')}
+      >
+        <Image
+          source={require('../assets/images/salas.png')}
+          style={styles.menuIcon}
+        />
+
+        <Text style={styles.menuText}>
+          Salas
+        </Text>
+      </TouchableOpacity>
+
+      {/* cancelamentos */}
+      <TouchableOpacity
+        style={styles.menuItem}
+        onPress={() => router.push('/cancelamentos')}
+      >
+        <Image
+          source={require('../assets/images/cancelamento.png')}
+          style={styles.menuIcon}
+        />
+
+        <Text style={styles.menuText}>
+          Cancelamentos
+        </Text>
+      </TouchableOpacity>
+
+      {/* cadastrar estagiário */}
+      <TouchableOpacity
+        style={styles.menuItem}
+        onPress={() => router.push('/cadastro')}
+      >
+        <Image
+          source={require('../assets/images/estagiario.png')}
+          style={styles.menuIcon}
+        />
+
+        <Text style={styles.menuText}>
+          Cadastrar Estagiário
+        </Text>
+      </TouchableOpacity>
+
+      {/* perfil */}
+      <TouchableOpacity
+        style={styles.menuItem}
+        onPress={() => router.push('/perfil-administrador')}
+      >
+        <Image
+          source={require('../assets/images/perfil.png')}
+          style={styles.menuIcon}
+        />
+
+        <Text style={styles.menuText}>
+          Perfil
+        </Text>
+      </TouchableOpacity>
+
+    </View>
+  </View>
+)}
 
       {/* conteúdo principal */}
       <ScrollView
@@ -67,36 +199,40 @@ export default function NovoAgendamentoScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
+        {/* bolinhas do fundo */}
+        <View style={styles.decorCircleOne} />
+        <View style={styles.decorCircleTwo} />
+        <View style={styles.decorCircleThree} />
+        <View style={styles.decorDotOne} />
+        <View style={styles.decorDotTwo} />
+        <View style={styles.decorDotThree} />
+        <View style={styles.decorDotFour} />
 
         {/* topo da tela */}
-        <View style={[styles.header, !isDesktop && styles.headerMobile]}>
-          <TouchableOpacity style={styles.iconButton} onPress={() => router.back()}>
-            <Ionicons name="chevron-back" size={24} color="#111827" />
-          </TouchableOpacity>
 
           <View style={styles.headerTextBox}>
             <Text style={styles.pageTitle}>Novo Agendamento</Text>
             <Text style={styles.pageSubtitle}>
-              Preencha as informações para criar um novo agendamento.
+              Preencha as informações para criar um novo atendimento.
             </Text>
           </View>
-        </View>
 
         {/* card principal */}
         <View style={styles.formCard}>
-
           <View style={styles.cardHeader}>
             <View style={styles.cardIcon}>
-              <Ionicons name="calendar-outline" size={23} color="#0C706E" />
+              <Ionicons name="calendar-outline" size={22} color="#087A73" />
             </View>
 
-            <Text style={styles.cardTitle}>Dados do Agendamento</Text>
+            <View>
+              <Text style={styles.cardTitle}>Dados do agendamento</Text>
+              <Text style={styles.cardSubtitle}>Organize o atendimento do paciente</Text>
+            </View>
           </View>
 
           {/* campos principais */}
           <View style={[styles.grid, isDesktop && styles.gridDesktop]}>
-
-            <View style={styles.field}>
+            <View style={[styles.field, isDesktop && styles.fieldDesktop]}>
               <SelectField
                 label="Paciente *"
                 value={paciente}
@@ -111,7 +247,7 @@ export default function NovoAgendamentoScreen() {
               />
             </View>
 
-            <View style={styles.field}>
+            <View style={[styles.field, isDesktop && styles.fieldDesktop]}>
               <SelectField
                 label="Estagiário *"
                 value={estagiario}
@@ -125,10 +261,12 @@ export default function NovoAgendamentoScreen() {
               />
             </View>
 
-            <View style={styles.field}>
+            <View style={[styles.field, isDesktop && styles.fieldDesktop]}>
               <Text style={styles.label}>Data *</Text>
+
               <View style={styles.inputIconBox}>
-                <Ionicons name="calendar-outline" size={21} color="#475569" />
+                <Ionicons name="calendar-outline" size={20} color="#7E8D9B" />
+
                 <TextInput
                   style={styles.input}
                   value={data}
@@ -139,7 +277,7 @@ export default function NovoAgendamentoScreen() {
               </View>
             </View>
 
-            <View style={styles.field}>
+            <View style={[styles.field, isDesktop && styles.fieldDesktop]}>
               <SelectField
                 label="Horário *"
                 value={horario}
@@ -156,7 +294,7 @@ export default function NovoAgendamentoScreen() {
               />
             </View>
 
-            <View style={styles.field}>
+            <View style={[styles.field, isDesktop && styles.fieldDesktop]}>
               <SelectField
                 label="Sala *"
                 value={sala}
@@ -171,7 +309,7 @@ export default function NovoAgendamentoScreen() {
               />
             </View>
 
-            <View style={styles.field}>
+            <View style={[styles.field, isDesktop && styles.fieldDesktop]}>
               <SelectField
                 label="Tipo de Atendimento *"
                 value={tipoAtendimento}
@@ -186,7 +324,7 @@ export default function NovoAgendamentoScreen() {
               />
             </View>
 
-            <View style={styles.field}>
+            <View style={[styles.field, isDesktop && styles.fieldDesktop]}>
               <SelectField
                 label="Sessão (Pacote)"
                 value={sessao}
@@ -200,7 +338,7 @@ export default function NovoAgendamentoScreen() {
               />
             </View>
 
-            <View style={styles.field}>
+            <View style={[styles.field, isDesktop && styles.fieldDesktop]}>
               <SelectField
                 label="Duração"
                 value={duracao}
@@ -217,7 +355,7 @@ export default function NovoAgendamentoScreen() {
 
           {/* observações */}
           <View style={styles.obsBox}>
-            <Text style={styles.label}>Observações Iniciais</Text>
+            <Text style={styles.label}>Observações iniciais</Text>
 
             <TextInput
               style={styles.textArea}
@@ -229,13 +367,16 @@ export default function NovoAgendamentoScreen() {
               maxLength={500}
             />
 
-            <Text style={styles.counter}>{observacoes.length}/500 caracteres</Text>
+            <Text style={styles.counter}>
+              {observacoes.length}/500 caracteres
+            </Text>
           </View>
 
           {/* agendamento automático */}
           <View style={styles.autoBlock}>
             <View style={styles.autoTextBox}>
-              <Text style={styles.autoTitle}>Agendamento Automático</Text>
+              <Text style={styles.autoTitle}>Agendamento automático</Text>
+
               <Text style={styles.autoSubtitle}>
                 Criar pacote de 10 sessões para o paciente
               </Text>
@@ -244,15 +385,15 @@ export default function NovoAgendamentoScreen() {
             <Switch
               value={automatico}
               onValueChange={setAutomatico}
-              trackColor={{ false: '#CBD5E1', true: '#A7D8C4' }}
-              thumbColor={automatico ? '#0C706E' : '#F8FAFC'}
+              trackColor={{ false: '#CBD5E1', true: '#BFE7DA' }}
+              thumbColor={automatico ? '#087A73' : '#F8FAFC'}
             />
           </View>
 
           {/* botões */}
           <View style={[styles.buttonsRow, !isDesktop && styles.buttonsMobile]}>
             <TouchableOpacity style={styles.cancelButton} onPress={() => router.back()}>
-              <Ionicons name="close-outline" size={23} color="#334155" />
+              <Ionicons name="close-outline" size={22} color="#60768A" />
               <Text style={styles.cancelText}>Cancelar</Text>
             </TouchableOpacity>
 
@@ -260,29 +401,29 @@ export default function NovoAgendamentoScreen() {
               style={styles.saveButton}
               onPress={() => router.push('/agendamento-sucesso')}
             >
-              <Ionicons name="checkmark-outline" size={23} color="#FFFFFF" />
-              <Text style={styles.saveText}>Salvar Agendamento</Text>
+              <Ionicons name="checkmark-outline" size={22} color="#FFFFFF" />
+              <Text style={styles.saveText}>Salvar agendamento</Text>
             </TouchableOpacity>
           </View>
-
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 }
 
-function MenuItem({ icon, label, path }: any) {
+function MenuItem({ icon, label, path, active }: any) {
   return (
     <TouchableOpacity
-      style={label === 'Agenda' ? styles.menuItemActive : styles.menuItem}
+      style={[styles.menuItem, active && styles.menuActive]}
       onPress={() => router.push(path)}
     >
       <Ionicons
         name={icon}
-        size={22}
-        color={label === 'Agenda' ? '#FFFFFF' : '#475569'}
+        size={20}
+        color={active ? '#0C706E' : '#70808A'}
       />
-      <Text style={label === 'Agenda' ? styles.menuTextActive : styles.menuText}>
+
+      <Text style={[styles.menuText, active && styles.menuTextActive]}>
         {label}
       </Text>
     </TouchableOpacity>
@@ -293,79 +434,107 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#F8FAFC',
   },
 
-  sidebar: {
-    width: 250,
-    backgroundColor: '#FFFFFF',
-    borderRightWidth: 1,
-    borderRightColor: '#E5E7EB',
-    paddingBottom: 24,
-  },
+  // sidebar
+sidebar: {
+  width: 270,
+  backgroundColor: '#FFFFFF',
+  borderRightWidth: 1,
+  borderRightColor: '#DCEBE7',
+  paddingTop: 28,
+},
 
-  logoBox: {
-    height: 118,
+// logo
+logoBox: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 12,
+  paddingHorizontal: 24,
+  marginBottom: 36,
+},
+
+// símbolo psi
+psi: {
+  fontSize: 38,
+  color: '#0C706E',
+  fontWeight: '700',
+},
+
+// texto sep
+logoText: {
+  fontSize: 24,
+  color: '#17262F',
+  fontWeight: '700',
+},
+
+// subtítulo
+logoSub: {
+  fontSize: 12,
+  color: '#70808A',
+  marginTop: 2,
+},
+
+// área menu
+menuArea: {
+  paddingHorizontal: 16,
+},
+
+// label menu
+menuLabel: {
+  fontSize: 11,
+  color: '#8A98A3',
+  fontWeight: '600',
+  marginTop: 14,
+  marginBottom: 10,
+  marginLeft: 12,
+  letterSpacing: 1,
+},
+
+// item menu
+menuItem: {
+  height: 50,
+  borderRadius: 14,
+  paddingHorizontal: 14,
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 12,
+  marginBottom: 6,
+},
+
+// item ativo
+menuActive: {
+  backgroundColor: '#E9F7F5',
+},
+
+// ícone menu
+menuIcon: {
+  width: 20,
+  height: 20,
+  resizeMode: 'contain',
+  tintColor: '#0C706E',
+},
+
+// texto menu
+menuText: {
+  fontSize: 15,
+  color: '#70808A',
+  fontWeight: '500',
+},
+
+// texto ativo
+menuTextActive: {
+  color: '#0C706E',
+  fontWeight: '600',
+},
+
+  logoutSidebar: {
+    position: 'absolute',
+    bottom: 28,
+    left: 26,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    gap: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
-    marginBottom: 18,
-  },
-
-  psi: {
-    fontSize: 54,
-    color: '#0C706E',
-    fontWeight: '800',
-  },
-
-  logoText: {
-    fontSize: 34,
-    color: '#0C706E',
-    fontWeight: '900',
-  },
-
-  logoSub: {
-    fontSize: 13,
-    color: '#0C706E',
-    marginTop: -4,
-  },
-
-  menuItem: {
-    marginHorizontal: 14,
-    marginBottom: 8,
-    borderRadius: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-  },
-
-  menuItemActive: {
-    marginHorizontal: 14,
-    marginBottom: 8,
-    borderRadius: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-    backgroundColor: '#0C706E',
-  },
-
-  menuText: {
-    fontSize: 16,
-    color: '#334155',
-    fontWeight: '600',
-  },
-
-  menuTextActive: {
-    fontSize: 16,
-    color: '#FFFFFF',
-    fontWeight: '800',
+    gap: 13,
   },
 
   content: {
@@ -373,6 +542,7 @@ const styles = StyleSheet.create({
   },
 
   scrollContent: {
+    flexGrow: 1,
     paddingHorizontal: 16,
     paddingTop: 28,
     paddingBottom: 32,
@@ -380,8 +550,81 @@ const styles = StyleSheet.create({
 
   scrollContentDesktop: {
     paddingHorizontal: 28,
-    paddingTop: 28,
+    paddingTop: 42,
     paddingBottom: 40,
+  },
+
+  decorCircleOne: {
+    position: 'absolute',
+    width: 310,
+    height: 310,
+    borderRadius: 155,
+    backgroundColor: '#DCEFEB',
+    opacity: 0.55,
+    left: -120,
+    top: 130,
+  },
+
+  decorCircleTwo: {
+    position: 'absolute',
+    width: 260,
+    height: 260,
+    borderRadius: 130,
+    backgroundColor: '#E3F3EF',
+    opacity: 0.75,
+    right: -90,
+    top: 250,
+  },
+
+  decorCircleThree: {
+    position: 'absolute',
+    width: 190,
+    height: 190,
+    borderRadius: 95,
+    backgroundColor: '#DDEFEA',
+    opacity: 0.45,
+    left: 40,
+    bottom: 80,
+  },
+
+  decorDotOne: {
+    position: 'absolute',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#EAF6F2',
+    top: 52,
+    left: '58%',
+  },
+
+  decorDotTwo: {
+    position: 'absolute',
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    backgroundColor: '#CBE6DF',
+    top: 300,
+    left: 40,
+  },
+
+  decorDotThree: {
+    position: 'absolute',
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#D4ECE6',
+    top: 350,
+    left: 72,
+  },
+
+  decorDotFour: {
+    position: 'absolute',
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#E1F2EE',
+    top: 120,
+    right: 110,
   },
 
   header: {
@@ -397,44 +640,51 @@ const styles = StyleSheet.create({
   },
 
   iconButton: {
-    width: 42,
-    height: 42,
-    borderRadius: 12,
+    width: 44,
+    height: 44,
+    borderRadius: 14,
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: '#DCEBE7',
+    shadowColor: '#6B8F86',
+    shadowOpacity: 0.07,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
   },
 
   headerTextBox: {
-    flex: 1,
-  },
-
+  flex: 1,
+  marginLeft: 10,
+  marginBottom: 20, // espaçamento do subtitulo
+},
   pageTitle: {
-    fontSize: 28,
-    fontWeight: '900',
-    color: '#111827',
+    fontSize: 30,
+    fontWeight: '600',
+    color: '#17262F',
   },
 
   pageSubtitle: {
-    fontSize: 15,
-    color: '#64748B',
-    marginTop: 4,
-    lineHeight: 21,
-  },
+  fontSize: 15,
+  color: '#6B7C86',
+  marginTop: 10, // aumenta esse valor para dar espaçamento
+  lineHeight: 21,
+  fontWeight: '400',
+},
 
   formCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
-    padding: 16,
-    shadowColor: '#94A3B8',
-    shadowOpacity: 0.12,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 5 },
-    elevation: 3,
+    borderColor: '#DCEBE7',
+    padding: 22,
+    shadowColor: '#6B8F86',
+    shadowOpacity: 0.07,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
 
   cardHeader: {
@@ -448,15 +698,21 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#E8F4F1',
+    backgroundColor: '#DCEFEB',
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   cardTitle: {
     fontSize: 19,
-    fontWeight: '900',
-    color: '#111827',
+    fontWeight: '600',
+    color: '#087A73',
+  },
+
+  cardSubtitle: {
+    fontSize: 13,
+    color: '#6B7C86',
+    marginTop: 2,
   },
 
   grid: {
@@ -466,17 +722,22 @@ const styles = StyleSheet.create({
   gridDesktop: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    columnGap: 28,
+    columnGap: 18,
+    rowGap: 16,
   },
 
   field: {
     width: '100%',
   },
 
+  fieldDesktop: {
+    width: '48.8%',
+  },
+
   label: {
     fontSize: 14,
-    fontWeight: '800',
-    color: '#111827',
+    fontWeight: '500',
+    color: '#17262F',
     marginBottom: 8,
   },
 
@@ -484,7 +745,7 @@ const styles = StyleSheet.create({
     minHeight: 56,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#DCEBE7',
     backgroundColor: '#FFFFFF',
     paddingHorizontal: 14,
     flexDirection: 'row',
@@ -494,37 +755,39 @@ const styles = StyleSheet.create({
 
   input: {
     flex: 1,
-    fontSize: 16,
-    color: '#111827',
+    fontSize: 15,
+    color: '#17262F',
+    fontWeight: '400',
   },
 
   obsBox: {
-    marginTop: 14,
+    marginTop: 16,
   },
 
   textArea: {
-    minHeight: 95,
+    minHeight: 100,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#DCEBE7',
     backgroundColor: '#FFFFFF',
     paddingHorizontal: 14,
     paddingTop: 14,
     fontSize: 15,
-    color: '#111827',
+    color: '#17262F',
     textAlignVertical: 'top',
+    fontWeight: '400',
   },
 
   counter: {
     fontSize: 12,
-    color: '#64748B',
+    color: '#7E8D9B',
     marginTop: 8,
   },
 
   autoBlock: {
     marginTop: 20,
     minHeight: 78,
-    borderRadius: 12,
+    borderRadius: 14,
     backgroundColor: '#EEF8F4',
     borderWidth: 1,
     borderColor: '#D6EDE5',
@@ -542,13 +805,13 @@ const styles = StyleSheet.create({
 
   autoTitle: {
     fontSize: 15,
-    fontWeight: '900',
-    color: '#111827',
+    fontWeight: '500',
+    color: '#17262F',
   },
 
   autoSubtitle: {
     fontSize: 13,
-    color: '#475569',
+    color: '#61717B',
     marginTop: 3,
   },
 
@@ -565,11 +828,11 @@ const styles = StyleSheet.create({
 
   cancelButton: {
     minHeight: 52,
-    borderRadius: 10,
+    borderRadius: 12,
     paddingHorizontal: 22,
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#DCEBE7',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -578,15 +841,15 @@ const styles = StyleSheet.create({
 
   cancelText: {
     fontSize: 15,
-    color: '#334155',
-    fontWeight: '800',
+    color: '#60768A',
+    fontWeight: '500',
   },
 
   saveButton: {
     minHeight: 52,
-    borderRadius: 10,
+    borderRadius: 12,
     paddingHorizontal: 22,
-    backgroundColor: '#0C706E',
+    backgroundColor: '#087A73',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -596,6 +859,6 @@ const styles = StyleSheet.create({
   saveText: {
     fontSize: 15,
     color: '#FFFFFF',
-    fontWeight: '900',
+    fontWeight: '500',
   },
 });

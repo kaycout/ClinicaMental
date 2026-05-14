@@ -1,22 +1,42 @@
 // arquivo app/(tabs)/index.tsx
 // aqui eu organizei a tela de agenda e deixei responsiva para mobile e desktop
+// essa tela mostra os atendimentos do dia e permite ações do estagiário
 
+// importação principal do React, pois é necessário para criar componentes React Native.
 import React from 'react';
 
+// componentes nativos do React são usados nesta tela
 import {
+  // permite rolagem vertical na tela
   ScrollView,
+  // usado para criar estilos na tela
   StyleSheet,
+  // componente de texto
   Text,
+  // botão com clique e efeito ao toque
   TouchableOpacity,
+  // componente base de estrutura e layout
   View,
+  // hook que pega largura e altura da tela em tempo real
+  // usado para responsividade entre mobile e desktop 
   useWindowDimensions,
+
 } from 'react-native';
 
+// biblioteca de ícones do Expo
+// usado para exibir ícones visuais na interface da tela
 import { Ionicons } from '@expo/vector-icons';
+
+// controle de navegação entre telas
+// usado para redirecionar o usuário para outras páginas
 import { router } from 'expo-router';
+
+// componente de fundo degradê
+// usado para deixar o background mais moderno e suave
 import { LinearGradient } from 'expo-linear-gradient';
 
-// lista simulada dos atendimentos do dia
+// lista simulada dos atendimentos do dia, apenas simulação.
+// esses dados representam a agenda que será exibida na tela
 const atendimentos = [
   {
     horario: '08:00',
@@ -86,20 +106,21 @@ const atendimentos = [
   },
 ];
 
-// menu lateral do desktop
+// menu lateral do desktop, apenas no desktop, no mobile a navegação é diferente.
+// lista de navegação principal da aplicação
 const menuItems = [
   ['calendar-outline', 'Agenda', '/(tabs)'],
   ['people-outline', 'Pacientes', '/(tabs)/pacientes'],
   ['business-outline', 'Salas', '/(tabs)/salas'],
-  ['notifications-outline', 'Avisos', '/(tabs)/notificacoes'],
+  ['notifications-outline', 'Notificacoes', '/(tabs)/notificacoes'],
   ['person-outline', 'Perfil', '/(tabs)/perfil'],
 ];
 
 export default function AgendaScreen() {
-  // aqui eu pego a largura da tela para adaptar no mobile e desktop
+  // pega largura da tela para aplicar responsividade
   const { width } = useWindowDimensions();
 
-  // se a tela for menor que 900, eu considero mobile
+  // define se é mobile ou desktop baseado na largura da tela
   const isMobile = width < 900;
 
   return (
@@ -107,7 +128,9 @@ export default function AgendaScreen() {
       colors={['#F4FBF8', '#EAF6F1', '#F8FCFA']}
       style={styles.background}
     >
-      {/* fundo com bolas */}
+
+      {/* fundo decorativo com círculos suaves */}
+      {/* esses elementos são apenas visuais e não interagem com o usuário */}
       <View style={styles.backgroundDecor}>
         <View style={styles.blurCircleOne} />
         <View style={styles.blurCircleTwo} />
@@ -117,10 +140,11 @@ export default function AgendaScreen() {
       <View style={styles.screen}>
 
         {/* sidebar só aparece no desktop */}
+        {/* no mobile ela é removida para simplificar a interface e ajudar para que os elementos fiquem bem alinhados. */}
         {!isMobile && (
           <View style={styles.sidebar}>
 
-            {/* logo */}
+            {/* logo da clínica */}
             <View style={styles.logoBox}>
               <Text style={styles.psi}>Ψ</Text>
 
@@ -130,7 +154,7 @@ export default function AgendaScreen() {
               </View>
             </View>
 
-            {/* itens do menu */}
+            {/* menu lateral de navegação */}
             <View style={styles.menuArea}>
               {menuItems.map(([icon, label, path]) => (
                 <TouchableOpacity
@@ -158,23 +182,17 @@ export default function AgendaScreen() {
                 </TouchableOpacity>
               ))}
             </View>
-
-            {/* botão sair */}
-            <TouchableOpacity style={styles.logout} onPress={() => router.replace('/')}>
-              <Ionicons name="exit-outline" size={20} color="#70808A" />
-              <Text style={styles.menuText}>Sair</Text>
-            </TouchableOpacity>
           </View>
         )}
 
-        {/* conteúdo principal */}
+        {/* conteúdo principal da tela */}
         <ScrollView
           style={[styles.content, isMobile && styles.contentMobile]}
           contentContainerStyle={styles.contentContainer}
           showsVerticalScrollIndicator={false}
         >
 
-          {/* topo da página */}
+          {/* topo da agenda */}
           <View style={[styles.topRow, isMobile && styles.topRowMobile]}>
             <View style={styles.titleBox}>
               <Text style={styles.pageTitle}>Agenda</Text>
@@ -186,6 +204,8 @@ export default function AgendaScreen() {
             {/* informações extras só no desktop */}
             {!isMobile && (
               <View style={styles.topRight}>
+
+                {/* navegação de datas */}
                 <View style={styles.dateNavigation}>
                   <TouchableOpacity style={styles.dateButton}>
                     <Ionicons name="chevron-back-outline" size={18} color="#0F3F3D" />
@@ -201,14 +221,7 @@ export default function AgendaScreen() {
                   </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.todayButton}>
-                  <Text style={styles.todayText}>Hoje</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.notificationButton}>
-                  <Ionicons name="notifications-outline" size={20} color="#0C706E" />
-                </TouchableOpacity>
-
+                {/* usuário logado */}
                 <View style={styles.userBox}>
                   <View style={styles.avatarUser}>
                     <Text style={styles.avatarUserText}>JS</Text>
@@ -223,7 +236,7 @@ export default function AgendaScreen() {
             )}
           </View>
 
-          {/* data no mobile */}
+          {/* navegação de data no mobile */}
           {isMobile && (
             <View style={styles.mobileDateBox}>
               <TouchableOpacity style={styles.mobileDateArrow}>
@@ -241,16 +254,31 @@ export default function AgendaScreen() {
             </View>
           )}
 
-          {/* botão novo agendamento */}
-          <TouchableOpacity
-            style={[styles.newButton, isMobile && styles.newButtonMobile]}
-            onPress={() => router.push('/novo-agendamento')}
-          >
-            <Ionicons name="add" size={20} color="#FFFFFF" />
-            <Text style={styles.newButtonText}>Solicitar agendamento</Text>
-          </TouchableOpacity>
+          {/* botões principais da tela */}
+          <View style={[styles.buttonsContainer, isMobile && styles.buttonsContainerMobile]}>
 
-          {/* cards de resumo */}
+            {/* botão novo agendamento */}
+            <TouchableOpacity
+              style={[styles.newButton, isMobile && styles.newButtonMobile]}
+              onPress={() => router.push('/novo-agendamento-estagiario')}
+            >
+              <Ionicons name="add" size={20} color="#FFFFFF" />
+              <Text style={styles.newButtonText}>Novo agendamento</Text>
+            </TouchableOpacity>
+
+            {/* botão de reagendamento */}
+            <TouchableOpacity
+              style={[styles.reagendamentoButton, isMobile && styles.newButtonMobile]}
+              onPress={() => router.push('/solicitacao-reagendamento')}
+            >
+              <Ionicons name="refresh-outline" size={20} color="#0C706E" />
+              <Text style={styles.reagendamentoButtonText}>
+                Solicitar Reagendamento
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* cards de estatísticas do dia */}
           <View style={[styles.statsRow, isMobile && styles.statsRowMobile]}>
             <StatCard icon="calendar-outline" value="12" label="Atendimentos" color="#EAF6F2" />
             <StatCard icon="checkmark-done-outline" value="6" label="Confirmados" color="#E7F7EF" />
@@ -258,7 +286,7 @@ export default function AgendaScreen() {
             <StatCard icon="alert-circle-outline" value="1" label="Faltas" color="#FFE8E8" />
           </View>
 
-          {/* filtros */}
+          {/* filtros da agenda */}
           <View style={[styles.filtersRow, isMobile && styles.filtersRowMobile]}>
             <TouchableOpacity style={[styles.filterBox, isMobile && styles.filterBoxMobile]}>
               <Text style={styles.filterText}>Minhas salas</Text>
@@ -276,8 +304,10 @@ export default function AgendaScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* card principal da agenda */}
+          {/* card principal da lista de atendimentos */}
           <View style={styles.listCard}>
+
+            {/* header do card */}
             <View style={styles.listHeader}>
               <View>
                 <Text style={styles.listTitle}>Atendimentos do dia</Text>
@@ -290,25 +320,20 @@ export default function AgendaScreen() {
               </View>
             </View>
 
-            {/* lista dos atendimentos */}
+            {/* lista dinâmica de atendimentos */}
             {atendimentos.map((item, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.appointmentRow,
-                  isMobile && styles.appointmentRowMobile,
-                ]}
-              >
-                {/* barrinha colorida do status */}
+              <View key={index} style={[styles.appointmentRow, isMobile && styles.appointmentRowMobile]}>
+
+                {/* barra lateral indicando status */}
                 <View style={[styles.leftBar, getBarStyle(item.status)]} />
 
-                {/* horário */}
+                {/* horário do atendimento */}
                 <View style={[styles.timeBox, isMobile && styles.timeBoxMobile]}>
                   <Text style={styles.time}>{item.horario}</Text>
                   <Text style={styles.timeSub}>1h de sessão</Text>
                 </View>
 
-                {/* avatar */}
+                {/* iniciais do paciente */}
                 <View style={styles.avatar}>
                   <Text style={styles.avatarText}>{item.iniciais}</Text>
                 </View>
@@ -316,11 +341,9 @@ export default function AgendaScreen() {
                 {/* dados do paciente */}
                 <View style={[styles.patientBox, isMobile && styles.patientBoxMobile]}>
                   <Text style={styles.patientName}>{item.paciente}</Text>
-
                   <Text style={styles.patientMeta}>
                     {item.idade} • {item.tipo}
                   </Text>
-
                   <Text style={styles.patientMeta}>
                     Responsável: {item.responsavel}
                   </Text>
@@ -339,56 +362,70 @@ export default function AgendaScreen() {
                   </View>
                 </View>
 
-                {/* status */}
+                {/* status do atendimento */}
                 <View style={[styles.statusBadge, getStatusStyle(item.status)]}>
-                  <Ionicons
-                    name={getStatusIcon(item.status) as any}
-                    size={13}
-                    color={getStatusColor(item.status)}
-                  />
-
+                  <Ionicons name={getStatusIcon(item.status) as any} size={13} color={getStatusColor(item.status)} />
                   <Text style={[styles.statusText, { color: getStatusColor(item.status) }]}>
                     {item.status}
                   </Text>
                 </View>
 
-                {/* ações só aparecem no desktop */}
-                {!isMobile && (
-                  <View style={styles.actions}>
-                    <TouchableOpacity style={styles.actionButton}>
-                      <Ionicons name="eye-outline" size={17} color="#0C706E" />
-                      <Text style={styles.actionText}>Detalhes</Text>
-                    </TouchableOpacity>
+                {/* ações disponíveis apenas no desktop */}
+                {/* no mobile os botões são simplificados para melhorar a usabilidade */}
+                  {!isMobile && (
 
-                    <TouchableOpacity
-                      style={[
-                        styles.actionButton,
-                        item.status === 'Falta' && styles.actionDangerButton,
-                      ]}
-                    >
-                      <Ionicons
-                        name={
-                          item.status === 'Falta'
-                            ? 'close-circle-outline'
-                            : 'checkmark-circle-outline'
-                        }
-                        size={17}
-                        color={item.status === 'Falta' ? '#B91C1C' : '#0C706E'}
-                      />
+                  // container que agrupa os botões de ação do atendimento
+                    <View style={styles.actions}>
+                    {/* botão para visualizar detalhes completos do atendimento */}
+                      <TouchableOpacity style={styles.actionButton}>
+                        {/* ícone de visualização */}
+                        <Ionicons name="eye-outline" size={17} color="#0C706E" />
+                        {/* texto do botão */}
+                        <Text style={styles.actionText}>Detalhes</Text>
+                      </TouchableOpacity>
 
-                      <Text
+                      {/* botão de registro do atendimento */}
+                      {/* muda aparência caso o status seja falta */}
+                      <TouchableOpacity
                         style={[
-                          styles.actionText,
-                          item.status === 'Falta' && styles.actionDangerText,
+                          styles.actionButton,
+                          item.status === 'Falta' && styles.actionDangerButton
                         ]}
                       >
-                        {item.status === 'Falta' ? 'Registrar falta' : 'Registrar'}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
 
-                {/* botão simples no mobile */}
+                        {/* ícone muda dependendo do status */}
+                        <Ionicons
+                          name={
+                            item.status === 'Falta'
+                              ? 'close-circle-outline'
+                              : 'checkmark-circle-outline'
+                          }
+                          size={17}
+
+                          // cor vermelha para falta e verde para registro normal
+                          color={item.status === 'Falta' ? '#B91C1C' : '#0C706E'}
+                        />
+
+                          {/* texto do botão muda conforme o status */}
+                          <Text
+                            style={[
+                              styles.actionText,
+
+                              // aplica estilo de alerta quando for falta
+                              item.status === 'Falta' && styles.actionDangerText,
+                            ]}
+                          >
+
+                          {/* altera texto exibido dependendo do status */}
+                          {item.status === 'Falta'
+                            ? 'Registrar falta'
+                            : 'Registrar'}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+
+                {/* ações no mobile */}
                 {isMobile && (
                   <View style={styles.mobileActions}>
                     <TouchableOpacity style={styles.mobileDetailsButton}>
@@ -415,7 +452,7 @@ export default function AgendaScreen() {
               </View>
             ))}
 
-            {/* rodapé do card */}
+            {/* rodapé da lista, essa mensagem aparece no final dos agendamentos do dia */}
             <View style={styles.footerInfo}>
               <Text style={styles.footerInfoText}>
                 Exibindo somente atendimentos vinculados ao estagiário.
@@ -428,7 +465,7 @@ export default function AgendaScreen() {
   );
 }
 
-// aqui eu retorno a cor do status
+// função que define estilo do status
 function getStatusStyle(status: string) {
   if (status === 'Confirmada') return styles.confirmedBadge;
   if (status === 'Pendente') return styles.pendingBadge;
@@ -437,7 +474,7 @@ function getStatusStyle(status: string) {
   return styles.canceledBadge;
 }
 
-// aqui eu retorno a cor da barrinha lateral
+// função que define cor da barra lateral
 function getBarStyle(status: string) {
   if (status === 'Confirmada') return styles.confirmedBar;
   if (status === 'Pendente') return styles.pendingBar;
@@ -446,7 +483,7 @@ function getBarStyle(status: string) {
   return styles.canceledBar;
 }
 
-// aqui eu retorno a cor do texto do status
+// função que define cor do texto do status
 function getStatusColor(status: string) {
   if (status === 'Confirmada') return '#0C706E';
   if (status === 'Pendente') return '#A66B00';
@@ -455,7 +492,7 @@ function getStatusColor(status: string) {
   return '#64748B';
 }
 
-// aqui eu retorno o ícone do status
+// função que define ícone do status
 function getStatusIcon(status: string) {
   if (status === 'Confirmada') return 'checkmark-circle-outline';
   if (status === 'Pendente') return 'time-outline';
@@ -464,7 +501,7 @@ function getStatusIcon(status: string) {
   return 'remove-circle-outline';
 }
 
-// componente dos cards de estatística
+// componente reutilizável de estatísticas
 function StatCard({ icon, value, label, color }: any) {
   return (
     <View style={styles.statCard}>
@@ -480,16 +517,23 @@ function StatCard({ icon, value, label, color }: any) {
   );
 }
 
+// criação centralizada dos estilos da tela
+// aqui ficam todas as estilizações da interface organizadas por seção
 const styles = StyleSheet.create({
+
+  // fundo principal da tela
+  // ocupa toda a altura disponível
   background: {
     flex: 1,
   },
 
+  // camada decorativa absoluta usada para os círculos do fundo
   backgroundDecor: {
     ...StyleSheet.absoluteFillObject,
     overflow: 'hidden',
   },
 
+  // primeiro círculo decorativo do fundo
   blurCircleOne: {
     position: 'absolute',
     width: 420,
@@ -500,6 +544,7 @@ const styles = StyleSheet.create({
     left: -120,
   },
 
+  // segundo círculo decorativo do fundo
   blurCircleTwo: {
     position: 'absolute',
     width: 520,
@@ -510,6 +555,7 @@ const styles = StyleSheet.create({
     bottom: -160,
   },
 
+  // terceiro círculo decorativo do fundo
   blurCircleThree: {
     position: 'absolute',
     width: 300,
@@ -520,12 +566,15 @@ const styles = StyleSheet.create({
     top: 120,
   },
 
+  // estrutura principal da página
+  // divide sidebar e conteúdo
   screen: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'transparent',
   },
 
+  // menu lateral do desktop
   sidebar: {
     width: 245,
     backgroundColor: '#FFFFFF',
@@ -533,6 +582,7 @@ const styles = StyleSheet.create({
     borderRightColor: '#E6ECEA',
   },
 
+  // área da logo da clínica
   logoBox: {
     height: 118,
     backgroundColor: '#0C706E',
@@ -543,28 +593,33 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 18,
   },
 
+  // símbolo psi da logo
   psi: {
     fontSize: 50,
     color: '#FFFFFF',
     fontWeight: '700',
   },
 
+  // texto principal da logo
   logoText: {
     fontSize: 30,
     color: '#FFFFFF',
     fontWeight: '700',
   },
 
+  // subtítulo da logo
   logoSub: {
     fontSize: 12,
     color: '#EAF6F2',
     marginTop: 2,
   },
 
+  // container dos itens do menu
   menuArea: {
     paddingTop: 18,
   },
 
+  // botão padrão do menu lateral
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -576,45 +631,43 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 
+  // estilo do item ativo do menu
   menuActive: {
     backgroundColor: '#EAF6F2',
   },
 
+  // texto padrão do menu
   menuText: {
     fontSize: 15,
     color: '#4B5F68',
     fontWeight: '400',
   },
 
+  // texto do item ativo
   menuTextActive: {
     color: '#0C706E',
     fontWeight: '600',
   },
 
-  logout: {
-    position: 'absolute',
-    bottom: 28,
-    left: 26,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 13,
-  },
-
+  // conteúdo principal da tela
   content: {
     flex: 1,
     paddingHorizontal: 34,
     paddingTop: 30,
   },
 
+  // espaçamento inferior do scroll
   contentContainer: {
     paddingBottom: 34,
   },
 
+  // ajustes específicos do mobile
   contentMobile: {
     paddingHorizontal: 16,
     paddingTop: 48,
   },
 
+  // linha superior da página
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -623,15 +676,18 @@ const styles = StyleSheet.create({
     gap: 18,
   },
 
+  // versão mobile do topo
   topRowMobile: {
     flexDirection: 'column',
     gap: 10,
   },
 
+  // área do título principal
   titleBox: {
     flex: 1,
   },
 
+  // título principal da página
   pageTitle: {
     fontSize: 30,
     fontWeight: '600',
@@ -639,23 +695,27 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
 
+  // subtítulo explicativo da página
   pageSubtitle: {
     fontSize: 15,
     color: '#6B7C83',
     lineHeight: 21,
   },
 
+  // lado direito do header desktop
   topRight: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
   },
 
+  // navegação de datas
   dateNavigation: {
     flexDirection: 'row',
     alignItems: 'center',
   },
 
+  // botão das setas da data
   dateButton: {
     width: 42,
     height: 48,
@@ -666,6 +726,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  // linha dos botões superiores
+  buttonsRow: {
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center',
+  },
+
+  // caixa central da data
   dateBox: {
     width: 185,
     height: 48,
@@ -677,18 +745,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  // texto principal da data
   dateText: {
     fontSize: 14,
     fontWeight: '600',
     color: '#152322',
   },
 
+  // subtítulo da data
   dateSub: {
     fontSize: 12,
     color: '#6B7C83',
     marginTop: 2,
   },
 
+  // botão "Hoje"
   todayButton: {
     height: 46,
     paddingHorizontal: 17,
@@ -699,11 +770,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  // texto do botão hoje
   todayText: {
     fontWeight: '500',
     color: '#152322',
   },
 
+  // botão de notificações
   notificationButton: {
     width: 46,
     height: 46,
@@ -715,12 +788,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  // área de dados do usuário
   userBox: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 11,
   },
 
+  // avatar circular do usuário
   avatarUser: {
     width: 43,
     height: 43,
@@ -730,23 +805,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  // texto das iniciais do avatar
   avatarUserText: {
     fontWeight: '600',
     color: '#0C706E',
   },
 
+  // nome do usuário
   userName: {
     fontSize: 15,
     fontWeight: '600',
     color: '#152322',
   },
 
+  // cargo do usuário
   userRole: {
     fontSize: 12,
     color: '#6B7C83',
     marginTop: 2,
   },
 
+  // caixa de data no mobile
   mobileDateBox: {
     minHeight: 58,
     backgroundColor: '#FFFFFF',
@@ -758,6 +837,7 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
 
+  // botão lateral da data no mobile
   mobileDateArrow: {
     width: 48,
     height: 58,
@@ -765,56 +845,51 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  // área central da data no mobile
   mobileDateCenter: {
     flex: 1,
     alignItems: 'center',
   },
 
+  // texto principal da data mobile
   mobileDateText: {
     fontSize: 14,
     fontWeight: '600',
     color: '#152322',
   },
 
+  // subtítulo da data mobile
   mobileDateSub: {
     fontSize: 12,
     color: '#6B7C83',
     marginTop: 2,
   },
 
-  newButton: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#0C706E',
-    minHeight: 46,
-    borderRadius: 12,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 9,
-    marginBottom: 18,
-  },
-
+  // botão ocupa largura total no mobile
   newButtonMobile: {
     width: '100%',
   },
 
+  // texto do botão novo agendamento
   newButtonText: {
     color: '#FFFFFF',
     fontSize: 15,
     fontWeight: '600',
   },
 
+  // linha dos cards de estatísticas
   statsRow: {
     flexDirection: 'row',
     gap: 12,
     marginBottom: 18,
   },
 
+  // estatísticas em coluna no mobile
   statsRowMobile: {
     flexDirection: 'column',
   },
 
+  // card individual de estatística
   statCard: {
     flex: 1,
     minHeight: 76,
@@ -828,6 +903,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 
+  // círculo do ícone da estatística
   statIcon: {
     width: 44,
     height: 44,
@@ -836,29 +912,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  // valor numérico da estatística
   statValue: {
     fontSize: 22,
     fontWeight: '600',
     color: '#152322',
   },
 
+  // descrição da estatística
   statLabel: {
     fontSize: 12,
     color: '#6B7C83',
     marginTop: 2,
   },
 
+    // linha dos filtros da agenda
   filtersRow: {
     flexDirection: 'row',
     gap: 12,
     marginBottom: 18,
   },
 
+  // filtros organizados em coluna no mobile
   filtersRowMobile: {
     flexDirection: 'column',
     gap: 10,
   },
 
+  // caixa individual de filtro
   filterBox: {
     width: 215,
     height: 46,
@@ -872,16 +953,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  // filtro ocupa largura total no mobile
   filterBoxMobile: {
     width: '100%',
   },
 
+  // texto do filtro
   filterText: {
     fontSize: 13,
     fontWeight: '400',
     color: '#4B5F68',
   },
 
+  // card principal da agenda
   listCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 18,
@@ -890,6 +974,7 @@ const styles = StyleSheet.create({
     borderColor: '#E0E9E6',
   },
 
+  // cabeçalho do card da agenda
   listHeader: {
     minHeight: 70,
     backgroundColor: '#EAF6F2',
@@ -901,18 +986,21 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 
+  // título da lista
   listTitle: {
     fontSize: 18,
     fontWeight: '600',
     color: '#0C706E',
   },
 
+  // subtítulo da lista
   listSubtitle: {
     fontSize: 12,
     color: '#6B7C83',
     marginTop: 2,
   },
 
+  // badge de permissão do usuário
   permissionBadge: {
     minHeight: 32,
     borderRadius: 18,
@@ -925,12 +1013,14 @@ const styles = StyleSheet.create({
     gap: 6,
   },
 
+  // texto da permissão
   permissionText: {
     fontSize: 12,
     fontWeight: '500',
     color: '#0C706E',
   },
 
+  // linha individual do atendimento
   appointmentRow: {
     minHeight: 112,
     borderBottomWidth: 1,
@@ -943,6 +1033,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
 
+  // versão mobile do atendimento
   appointmentRowMobile: {
     flexDirection: 'column',
     alignItems: 'flex-start',
@@ -951,6 +1042,7 @@ const styles = StyleSheet.create({
     paddingRight: 16,
   },
 
+  // barra lateral colorida do status
   leftBar: {
     position: 'absolute',
     left: 0,
@@ -961,26 +1053,31 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 4,
   },
 
+  // caixa do horário
   timeBox: {
     width: 82,
   },
 
+  // horário ocupa largura total no mobile
   timeBoxMobile: {
     width: '100%',
   },
 
+  // horário principal
   time: {
     fontSize: 23,
     fontWeight: '600',
     color: '#0C706E',
   },
 
+  // subtítulo do horário
   timeSub: {
     fontSize: 12,
     color: '#6B7C83',
     marginTop: 2,
   },
 
+  // avatar do paciente
   avatar: {
     width: 52,
     height: 52,
@@ -990,26 +1087,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  // texto do avatar
   avatarText: {
     fontSize: 16,
     fontWeight: '600',
     color: '#0C706E',
   },
 
+  // caixa de dados do paciente
   patientBox: {
     width: 225,
   },
 
+  // dados do paciente no mobile
   patientBoxMobile: {
     width: '100%',
   },
 
+  // nome do paciente
   patientName: {
     fontSize: 16,
     fontWeight: '600',
     color: '#152322',
   },
 
+  // informações secundárias do paciente
   patientMeta: {
     fontSize: 12,
     color: '#5B6D75',
@@ -1017,27 +1119,32 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
 
+  // área de profissional e sala
   infoBox: {
     width: 175,
     gap: 7,
   },
 
+  // informações ocupam largura total no mobile
   infoBoxMobile: {
     width: '100%',
     marginTop: 2,
   },
 
+  // linha individual de informação
   infoLine: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
   },
 
+  // texto das informações
   infoText: {
     fontSize: 13,
     color: '#4B5F68',
   },
 
+  // badge de status do atendimento
   statusBadge: {
     minHeight: 32,
     borderRadius: 18,
@@ -1049,31 +1156,38 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  // cor do status confirmado
   confirmedBadge: {
     backgroundColor: '#E3F7EE',
   },
 
+  // cor do status pendente
   pendingBadge: {
     backgroundColor: '#FFF3CC',
   },
 
+  // cor do status remarcado
   rescheduledBadge: {
     backgroundColor: '#E0F2F8',
   },
 
+  // cor do status falta
   missedBadge: {
     backgroundColor: '#FFE5E5',
   },
 
+  // cor do status cancelado
   canceledBadge: {
     backgroundColor: '#EEF2F3',
   },
 
+  // texto do status
   statusText: {
     fontSize: 12,
     fontWeight: '500',
   },
 
+  // área dos botões de ação desktop
   actions: {
     marginLeft: 'auto',
     flexDirection: 'row',
@@ -1081,6 +1195,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  // botão padrão de ação
   actionButton: {
     height: 40,
     paddingHorizontal: 13,
@@ -1093,20 +1208,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
 
+  // texto do botão de ação
   actionText: {
     fontSize: 13,
     fontWeight: '500',
     color: '#0C706E',
   },
 
+  // estilo de alerta do botão
   actionDangerButton: {
     borderColor: '#E8A3A3',
   },
 
+  // texto de alerta
   actionDangerText: {
     color: '#B91C1C',
   },
 
+  // ações do mobile
   mobileActions: {
     width: '100%',
     flexDirection: 'row',
@@ -1114,6 +1233,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 
+  // botão de ação no mobile
   mobileDetailsButton: {
     flex: 1,
     minHeight: 41,
@@ -1125,20 +1245,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
 
+  // texto do botão mobile
   mobileDetailsText: {
     fontSize: 13,
     fontWeight: '500',
     color: '#0C706E',
   },
 
+  // borda de alerta no mobile
   mobileDangerButton: {
     borderColor: '#E8A3A3',
   },
 
+  // texto de alerta mobile
   mobileDangerText: {
     color: '#B91C1C',
   },
 
+  // rodapé informativo da agenda
   footerInfo: {
     minHeight: 54,
     backgroundColor: '#F8FCFA',
@@ -1146,28 +1270,82 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  // texto do rodapé
   footerInfoText: {
     color: '#6B7C83',
     fontSize: 13,
   },
 
+  // barra verde de confirmado
   confirmedBar: {
     backgroundColor: '#10B981',
   },
 
+  // barra amarela de pendente
   pendingBar: {
     backgroundColor: '#F59E0B',
   },
 
+  // barra azul de remarcado
   rescheduledBar: {
     backgroundColor: '#2C7DA0',
   },
 
+  // barra vermelha de falta
   missedBar: {
     backgroundColor: '#EF4444',
   },
 
+  // barra cinza de cancelado
   canceledBar: {
     backgroundColor: '#94A3B8',
   },
-});
+
+  // container dos botões principais
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 18,
+  },
+
+  // botões empilhados no mobile
+  buttonsContainerMobile: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+  },
+
+  // botão principal de novo agendamento
+  newButton: {
+    height: 58,
+    backgroundColor: '#0C706E',
+    borderRadius: 16,
+    paddingHorizontal: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 9,
+  },
+
+  // botão secundário de reagendamento
+  reagendamentoButton: {
+    height: 58,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#0C706E',
+    borderRadius: 16,
+    paddingHorizontal: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 9,
+  },
+
+  // texto do botão de reagendamento
+  reagendamentoButtonText: {
+    color: '#0C706E',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  });

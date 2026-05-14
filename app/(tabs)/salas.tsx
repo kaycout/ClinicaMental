@@ -1,9 +1,8 @@
 // arquivo app/(tabs)/salas.tsx
-// aqui eu organizei essa tela e deixei os comentários explicando minha parte do código
+// versão estagiário baseada no layout administrativo (somente visualização)
 
 import React from 'react';
 
-// importando componentes básicos
 import {
   ScrollView,
   StyleSheet,
@@ -13,12 +12,11 @@ import {
   useWindowDimensions,
 } from 'react-native';
 
-// importando libs
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 
-// lista simulada das salas da clínica
+// salas simuladas
 const salas = [
   { nome: 'Sala 1', status: 'Livre', horario: '08:00 - 09:00' },
   { nome: 'Sala 2', status: 'Ocupada', horario: '09:00 - 10:00' },
@@ -29,22 +27,17 @@ const salas = [
   { nome: 'Sala de Supervisão', status: 'Livre', horario: '16:00 - 17:00' },
 ];
 
-// aqui ficam os itens do menu lateral do desktop
+// menu limitado (estagiário)
 const menuItems = [
   ['calendar-outline', 'Agenda', '/(tabs)'],
   ['people-outline', 'Pacientes', '/(tabs)/pacientes'],
   ['business-outline', 'Salas', '/(tabs)/salas'],
-  ['notifications-outline', 'Avisos', '/(tabs)/notificacoes'],
+  ['business-outline', 'Notificacoes', '/(tabs)/notificacoes'],
   ['person-outline', 'Perfil', '/(tabs)/perfil'],
 ];
 
-// componente da tela de salas
 export default function SalasScreen() {
-
-  // aqui eu pego a largura da tela para adaptar
   const { width } = useWindowDimensions();
-
-  // se for menor que 900 considero mobile
   const isMobile = width < 900;
 
   return (
@@ -52,31 +45,22 @@ export default function SalasScreen() {
       colors={['#F4FBF8', '#EAF6F1', '#F8FCFA']}
       style={styles.background}
     >
+      <View style={styles.page}>
 
-      {/* fundo com bolas (AGORA aparece em mobile também) */}
-      <View style={styles.backgroundDecor}>
-        <View style={styles.blurCircleOne} />
-        <View style={styles.blurCircleTwo} />
-        <View style={styles.blurCircleThree} />
-      </View>
-
-      <View style={styles.screen}>
-
-        {/* sidebar aparece só no desktop */}
+        {/* SIDEBAR (ESTAGIÁRIO) */}
         {!isMobile && (
           <View style={styles.sidebar}>
 
-            {/* logo da clínica */}
+            {/* logo */}
             <View style={styles.logoBox}>
               <Text style={styles.psi}>Ψ</Text>
-
               <View>
                 <Text style={styles.logoText}>SEP</Text>
                 <Text style={styles.logoSub}>Clínica de Psicologia</Text>
               </View>
             </View>
 
-            {/* menu lateral */}
+            {/* menu */}
             <View style={styles.menuArea}>
               {menuItems.map(([icon, label, path]) => (
                 <TouchableOpacity
@@ -104,171 +88,84 @@ export default function SalasScreen() {
                 </TouchableOpacity>
               ))}
             </View>
-
-            {/* botão de sair */}
-            <TouchableOpacity style={styles.logout} onPress={() => router.replace('/')}>
-              <Ionicons name="exit-outline" size={20} color="#70808A" />
-              <Text style={styles.menuText}>Sair</Text>
-            </TouchableOpacity>
           </View>
         )}
 
-        {/* scroll */}
+        {/* CONTEÚDO */}
         <ScrollView
           style={styles.scroll}
           contentContainerStyle={styles.content}
           showsVerticalScrollIndicator={false}
         >
 
-          {/* container principal */}
-          <View style={styles.wrapper}>
+          {/* HEADER */}
+          <View style={styles.header}>
+            <View>
+              <Text style={styles.title}>Salas da clínica</Text>
+              <Text style={styles.subtitle}>
+                Visualização das salas (acesso de estagiário)
+              </Text>
+            </View>
 
-            {/* topo da tela */}
-            <View style={[styles.topRow, isMobile && styles.topRowMobile]}>
-              <View>
-                <Text style={styles.pageTitle}>Salas da clínica</Text>
-                <Text style={styles.pageSubtitle}>
-                  Visualize a disponibilidade das salas em tempo real
-                </Text>
-              </View>
+            {/* ❌ REMOVIDO: botão Nova sala */}
+          </View>
 
-              {!isMobile && (
-                <View style={styles.userBox}>
-                  <View style={styles.avatarUser}>
-                    <Text style={styles.avatarUserText}>JS</Text>
-                  </View>
+          {/* CARDS */}
+          <View style={[styles.cardsWrap, !isMobile && styles.cardsWrapDesktop]}>
+            {salas.map((sala, index) => (
+              <View key={index} style={[styles.card, !isMobile && styles.cardDesktop]}>
 
-                  <View>
-                    <Text style={styles.userName}>João Silva</Text>
-                    <Text style={styles.userRole}>Estagiário</Text>
-                  </View>
+                <View style={styles.cardHeader}>
+                  <Ionicons name="business-outline" size={18} color="#0C706E" />
+                  <Text style={styles.cardTitle}>{sala.nome}</Text>
                 </View>
-              )}
-            </View>
 
-            {/* aviso de acesso */}
-            <View style={styles.permissionCard}>
-              <Ionicons name="shield-checkmark-outline" size={20} color="#0C706E" />
-              <View>
-                <Text style={styles.permissionTitle}>Acesso limitado</Text>
-                <Text style={styles.permissionText}>
-                  Estagiário pode visualizar disponibilidade das salas.
-                </Text>
-              </View>
-            </View>
-
-            {/* cards */}
-            <View
-              style={[
-                styles.cardsWrap,
-                !isMobile && styles.cardsWrapDesktop
-              ]}
-            >
-
-              {/* percorrendo as salas */}
-              {salas.map((sala, index) => (
+                <View style={styles.timeRow}>
+                  <Ionicons name="time-outline" size={14} color="#64748B" />
+                  <Text style={styles.cardSubtitle}>{sala.horario}</Text>
+                </View>
 
                 <View
-                  key={index}
                   style={[
-                    styles.card,
-                    !isMobile && styles.cardDesktop
+                    styles.badge,
+                    sala.status === 'Livre' ? styles.badgeFree : styles.badgeBusy,
                   ]}
                 >
-
-                  {/* nome da sala */}
-                  <View style={styles.cardHeader}>
-                    <Ionicons name="business-outline" size={18} color="#0C706E" />
-                    <Text style={styles.cardTitle}>{sala.nome}</Text>
-                  </View>
-
-                  {/* horario */}
-                  <View style={styles.timeRow}>
-                    <Ionicons name="time-outline" size={14} color="#64748B" />
-                    <Text style={styles.cardSubtitle}>{sala.horario}</Text>
-                  </View>
-
-                  {/* status */}
-                  <View
+                  <Text
                     style={[
-                      styles.badge,
+                      styles.badgeText,
                       sala.status === 'Livre'
-                        ? styles.badgeFree
-                        : styles.badgeBusy
+                        ? styles.badgeTextFree
+                        : styles.badgeTextBusy,
                     ]}
                   >
-                    <Text
-                      style={[
-                        styles.badgeText,
-                        sala.status === 'Livre'
-                          ? styles.badgeTextFree
-                          : styles.badgeTextBusy
-                      ]}
-                    >
-                      {sala.status}
-                    </Text>
-                  </View>
-
-                  {/* ação limitada */}
-                  <TouchableOpacity style={styles.detailsButton}>
-                    <Ionicons name="eye-outline" size={16} color="#0C706E" />
-                    <Text style={styles.detailsText}>Ver detalhes</Text>
-                  </TouchableOpacity>
-
+                    {sala.status}
+                  </Text>
                 </View>
-              ))}
-            </View>
 
+                {/* ação somente visual */}
+                <TouchableOpacity style={styles.detailsButton}>
+                  <Ionicons name="eye-outline" size={16} color="#0C706E" />
+                  <Text style={styles.detailsText}>Ver detalhes</Text>
+                </TouchableOpacity>
+
+              </View>
+            ))}
           </View>
+
         </ScrollView>
       </View>
     </LinearGradient>
   );
 }
 
-// estilos
 const styles = StyleSheet.create({
 
   background: {
     flex: 1,
   },
 
-  backgroundDecor: {
-    ...StyleSheet.absoluteFillObject,
-    overflow: 'hidden',
-  },
-
-  blurCircleOne: {
-    position: 'absolute',
-    width: 420,
-    height: 420,
-    borderRadius: 210,
-    backgroundColor: 'rgba(12,112,110,0.08)',
-    top: -120,
-    left: -120,
-  },
-
-  blurCircleTwo: {
-    position: 'absolute',
-    width: 520,
-    height: 520,
-    borderRadius: 260,
-    backgroundColor: 'rgba(166,189,184,0.18)',
-    right: -180,
-    bottom: -160,
-  },
-
-  blurCircleThree: {
-    position: 'absolute',
-    width: 300,
-    height: 300,
-    borderRadius: 150,
-    backgroundColor: 'rgba(255,255,255,0.7)',
-    right: 100,
-    top: 120,
-  },
-
-  screen: {
+  page: {
     flex: 1,
     flexDirection: 'row',
   },
@@ -338,15 +235,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  logout: {
-    position: 'absolute',
-    bottom: 28,
-    left: 26,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 13,
-  },
-
   scroll: {
     flex: 1,
   },
@@ -357,85 +245,20 @@ const styles = StyleSheet.create({
     paddingBottom: 28,
   },
 
-  wrapper: {
-    width: '100%',
-    maxWidth: 1100,
-    alignSelf: 'center',
+  header: {
+    marginBottom: 24,
   },
 
-  topRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 18,
-  },
-
-  topRowMobile: {
-    flexDirection: 'column',
-    gap: 10,
-  },
-
-  pageTitle: {
+  title: {
     fontSize: 28,
     fontWeight: '600',
     color: '#152322',
   },
 
-  pageSubtitle: {
+  subtitle: {
     fontSize: 14,
     color: '#6B7C83',
     marginTop: 4,
-  },
-
-  userBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-
-  avatarUser: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#DDEDEA',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  avatarUserText: {
-    fontWeight: '600',
-    color: '#0C706E',
-  },
-
-  userName: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-
-  userRole: {
-    fontSize: 12,
-    color: '#6B7C83',
-  },
-
-  permissionCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: '#DDE8E5',
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 16,
-  },
-
-  permissionTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#0C706E',
-  },
-
-  permissionText: {
-    fontSize: 13,
-    color: '#6B7C83',
   },
 
   cardsWrap: {

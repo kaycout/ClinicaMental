@@ -1,21 +1,45 @@
 // arquivo app/dados-pessoais.tsx
-// aqui eu organizei essa tela e deixei os comentários explicando minha parte do código
+
+// importa componentes do React Native
 import React, { useState } from 'react';
+
+// componentes nativos do React são usados nesta tela
 import {
+  // barra de rolagem na tela
   ScrollView,
+  // usado para criar estilos na tela
   StyleSheet,
+  // componente de texto
   Text,
+  // botão com clique e efeito ao toque
   TextInput,
-  View,
+  // para realizar a inserção de dados do usuario
   TouchableOpacity,
+  // componente base de estrutura e layout
+  View,
+  // hook que pega largura e altura da tela em tempo real
+  // usado para responsividade entre mobile e desktop 
   useWindowDimensions,
+
 } from 'react-native';
-import { router } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
+
+// biblioteca de ícones do Expo
+// usado para exibir ícones visuais na interface da tela
 import { Ionicons } from '@expo/vector-icons';
 
+// aqui eu uso o router pra navegação entre telas
+import { router } from 'expo-router';
+
+// componente de fundo degradê
+// usado para deixar o background mais moderno e suave
+import { LinearGradient } from 'expo-linear-gradient';
+
+// componente da tela de cadastro realizado com sucesso
 export default function DadosPessoaisScreen() {
+  // define se é mobile ou desktop baseado na largura da tela
   const { width } = useWindowDimensions();
+
+  // considera se é mobile quando a tela é menor que 900
   const isDesktop = width >= 900;
 
   // estados dos campos
@@ -25,11 +49,14 @@ export default function DadosPessoaisScreen() {
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
 
+  // início da renderização da tela
   return (
+    // Coloca um fundo com degradê suave pra dar um visual mais clean
     <LinearGradient
       colors={['#F4FBF8', '#EAF6F1', '#F8FCFA']}
       style={styles.background}
     >
+      {/* elementos decorativos de fundo */}
       {(
         <View style={styles.backgroundDecor}>
           <View style={styles.blurCircleOne} />
@@ -38,12 +65,14 @@ export default function DadosPessoaisScreen() {
         </View>
       )}
 
+      {/* área de scroll principal da tela */}
       <ScrollView contentContainerStyle={styles.scrollContent}>
 
+        {/* wrapper central da tela */}
         <View style={[styles.wrapper, isDesktop && styles.wrapperDesktop]}>
           <View style={[styles.card, isDesktop && styles.cardDesktop]}>
 
-            {/* LOGO */}
+            {/* Logo da clínica */}
             <View style={styles.logoArea}>
               <Text style={styles.psi}>Ψ</Text>
               <View>
@@ -52,10 +81,10 @@ export default function DadosPessoaisScreen() {
               </View>
             </View>
 
-            {/* ETAPAS */}
+            {/* ETAPAS - indicador de progresso do cadastro */}
             <View style={styles.stepsContainer}>
 
-              {/* passo 1 concluído */}
+              {/* passo 1 já concluído */}
               <View style={styles.stepItem}>
                 <View style={styles.stepDone}>
                   <Ionicons name="checkmark" size={14} color="#fff" />
@@ -63,9 +92,10 @@ export default function DadosPessoaisScreen() {
                 <Text style={styles.stepLabel}>Tipo de conta</Text>
               </View>
 
+              {/* linha entre etapas */}
               <View style={styles.stepLine} />
 
-              {/* passo 2 ativo */}
+              {/* passo 2 (etapa atual) */}
               <View style={styles.stepItem}>
                 <View style={styles.stepActive}>
                   <Text style={styles.stepActiveText}>2</Text>
@@ -73,9 +103,10 @@ export default function DadosPessoaisScreen() {
                 <Text style={styles.stepLabelActive}>Dados pessoais</Text>
               </View>
 
+              {/* linha entre etapas */}
               <View style={styles.stepLine} />
 
-              {/* passo 3 */}
+              {/* passo 3 ainda não concluído */}
               <View style={styles.stepItem}>
                 <View style={styles.stepInactive}>
                   <Text style={styles.stepInactiveText}>3</Text>
@@ -83,9 +114,10 @@ export default function DadosPessoaisScreen() {
                 <Text style={styles.stepLabel}>Dados acesso</Text>
               </View>
 
+              {/* linha entre etapas */}
               <View style={styles.stepLine} />
 
-              {/* passo 4 */}
+              {/* passo 4 final */}
               <View style={styles.stepItem}>
                 <View style={styles.stepInactive}>
                   <Text style={styles.stepInactiveText}>4</Text>
@@ -95,16 +127,16 @@ export default function DadosPessoaisScreen() {
 
             </View>
 
-            {/* TÍTULO */}
+            {/* TÍTULO DA SEÇÃO */}
             <Text style={styles.title}>Dados pessoais</Text>
             <Text style={styles.subtitle}>
               Preencha seus dados pessoais
             </Text>
 
-            {/* FORMULÁRIO */}
+            {/* FORMULÁRIO PRINCIPAL */}
             <View style={styles.form}>
 
-              {/* NOME */}
+              {/* campo nome completo */}
               <Text style={styles.label}>Nome completo *</Text>
               <TextInput
                 value={nome}
@@ -113,9 +145,10 @@ export default function DadosPessoaisScreen() {
                 style={styles.input}
               />
 
-              {/* CPF + DATA */}
+              {/* linha com CPF e data de nascimento */}
               <View style={styles.row}>
 
+                {/* CPF */}
                 <View style={{ flex: 1 }}>
                   <Text style={styles.label}>CPF *</Text>
                   <TextInput
@@ -127,6 +160,7 @@ export default function DadosPessoaisScreen() {
                   />
                 </View>
 
+                {/* data de nascimento */}
                 <View style={{ flex: 1 }}>
                   <Text style={styles.label}>Data de nascimento *</Text>
                   <View style={styles.inputIcon}>
@@ -142,7 +176,7 @@ export default function DadosPessoaisScreen() {
 
               </View>
 
-              {/* EMAIL */}
+              {/* e-mail */}
               <Text style={styles.label}>E-mail *</Text>
               <TextInput
                 value={email}
@@ -151,7 +185,7 @@ export default function DadosPessoaisScreen() {
                 style={styles.input}
               />
 
-              {/* TELEFONE */}
+              {/* telefone */}
               <Text style={styles.label}>Telefone *</Text>
               <View style={styles.inputIcon}>
                 <TextInput
@@ -166,9 +200,10 @@ export default function DadosPessoaisScreen() {
 
             </View>
 
-            {/* BOTÕES */}
+            {/* BOTÕES DE NAVEGAÇÃO */}
             <View style={styles.buttonsRow}>
 
+              {/* voltar etapa anterior */}
               <TouchableOpacity
                 style={styles.secondaryButton}
                 onPress={() => router.back()}
@@ -176,43 +211,50 @@ export default function DadosPessoaisScreen() {
                 <Text style={styles.secondaryText}>Voltar</Text>
               </TouchableOpacity>
 
+              {/* avançar para próxima etapa */}
               <TouchableOpacity
                 style={styles.primaryButton}
                 onPress={() => router.push('/dados-acesso')}
               >
                 <Text style={styles.primaryText}>Continuar</Text>
               </TouchableOpacity>
-
             </View>
-
           </View>
         </View>
-
       </ScrollView>
     </LinearGradient>
   );
 }
 
-
+// criação centralizada dos estilos da tela
+// aqui ficam todas as estilizações da interface organizadas por seção
 const styles = StyleSheet.create({
-  background: { flex: 1 },
 
+  // fundo principal da tela
+  // ocupa toda a altura disponível
+  background: {
+    flex: 1,
+  },
+
+  // fundo decorativo da tela
   backgroundDecor: {
     ...StyleSheet.absoluteFillObject,
     overflow: 'hidden',
   },
 
   blurCircleOne: {
-    position: 'absolute',
-    width: 520,
-    height: 520,
-    borderRadius: 260,
-    backgroundColor: 'rgba(12, 112, 110, 0.08)',
-    top: -120,
-    left: -120,
-  },
+  // círculo decorativo superior esquerdo (fundo suave)
+  position: 'absolute',
+  width: 520,
+  height: 520,
+  borderRadius: 260,
+  backgroundColor: 'rgba(12, 112, 110, 0.08)',
+  top: -120,
+  left: -120,
+},
 
   blurCircleTwo: {
+    // círculo decorativo inferior direito (mais escuro)
     position: 'absolute',
     width: 600,
     height: 600,
@@ -223,6 +265,7 @@ const styles = StyleSheet.create({
   },
 
   blurCircleThree: {
+    // círculo decorativo central leve (branco translúcido)
     position: 'absolute',
     width: 380,
     height: 380,
@@ -233,14 +276,23 @@ const styles = StyleSheet.create({
   },
 
   scrollContent: {
+    // área principal com centralização e espaçamento interno
     flexGrow: 1,
     justifyContent: 'center',
     padding: 22,
   },
 
-  wrapper: { width: '100%' },
-  wrapperDesktop: { alignItems: 'center' },
+  wrapper: {
+    // container geral da tela
+    width: '100%',
+  },
 
+  wrapperDesktop: {
+    // centraliza conteúdo no desktop
+    alignItems: 'center',
+  },
+
+  // card principal branco com sombra
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 18,
@@ -248,12 +300,14 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
 
+  // limita largura no desktop
   cardDesktop: {
   width: '100%',
   maxWidth: 520, // igual da tela de criar conta
   padding: 24,   // reduz um pouco também
-},
+  },
 
+  // área do logo centralizada
   logoArea: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -262,11 +316,23 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
 
-  psi: { fontSize: 60, color: '#0C706E', fontWeight: '700' },
+  psi: {
+    // símbolo principal da marca
+    fontSize: 60,
+    fontWeight: '700',
+    color: '#0C706E',
+    lineHeight: 68,
+  },
 
-  logoText: { fontSize: 28, fontWeight: '900', color: '#0C706E' },
+  logoText: {
+    // nome da marca
+    fontSize: 28,
+    fontWeight: '900',
+    color: '#0C706E',
+  },
 
   logoSubtitle: {
+    // subtítulo da clínica
     fontSize: 11,
     fontWeight: '500',
     color: '#0C706E',
@@ -274,24 +340,31 @@ const styles = StyleSheet.create({
   },
 
   stepsContainer: {
+    // barra de progresso das etapas
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 25,
+    marginBottom: 22,
   },
 
-  stepItem: { alignItems: 'center', width: 70 },
+  stepItem: {
+    // item individual de etapa
+    alignItems: 'center',
+    width: 70,
+  },
 
   stepDone: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    backgroundColor: '#0C706E',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 6,
-  },
+  // etapa concluída (círculo preenchido)
+  width: 26,
+  height: 26,
+  borderRadius: 13,
+  backgroundColor: '#0C706E',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom: 6,
+},
 
   stepActive: {
+    // etapa atual ativa
     width: 26,
     height: 26,
     borderRadius: 13,
@@ -302,6 +375,7 @@ const styles = StyleSheet.create({
   },
 
   stepInactive: {
+    // etapa ainda não concluída
     width: 26,
     height: 26,
     borderRadius: 13,
@@ -311,19 +385,41 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
 
-  stepActiveText: { color: '#fff', fontWeight: '400' },
-  stepInactiveText: { color: '#777', fontWeight: '400' },
+  stepActiveText: {
+    // número da etapa ativa
+    color: '#fff',
+    fontWeight: '400',
+  },
 
-  stepLabel: { fontSize: 10, color: '#7B8986', fontWeight: '400' },
-  stepLabelActive: { fontSize: 10, fontWeight: '400', color: '#1B3431' },
+  stepInactiveText: {
+    // número da etapa inativa
+    color: '#777',
+    fontWeight: '400',
+  },
+
+  stepLabel: {
+    // texto padrão da etapa
+    fontSize: 10,
+    color: '#7B8986',
+    fontWeight: '400',
+  },
+
+  stepLabelActive: {
+    // texto da etapa ativa
+    fontSize: 10,
+    fontWeight: '400',
+    color: '#1B3431',
+  },
 
   stepLine: {
+    // linha entre etapas
     flex: 1,
     height: 2,
     backgroundColor: '#E3EBE8',
   },
 
   title: {
+    // título principal
     fontSize: 22,
     fontWeight: '400',
     textAlign: 'center',
@@ -331,20 +427,26 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
+    // subtítulo
     textAlign: 'center',
     color: '#7A8583',
     marginBottom: 20,
   },
 
-  form: { gap: 10 },
+  form: {
+    // container do formulário
+    gap: 10,
+  },
 
   label: {
+    // label dos inputs
     fontSize: 12,
     fontWeight: '400',
     marginBottom: 4,
   },
 
   input: {
+    // campo de texto padrão
     height: 48,
     borderWidth: 1,
     borderColor: '#DCE5E2',
@@ -354,6 +456,7 @@ const styles = StyleSheet.create({
   },
 
   inputIcon: {
+    // input com ícone
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
@@ -365,45 +468,56 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  inputFlex: { flex: 1 },
+  inputFlex: {
+    // input flexível dentro do input com ícone
+    flex: 1,
+  },
 
-  row: { flexDirection: 'row', gap: 10 },
+  row: {
+    // linha de inputs lado a lado
+    flexDirection: 'row',
+    gap: 10,
+  },
 
   buttonsRow: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  marginTop: 24,
-},
+    // linha dos botões
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 24,
+  },
 
   primaryButton: {
-  width: 140, // menor igual o outro layout
-  height: 44,
-  backgroundColor: '#0C706E',
-  borderRadius: 6,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
+    // botão principal (continuar)
+    width: 140,
+    height: 44,
+    backgroundColor: '#0C706E',
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
   primaryText: {
-  color: '#fff',
-  fontWeight: '400',
-  fontSize: 13, // menor também
-},
+    // texto botão principal
+    color: '#fff',
+    fontWeight: '400',
+    fontSize: 13,
+  },
 
   secondaryButton: {
-  width: 100, // menor igual dados de acesso
-  height: 44, // diminui altura
-  borderWidth: 1,
-  borderColor: '#DCE5E2',
-  borderRadius: 6,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
+    // botão secundário (voltar)
+    width: 100,
+    height: 44,
+    borderWidth: 1,
+    borderColor: '#DCE5E2',
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
   secondaryText: {
-  fontWeight: '400',
-  fontSize: 13, // menor
-  color: '#1B3431',
-},
-
-});
+    // texto botão secundário
+    fontWeight: '400',
+    fontSize: 13,
+    color: '#1B3431',
+  },
+  });

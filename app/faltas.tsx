@@ -1,14 +1,24 @@
 // arquivo app/faltas.tsx
-// aqui eu organizei essa tela e deixei os comentários explicando minha parte do código
-import React from 'react';
-// importando componentes básicos
+
+// importa componentes do React Native
+import React, { useState } from 'react';
+
+// componentes nativos do React são usados nesta tela
 import {
+  // barra de rolagem na tela
   ScrollView,
+  // usado para criar estilos na tela
   StyleSheet,
+  // componente de texto
   Text,
+  // botão com clique e efeito ao toque
+  TouchableOpacity,
+  // componente base de estrutura e layout
   View,
+  // hook que pega largura e altura da tela em tempo real
+  // usado para responsividade entre mobile e desktop 
   useWindowDimensions,
-  TouchableOpacity
+
 } from 'react-native';
 
 // navegação
@@ -62,10 +72,9 @@ export default function FaltasScreen() {
   const metaFont = isSmallMobile ? 13 : isMobile ? 14 : 14;
   const obsFont = isSmallMobile ? 13 : isMobile ? 14 : 14;
 
+  // início da renderização da tela
   return (
-    // estrutura base da tela
     <Screen>
-
       {/* scroll para permitir rolagem */}
       <ScrollView
         contentContainerStyle={[
@@ -192,12 +201,9 @@ export default function FaltasScreen() {
                     {/* texto da observação */}
                     {item.observacao}
                   </Text>
-
                 </View>
-
               </View>
             ))}
-
           </SectionCard>
         </View>
       </ScrollView>
@@ -205,8 +211,8 @@ export default function FaltasScreen() {
   );
 }
 
-
-// estilos da tela
+// criação centralizada dos estilos da tela
+// aqui ficam todas as estilizações da interface organizadas por seção
 const styles = StyleSheet.create({
 
   // espaçamento geral

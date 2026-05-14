@@ -1,12 +1,35 @@
 // arquivo app/cancelamentos.tsx
-// aqui eu organizei essa tela e deixei os comentários explicando minha parte do código
+
+// importação principal do React, pois é necessário para criar componentes React Native.
 import React from 'react';
-// importando componentes básicos
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-// hook de navegação
-import { useRouter } from 'expo-router';
-// componentes do projeto
-import { BrandHeader, Screen, SectionCard } from '@/components/clinic-ui';
+
+// componentes nativos do React são usados nesta tela
+import {
+  // barra de rolagem na tela
+  ScrollView,
+  // usado para criar estilos na tela
+  StyleSheet,
+  // componente de texto
+  Text,
+  // botão com clique e efeito ao toque
+  TouchableOpacity,
+  // componente base de estrutura e layout
+  View,
+  // hook que pega largura e altura da tela em tempo real
+  // usado para responsividade entre mobile e desktop 
+  useWindowDimensions,
+
+} from 'react-native';
+
+// aqui eu uso o router pra navegação entre telas
+import { router } from 'expo-router';
+
+// importando imagens para adicionar ícones ao sidebar
+import { Image } from 'react-native';
+
+// componente de fundo degradê
+// usado para deixar o background mais moderno e suave
+import { LinearGradient } from 'expo-linear-gradient';
 
 // lista simulada de solicitações (como se viesse do backend)
 const solicitacoes = [
@@ -36,45 +59,213 @@ const solicitacoes = [
 // tela de cancelamentos e remarcações
 export default function CancelamentosScreen() {
 
-  // hook de navegação pra trocar de tela
-  const router = useRouter();
+  // pegando largura da tela pra responsividade
+  const { width } = useWindowDimensions();
+
+  /// considera se é mobile quando a tela é menor que 900
+  const isDesktop = width >= 900;
 
   return (
-    // estrutura base da tela
-    <Screen>
 
-      {/* scroll pra permitir rolar a tela */}
-      <ScrollView
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
+    // Coloca um fundo com degradê suave pra dar um visual mais clean
+    <LinearGradient
+      colors={['#F7FCFA', '#EEF8F5', '#F9FCFB']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.background}
+    >
 
-        {/* 🔙 BOTÃO VOLTAR */}
-        <TouchableOpacity
-          style={styles.backButton}
+      {/* estrutura principal da tela, responsável por organizar sidebar + conteúdo */}
+      <View style={styles.page}>
 
-          // aqui eu volto pro painel administrativo
-          onPress={() => router.replace('/acesso-administrador')}
+        {/* sidebar exibida apenas em telas desktop */}
+        {isDesktop && (
+          <View style={styles.sidebar}>
+
+            {/* área do logo da clínica */}
+            <View style={styles.logoBox}>
+              <Text style={styles.psi}>Ψ</Text>
+
+              <View>
+                {/* nome da clínica */}
+                <Text style={styles.logoText}>SEP</Text>
+
+                {/* subtítulo da clínica */}
+                <Text style={styles.logoSub}>
+                  Clínica de Psicologia
+                </Text>
+              </View>
+            </View>
+
+            {/* área de navegação lateral */}
+            <View style={styles.menuArea}>
+
+              {/* item de menu: administrador */}
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/acesso-administrador')}
+              >
+                <Image
+                  source={require('../assets/images/administrador.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Administrador
+                </Text>
+              </TouchableOpacity>
+
+              {/* separador de seção do menu */}
+              <Text style={styles.menuLabel}>
+                GERENCIAMENTO
+              </Text>
+
+              {/* item: agendamentos */}
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/calendario-administrador')}
+              >
+                <Image
+                  source={require('../assets/images/agendamento.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Agendamentos
+                </Text>
+              </TouchableOpacity>
+
+              {/* item: pacientes */}
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/pacientes-admin')}
+              >
+                <Image
+                  source={require('../assets/images/paciente.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Pacientes
+                </Text>
+              </TouchableOpacity>
+
+              {/* item: salas */}
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/salas-admin')}
+              >
+                <Image
+                  source={require('../assets/images/salas.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Salas
+                </Text>
+              </TouchableOpacity>
+
+              {/* item ativo: cancelamentos e remarcações */}
+              <TouchableOpacity
+                style={[
+                  styles.menuItem,
+                  styles.menuActive,
+                ]}
+              >
+                <Image
+                  source={require('../assets/images/cancelamento.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text
+                  style={[
+                    styles.menuText,
+                    styles.menuTextActive,
+                  ]}
+                >
+                  Cancelamentos
+                </Text>
+              </TouchableOpacity>
+
+              {/* item: cadastro de estagiário */}
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/cadastro')}
+              >
+                <Image
+                  source={require('../assets/images/estagiario.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Cadastrar Estagiário
+                </Text>
+              </TouchableOpacity>
+
+              {/* item: perfil */}
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/perfil-administrador')}
+              >
+                <Image
+                  source={require('../assets/images/perfil.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Perfil
+                </Text>
+              </TouchableOpacity>
+
+            </View>
+          </View>
+        )}
+
+        {/* conteúdo principal com scroll da tela */}
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.backText}>← Voltar</Text>
-        </TouchableOpacity>
 
-        {/* header com título da tela */}
-        <BrandHeader
-          title="Cancelamentos e Remarcações"
-          centered
-        />
+          {/* elementos decorativos de fundo (círculos) */}
+          <View style={styles.decorCircleOne} />
+          <View style={styles.decorCircleTwo} />
+          <View style={styles.decorCircleThree} />
 
-        {/* container central */}
-        <View style={styles.container}>
+          {/* cabeçalho da página */}
+          <View style={styles.header}>
 
-          {/* card principal com lista de solicitações */}
-          <SectionCard title="Solicitações" tone="peach">
+            <View>
+              {/* título da página */}
+              <Text style={styles.title}>
+                Cancelamentos e Remarcações
+              </Text>
 
-            {/* percorrendo lista de solicitações */}
+              {/* subtítulo explicativo */}
+              <Text style={styles.subtitle}>
+                Gerencie solicitações e acompanhe os status.
+              </Text>
+            </View>
+
+          </View>
+
+          {/* card principal de conteúdo */}
+          <View style={styles.sectionCard}>
+
+            {/* título da seção */}
+            <Text style={styles.sectionTitle}>
+              Solicitações
+            </Text>
+
+            {/* subtítulo da seção */}
+            <Text style={styles.sectionSubtitle}>
+              Lista de pedidos de cancelamento e remarcação
+            </Text>
+
+            {/* lista de solicitações */}
             {solicitacoes.map((item, index) => (
 
-              // card individual de cada solicitação
+              /* card individual da solicitação */
               <View key={index} style={styles.card}>
 
                 {/* nome do paciente */}
@@ -82,7 +273,7 @@ export default function CancelamentosScreen() {
                   {item.paciente}
                 </Text>
 
-                {/* tipo (cancelamento ou remarcação) */}
+                {/* tipo da solicitação */}
                 <Text style={styles.meta}>
                   Tipo: {item.tipo}
                 </Text>
@@ -92,17 +283,17 @@ export default function CancelamentosScreen() {
                   Motivo: {item.motivo}
                 </Text>
 
-                {/* quantidade de cancelamentos do paciente */}
+                {/* quantidade de cancelamentos */}
                 <Text style={styles.meta}>
                   Cancelamentos: {item.cancelamentos}
                 </Text>
 
-                {/* badge de status */}
+                {/* status da solicitação */}
                 <View
                   style={[
                     styles.statusBadge,
 
-                    // se ultrapassou limite, vermelho, senão amarelo
+                    /* define estilo conforme status */
                     item.status === 'Limite excedido'
                       ? styles.badgeDanger
                       : styles.badgePending
@@ -112,101 +303,266 @@ export default function CancelamentosScreen() {
                     {item.status}
                   </Text>
                 </View>
-
               </View>
             ))}
-
-          </SectionCard>
-        </View>
-
-      </ScrollView>
-    </Screen>
+          </View>
+        </ScrollView>
+      </View>
+    </LinearGradient>
   );
 }
 
-// estilos da tela
+// criação centralizada dos estilos da tela
+// aqui ficam todas as estilizações da interface organizadas por seção
 const styles = StyleSheet.create({
 
-  // espaçamento geral da tela
-  content: {
-    paddingBottom: 24,
-    paddingTop: 20,
+  // fundo principal da tela
+  // ocupa toda a altura disponível
+  background: {
+    flex: 1,
   },
 
-  // botão de voltar
-  backButton: {
-    alignSelf: 'flex-start',
-    marginLeft: 16,
-    marginBottom: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    backgroundColor: '#E8F3EF',
-    borderRadius: 12
+  // estrutura da página
+  page: {
+    flex: 1,
+    flexDirection: 'row',
   },
 
-  // texto do botão voltar
-  backText: {
-    fontSize: 14,
+  // sidebar
+  sidebar: {
+    width: 270,
+    backgroundColor: '#FFFFFF',
+    borderRightWidth: 1,
+    borderRightColor: '#DCEBE7',
+    paddingTop: 28,
+  },
+
+  // logo
+  logoBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 24,
+    marginBottom: 36,
+  },
+
+  // símbolo psi
+  psi: {
+    fontSize: 38,
+    color: '#0C706E',
     fontWeight: '700',
-    color: '#244043'
   },
 
-  // container centralizado
-  container: {
-    width: '100%',
-    maxWidth: 800,
-    alignSelf: 'center',
-    paddingHorizontal: 10,
+  // texto sep
+  logoText: {
+    fontSize: 24,
+    color: '#17262F',
+    fontWeight: '700',
   },
 
-  // card de cada solicitação
+  // subtítulo
+  logoSub: {
+    fontSize: 12,
+    color: '#70808A',
+    marginTop: 2,
+  },
+
+  // área menu
+  menuArea: {
+    paddingHorizontal: 16,
+  },
+
+  // label menu
+  menuLabel: {
+    fontSize: 11,
+    color: '#8A98A3',
+    fontWeight: '600',
+    marginTop: 14,
+    marginBottom: 10,
+    marginLeft: 12,
+    letterSpacing: 1,
+  },
+
+  // item menu
+  menuItem: {
+    height: 50,
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 6,
+  },
+
+  // item ativo
+  menuActive: {
+    backgroundColor: '#E9F7F5',
+  },
+
+  // ícone menu
+  menuIcon: {
+    width: 20,
+    height: 20,
+    resizeMode: 'contain',
+    tintColor: '#0C706E',
+  },
+
+  // texto menu
+  menuText: {
+    fontSize: 15,
+    color: '#70808A',
+    fontWeight: '500',
+  },
+
+  // texto menu ativo
+  menuTextActive: {
+    color: '#0C706E',
+    fontWeight: '600',
+  },
+
+  // conteúdo scrollável
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingBottom: 28,
+    paddingTop: 44,
+  },
+
+  // círculo decorativo
+  decorCircleOne: {
+    position: 'absolute',
+    width: 310,
+    height: 310,
+    borderRadius: 155,
+    backgroundColor: '#DCEFEB',
+    opacity: 0.55,
+    left: -110,
+    top: 135,
+  },
+
+  // círculo decorativo
+  decorCircleTwo: {
+    position: 'absolute',
+    width: 260,
+    height: 260,
+    borderRadius: 130,
+    backgroundColor: '#E3F3EF',
+    opacity: 0.75,
+    right: -90,
+    top: 230,
+  },
+
+  // círculo decorativo
+  decorCircleThree: {
+    position: 'absolute',
+    width: 190,
+    height: 190,
+    borderRadius: 95,
+    backgroundColor: '#DDEFEA',
+    opacity: 0.45,
+    left: 40,
+    bottom: 80,
+  },
+
+  // cabeçalho
+  header: {
+    marginBottom: 30,
+  },
+
+  // título
+  title: {
+    fontSize: 30,
+    fontWeight: '600',
+    color: '#17262F',
+    marginBottom: 6,
+  },
+
+  // subtítulo
+  subtitle: {
+    fontSize: 15,
+    color: '#6B7C86',
+  },
+
+  // card principal
+  sectionCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 18,
+    padding: 22,
+    borderWidth: 1,
+    borderColor: '#DCEBE7',
+    shadowColor: '#6B8F86',
+    shadowOpacity: 0.07,
+    shadowRadius: 14,
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    elevation: 4,
+  },
+
+  // título da seção
+  sectionTitle: {
+    fontSize: 18,
+    color: '#087A73',
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+
+  // subtítulo seção
+  sectionSubtitle: {
+    fontSize: 13,
+    color: '#6B7C86',
+    marginBottom: 18,
+  },
+
+  // card individual
   card: {
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#E1EBE8',
-    borderRadius: 14,
-    padding: 14,
-    marginBottom: 10
+    borderRadius: 16,
+    padding: 18,
+    marginBottom: 14,
   },
 
   // nome do paciente
   patient: {
-    fontSize: 16,
-    fontWeight: '800',
-    marginBottom: 6,
-    color: '#244043'
+    fontSize: 17,
+    fontWeight: '600',
+    marginBottom: 10,
+    color: '#17262F',
   },
 
-  // informações secundárias
+  // textos secundários
   meta: {
     fontSize: 14,
-    color: '#6B7A7A',
-    marginBottom: 3
+    color: '#6B7C86',
+    marginBottom: 5,
   },
 
-  // badge de status
+  // badge
   statusBadge: {
     alignSelf: 'flex-start',
-    marginTop: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 999
+    marginTop: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 999,
   },
 
-  // status pendente (amarelo)
+  // badge amarelo
   badgePending: {
-    backgroundColor: '#F3E7C8'
+    backgroundColor: '#F7E8C4',
   },
 
-  // status crítico (vermelho)
+  // badge vermelho
   badgeDanger: {
-    backgroundColor: '#F3DDD4'
+    backgroundColor: '#FFE1E5',
   },
 
-  // texto do status
+  // texto badge
   statusText: {
     fontSize: 12,
-    fontWeight: '700',
-    color: '#244043'
-  }
+    fontWeight: '600',
+    color: '#17262F',
+  },
 });

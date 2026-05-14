@@ -1,10 +1,27 @@
 // arquivo app/salas-admin.tsx
-// aqui eu organizei essa tela e deixei os comentários explicando minha parte do código
-import React from 'react';
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
-import { BrandHeader, Screen, useResponsive } from '@/components/clinic-ui';
+// tela de salas padronizada com o restante do sistema administrativo
 
+import React from 'react';
+
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  useWindowDimensions,
+  TextInput,
+} from 'react-native';
+
+import { router } from 'expo-router';
+
+// imagens dos ícones
+import { Image } from 'react-native';
+
+// gradiente
+import { LinearGradient } from 'expo-linear-gradient';
+
+// mock de salas
 const salas = [
   { nome: 'Sala 1', status: 'Livre', horario: '08:00 - 09:00' },
   { nome: 'Sala 2', status: 'Ocupada', horario: '09:00 - 10:00' },
@@ -16,130 +33,579 @@ const salas = [
 ];
 
 export default function SalasAdminScreen() {
-  const { isDesktop } = useResponsive();
-  const router = useRouter();
+  // responsividade
+  const { width } = useWindowDimensions();
+
+  // verifica se é desktop
+  const isDesktop = width >= 900;
 
   return (
-    <Screen>
-      <ScrollView
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.wrapper}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => router.replace('/acesso-administrador')}
-          >
-            <Text style={styles.backText}>← Voltar</Text>
-          </TouchableOpacity>
+    <LinearGradient
+      colors={['#F7FCFA', '#EEF8F5', '#F9FCFB']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.background}
+    >
+      <View style={styles.page}>
 
-          <BrandHeader
-            title="Salas da Clínica"
-            centered={isDesktop}
-          />
+        {/* sidebar */}
+        {isDesktop && (
+          <View style={styles.sidebar}>
 
-          <View
-            style={[
-              styles.cardsWrap,
-              isDesktop && styles.cardsWrapDesktop
-            ]}
-          >
+            {/* logo */}
+            <View style={styles.logoBox}>
+              <Text style={styles.psi}>Ψ</Text>
+
+              <View>
+                <Text style={styles.logoText}>SEP</Text>
+
+                <Text style={styles.logoSub}>
+                  Clínica de Psicologia
+                </Text>
+              </View>
+            </View>
+
+            {/* menu */}
+            <View style={styles.menuArea}>
+
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/acesso-administrador')}
+              >
+                <Image
+                  source={require('../assets/images/administrador.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Administrador
+                </Text>
+              </TouchableOpacity>
+
+              <Text style={styles.menuLabel}>
+                GERENCIAMENTO
+              </Text>
+
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/calendario-administrador')}
+              >
+                <Image
+                  source={require('../assets/images/agendamento.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Agendamentos
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/pacientes-admin')}
+              >
+                <Image
+                  source={require('../assets/images/paciente.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Pacientes
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.menuItem,
+                  styles.menuActive,
+                ]}
+              >
+                <Image
+                  source={require('../assets/images/salas.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text
+                  style={[
+                    styles.menuText,
+                    styles.menuTextActive,
+                  ]}
+                >
+                  Salas
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/cancelamentos')}
+              >
+                <Image
+                  source={require('../assets/images/cancelamento.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Cancelamentos
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/cadastro')}
+              >
+                <Image
+                  source={require('../assets/images/estagiario.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Cadastrar Estagiário
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={() => router.push('/perfil-administrador')}
+              >
+                <Image
+                  source={require('../assets/images/perfil.png')}
+                  style={styles.menuIcon}
+                />
+
+                <Text style={styles.menuText}>
+                  Perfil
+                </Text>
+              </TouchableOpacity>
+
+            </View>
+          </View>
+        )}
+
+        {/* conteúdo */}
+        <ScrollView
+          style={styles.content}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+
+          {/* decoração */}
+          <View style={styles.decorCircleOne} />
+          <View style={styles.decorCircleTwo} />
+          <View style={styles.decorCircleThree} />
+          <View style={styles.decorDotOne} />
+          <View style={styles.decorDotTwo} />
+          <View style={styles.decorDotThree} />
+
+          {/* header */}
+          <View style={styles.header}>
+            <View>
+              <Text style={styles.title}>
+                Salas da Clínica
+              </Text>
+
+              <Text style={styles.subtitle}>
+                Gerencie disponibilidade, ocupação e horários das salas.
+              </Text>
+            </View>
+
+            {isDesktop && (
+              <TouchableOpacity style={styles.newButton}>
+                <Text style={styles.newButtonText}>
+                  + Nova sala
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {/* pesquisa */}
+          <View style={styles.searchCard}>
+            <TextInput
+              placeholder="Pesquisar sala..."
+              placeholderTextColor="#8A98A3"
+              style={styles.searchInput}
+            />
+          </View>
+
+          {/* cards */}
+          <View style={[styles.cardsWrap, isDesktop && styles.cardsWrapDesktop]}>
             {salas.map((sala, index) => (
               <View
                 key={index}
-                style={[
-                  styles.card,
-                  isDesktop && styles.cardDesktop
-                ]}
+                style={[styles.card, isDesktop && styles.cardDesktop]}
               >
-                <Text style={styles.cardTitle}>{sala.nome}</Text>
-                <Text style={styles.cardSubtitle}>{sala.horario}</Text>
+
+                <View style={styles.cardTop}>
+                  <View style={styles.roomIcon}>
+                    <Text style={styles.roomIconText}>▥</Text>
+                  </View>
+
+                  <View style={styles.cardTopInfo}>
+                    <Text style={styles.cardTitle}>
+                      {sala.nome}
+                    </Text>
+
+                    <Text style={styles.cardSubtitle}>
+                      {sala.horario}
+                    </Text>
+                  </View>
+                </View>
 
                 <View
                   style={[
                     styles.badge,
                     sala.status === 'Livre'
                       ? styles.badgeFree
-                      : styles.badgeBusy
+                      : styles.badgeBusy,
                   ]}
                 >
-                  <Text style={styles.badgeText}>{sala.status}</Text>
+                  <Text
+                    style={[
+                      styles.badgeText,
+                      sala.status === 'Livre'
+                        ? styles.badgeTextFree
+                        : styles.badgeTextBusy,
+                    ]}
+                  >
+                    {sala.status}
+                  </Text>
                 </View>
+
+                <TouchableOpacity style={styles.detailsButton}>
+                  <Text style={styles.detailsButtonText}>
+                    Ver detalhes
+                  </Text>
+                </TouchableOpacity>
+
               </View>
             ))}
           </View>
-        </View>
-      </ScrollView>
-    </Screen>
+
+        </ScrollView>
+      </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
-    paddingBottom: 24
+  background: {
+    flex: 1,
   },
-  wrapper: {
-    width: '100%',
-    paddingTop: 20,
-    maxWidth: 1100,
-    alignSelf: 'center'
+
+  page: {
+    flex: 1,
+    flexDirection: 'row',
   },
-  backButton: {
-    alignSelf: 'flex-start',
-    marginBottom: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    backgroundColor: '#E8F3EF',
-    borderRadius: 12
+
+  // sidebar
+  sidebar: {
+    width: 270,
+    backgroundColor: '#FFFFFF',
+    borderRightWidth: 1,
+    borderRightColor: '#DCEBE7',
+    paddingTop: 28,
   },
-  backText: {
-    fontSize: 14,
+
+  // logo
+  logoBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 24,
+    marginBottom: 36,
+  },
+
+  psi: {
+    fontSize: 38,
+    color: '#0C706E',
     fontWeight: '700',
-    color: '#244043'
   },
+
+  logoText: {
+    fontSize: 24,
+    color: '#17262F',
+    fontWeight: '700',
+  },
+
+  logoSub: {
+    fontSize: 12,
+    color: '#70808A',
+    marginTop: 2,
+  },
+
+  menuArea: {
+    paddingHorizontal: 16,
+  },
+
+  menuLabel: {
+    fontSize: 11,
+    color: '#8A98A3',
+    fontWeight: '600',
+    marginTop: 14,
+    marginBottom: 10,
+    marginLeft: 12,
+    letterSpacing: 1,
+  },
+
+  menuItem: {
+    height: 50,
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 6,
+  },
+
+  menuActive: {
+    backgroundColor: '#E9F7F5',
+  },
+
+  menuIcon: {
+    width: 20,
+    height: 20,
+    resizeMode: 'contain',
+    tintColor: '#0C706E',
+  },
+
+  menuText: {
+    fontSize: 15,
+    color: '#70808A',
+    fontWeight: '500',
+  },
+
+  menuTextActive: {
+    color: '#0C706E',
+    fontWeight: '600',
+  },
+
+  content: {
+    flex: 1,
+  },
+
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingTop: 42,
+    paddingBottom: 34,
+  },
+
+  decorCircleOne: {
+    position: 'absolute',
+    width: 310,
+    height: 310,
+    borderRadius: 155,
+    backgroundColor: '#DCEFEB',
+    opacity: 0.55,
+    left: -110,
+    top: 120,
+  },
+
+  decorCircleTwo: {
+    position: 'absolute',
+    width: 260,
+    height: 260,
+    borderRadius: 130,
+    backgroundColor: '#E3F3EF',
+    opacity: 0.75,
+    right: -90,
+    top: 230,
+  },
+
+  decorCircleThree: {
+    position: 'absolute',
+    width: 190,
+    height: 190,
+    borderRadius: 95,
+    backgroundColor: '#DDEFEA',
+    opacity: 0.45,
+    left: 40,
+    bottom: 80,
+  },
+
+  decorDotOne: {
+    position: 'absolute',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#EAF6F2',
+    top: 52,
+    left: '58%',
+  },
+
+  decorDotTwo: {
+    position: 'absolute',
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    backgroundColor: '#CBE6DF',
+    top: 300,
+    left: 40,
+  },
+
+  decorDotThree: {
+    position: 'absolute',
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#E1F2EE',
+    top: 120,
+    right: 110,
+  },
+
+  header: {
+    marginBottom: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  title: {
+    fontSize: 30,
+    color: '#17262F',
+    fontWeight: '600',
+  },
+
+  subtitle: {
+    fontSize: 15,
+    color: '#6B7C86',
+    marginTop: 4,
+    lineHeight: 21,
+  },
+
+  newButton: {
+    minHeight: 48,
+    borderRadius: 12,
+    backgroundColor: '#087A73',
+    paddingHorizontal: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  newButtonText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+
+  searchCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: '#DCEBE7',
+    padding: 16,
+    marginBottom: 18,
+  },
+
+  searchInput: {
+    fontSize: 15,
+    color: '#17262F',
+  },
+
   cardsWrap: {
-    gap: 12
+    gap: 14,
   },
+
   cardsWrapDesktop: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12
+    justifyContent: 'space-between',
   },
+
   card: {
     width: '100%',
     backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#DEE9E5',
     borderRadius: 18,
-    padding: 16
+    borderWidth: 1,
+    borderColor: '#DCEBE7',
+    padding: 18,
+    shadowColor: '#6B8F86',
+    shadowOpacity: 0.07,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
+
   cardDesktop: {
-    width: '48.5%'
+    width: '48.8%',
   },
+
+  cardTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 18,
+  },
+
+  roomIcon: {
+    width: 54,
+    height: 54,
+    borderRadius: 27,
+    backgroundColor: '#DCEFEB',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 14,
+  },
+
+  roomIconText: {
+    fontSize: 24,
+    color: '#087A73',
+  },
+
+  cardTopInfo: {
+    flex: 1,
+  },
+
   cardTitle: {
     fontSize: 17,
-    fontWeight: '800',
-    marginBottom: 4
+    color: '#17262F',
+    fontWeight: '600',
   },
+
   cardSubtitle: {
-    fontSize: 14,
-    color: '#6B7A7A',
-    marginBottom: 10
+    fontSize: 13,
+    color: '#6B7C86',
+    marginTop: 2,
   },
+
   badge: {
     alignSelf: 'flex-start',
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: 999
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 999,
+    marginBottom: 18,
   },
+
   badgeFree: {
-    backgroundColor: '#DCEEDF'
+    backgroundColor: '#DDF5EB',
   },
+
   badgeBusy: {
-    backgroundColor: '#F3DDD4'
+    backgroundColor: '#FFE1E5',
   },
+
   badgeText: {
     fontSize: 13,
-    fontWeight: '700'
-  }
+    fontWeight: '600',
+  },
+
+  badgeTextFree: {
+    color: '#087A73',
+  },
+
+  badgeTextBusy: {
+    color: '#E03131',
+  },
+
+  detailsButton: {
+    height: 42,
+    borderRadius: 12,
+    backgroundColor: '#EAF6F2',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  detailsButtonText: {
+    color: '#087A73',
+    fontSize: 14,
+    fontWeight: '600',
+  },
 });

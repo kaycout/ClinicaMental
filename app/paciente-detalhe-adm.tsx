@@ -232,7 +232,7 @@ export default function PacienteDetalheScreen() {
             </View>
           </View>
 
-          {/* acesso limitado */}
+          {/* acesso completo */}
           <View style={styles.permissionCard}>
 
             <View style={styles.permissionIcon}>
@@ -246,13 +246,13 @@ export default function PacienteDetalheScreen() {
             <View style={styles.permissionTextBox}>
 
               <Text style={styles.permissionTitle}>
-                Acesso limitado
+                Acesso administrativo completo
               </Text>
 
               <Text style={styles.permissionDescription}>
-                Esta tela é apenas para consulta do estagiário.
-                Dados sensíveis, edições e exclusões ficam
-                disponíveis somente para a administração.
+                Nesta tela você possui permissão para visualizar,
+                editar, excluir e acompanhar todas as informações
+                relacionadas aos pacientes.
               </Text>
             </View>
           </View>
@@ -331,7 +331,7 @@ export default function PacienteDetalheScreen() {
               />
 
               <Text style={styles.sectionTitle}>
-                Observações permitidas
+                Observações administrativas
               </Text>
             </View>
 
@@ -366,7 +366,7 @@ export default function PacienteDetalheScreen() {
               />
 
               <Text style={styles.primaryButtonText}>
-                Visualizar histórico permitido
+                Editar Paciente
               </Text>
             </TouchableOpacity>
 
@@ -586,8 +586,8 @@ const styles = StyleSheet.create({
 
   pageTitle: {
     fontSize: 30,
-    fontWeight: '700',
     color: '#17262F',
+    fontWeight: '600',
   },
 
   pageSubtitle: {
@@ -818,3 +818,5 @@ const styles = StyleSheet.create({
   },
 
 });
+
+

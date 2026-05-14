@@ -1,33 +1,35 @@
+// importação principal do React, pois é necessário para criar componentes React Native.
 import React from 'react';
-// aqui eu importo o Tabs, que é a navegação de baixo no mobile
+// importação das Tabs, que é a navegação de baixo no mobile.
 import { Tabs } from 'expo-router';
-// aqui eu importo os ícones usados nas abas
+// importação dos ícones usados nas abas
 import { Ionicons } from '@expo/vector-icons';
-// aqui eu uso a largura da tela para saber se está no desktop ou mobile
+// importação da largura da tela para saber se está no desktop ou mobile
 import { useWindowDimensions } from 'react-native';
 
 // esse layout controla somente as telas que estão dentro da pasta tabs
 export default function TabLayout() {
-  // aqui eu pego a largura da tela
+  // aqui pega a largura da tela
   const { width } = useWindowDimensions();
 
-  // se a tela for grande, eu considero como desktop
+ // define se é mobile ou desktop baseado na largura da tela
   const isDesktop = width >= 900;
 
   return (
     <Tabs
       screenOptions={{
-        // aqui eu escondo o cabeçalho padrão, porque as telas já têm o próprio layout
+        // aqui esconde o cabeçalho padrão, porque as telas já têm o próprio layout
         headerShown: false,
         tabBarActiveTintColor: '#0C706E',
         tabBarInactiveTintColor: '#819392',
 
-        // no desktop eu escondo a barra de baixo, porque uso a sidebar lateral
+        // no desktop é escondido a barra de baixo, porque uso a sidebar lateral, 
+        // portanto só é mostrado no mobile
         tabBarStyle: isDesktop
           ? { display: 'none' }
           : { height: 68, paddingBottom: 8, paddingTop: 8 },
 
-        // aqui eu deixo o texto da aba mais organizado
+        // aqui o texto da aba fica mais organizado
         tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
       }}
     >
@@ -64,7 +66,7 @@ export default function TabLayout() {
         }}
       />
 
-      {/* quarta aba: avisos */}
+      {/* quarta aba: notificações */}
       <Tabs.Screen
         name="notificacoes"
         options={{

@@ -1,22 +1,41 @@
 // arquivo app/(tabs)/pacientes.tsx
-// aqui eu organizei essa tela de pacientes e deixei os comentários explicando minha parte do código
-import { LinearGradient } from 'expo-linear-gradient';
+
+// importação principal do React, pois é necessário para criar componentes React Native.
 import React from 'react';
 
+// componentes nativos do React são usados nesta tela
 import {
+  // permite rolagem vertical na tela
   ScrollView,
+  // usado para criar estilos na tela
   StyleSheet,
+  // componente de texto
   Text,
+  // botão com clique e efeito ao toque
   TextInput,
+  // para fazer pesquisa de pacientes
   TouchableOpacity,
+  // componente base de estrutura e layout
   View,
+  // hook que pega largura e altura da tela em tempo real
+  // usado para responsividade entre mobile e desktop 
   useWindowDimensions,
+
 } from 'react-native';
 
+// biblioteca de ícones do Expo
+// usado para exibir ícones visuais na interface da tela
 import { Ionicons } from '@expo/vector-icons';
+
+// controle de navegação entre telas
+// usado para redirecionar o usuário para outras páginas
 import { router } from 'expo-router';
 
-// aqui eu deixei alguns pacientes simulados pra testar a tela
+// componente de fundo degradê
+// usado para deixar o background mais moderno e suave
+import { LinearGradient } from 'expo-linear-gradient';
+
+// simulação de alguns pacientes do sistema só pra testar a interface.
 const pacientes = [
   {
     iniciais: 'AS',
@@ -70,23 +89,25 @@ const pacientes = [
   },
 ];
 
-// aqui ficam os itens do menu lateral do desktop
+// menu lateral do desktop, apenas no desktop, no mobile a navegação é diferente.
+// lista de navegação principal da aplicação
 const menuItems = [
   ['calendar-outline', 'Agenda', '/(tabs)'],
   ['people-outline', 'Pacientes', '/(tabs)/pacientes'],
   ['business-outline', 'Salas', '/(tabs)/salas'],
-  ['notifications-outline', 'Avisos', '/(tabs)/notificacoes'],
+  ['notifications-outline', 'Notificacoes', '/(tabs)/notificacoes'],
   ['person-outline', 'Perfil', '/(tabs)/perfil'],
 ];
 
 export default function PacientesScreen() {
-  // aqui eu pego a largura da tela pra saber se está no mobile ou desktop
+  // pega largura da tela para aplicar responsividade
   const { width } = useWindowDimensions();
 
-  // se a tela for menor que 900, eu considero como mobile
+  // define se é mobile ou desktop baseado na largura da tela
   const isMobile = width < 900;
 
   return (
+    // Coloca um fundo com degradê suave pra dar um visual mais clean
     <LinearGradient
       colors={['#F4FBF8', '#EAF6F1', '#F8FCFA']}
       style={styles.background}
@@ -141,12 +162,6 @@ export default function PacientesScreen() {
                 </TouchableOpacity>
               ))}
             </View>
-
-            {/* botão de sair */}
-            <TouchableOpacity style={styles.logout} onPress={() => router.replace('/')}>
-              <Ionicons name="exit-outline" size={20} color="#70808A" />
-              <Text style={styles.menuText}>Sair</Text>
-            </TouchableOpacity>
           </View>
         )}
 
@@ -159,39 +174,40 @@ export default function PacientesScreen() {
 
           {/* título da página */}
           <View style={[styles.topRow, isMobile && styles.topRowMobile]}>
+
+            {/* área do título */}
             <View style={styles.titleBox}>
+
+              {/* título principal */}
               <Text style={[styles.pageTitle, isMobile && styles.pageTitleMobile]}>
                 Pacientes
               </Text>
 
+              {/* subtítulo explicativo */}
               <Text style={[styles.pageSubtitle, isMobile && styles.pageSubtitleMobile]}>
                 Acompanhe somente os pacientes vinculados aos seus atendimentos.
               </Text>
             </View>
-
-            {!isMobile && (
-              <View style={styles.userBox}>
-                <View style={styles.avatarUser}>
-                  <Text style={styles.avatarUserText}>JS</Text>
-                </View>
-
-                <View>
-                  <Text style={styles.userName}>João Silva</Text>
-                  <Text style={styles.userRole}>Estagiário</Text>
-                </View>
-              </View>
-            )}
           </View>
 
+          {/* card de permissão */}
           <View style={styles.permissionCard}>
+
+            {/* ícone de permissão */}
             <View style={styles.permissionIcon}>
               <Ionicons name="shield-checkmark-outline" size={20} color="#0C706E" />
             </View>
 
+            {/* área do texto */}
             <View style={styles.permissionTextBox}>
+
+              {/* título da permissão */}
               <Text style={styles.permissionTitle}>Acesso limitado</Text>
+
+              {/* descrição da permissão */}
               <Text style={styles.permissionDescription}>
-                Você pode consultar dados básicos e acompanhar o histórico permitido. Cadastros, edições e exclusões ficam disponíveis apenas para a administração.
+                Você pode consultar dados básicos e acompanhar o histórico permitido. 
+                Cadastros, edições e exclusões ficam disponíveis apenas para a administração.
               </Text>
             </View>
           </View>
@@ -209,6 +225,8 @@ export default function PacientesScreen() {
 
           {/* cards de estatísticas */}
           <View style={[styles.statsRow, isMobile && styles.statsRowMobile]}>
+
+            {/* card de pacientes vinculados ao estagiário */}
             <StatCard
               icon="people-outline"
               title="Vinculados"
@@ -216,6 +234,7 @@ export default function PacientesScreen() {
               sub="Pacientes do estagiário"
             />
 
+            {/* card de pacientes que estão em acompanhamento */}
             <StatCard
               icon="heart-outline"
               title="Em acompanhamento"
@@ -223,6 +242,7 @@ export default function PacientesScreen() {
               sub="Ativos no momento"
             />
 
+            {/* card de pacientes que precisam de mais atenção */}
             <StatCard
               icon="alert-circle-outline"
               title="Em atenção"
@@ -247,7 +267,7 @@ export default function PacientesScreen() {
               </View>
             </View>
 
-            {/* aqui eu percorro a lista de pacientes e mostro um por um */}
+            {/* é percorrida a lista de pacientes e mostro um por um */}
             {pacientes.map((paciente, index) => (
               <View
                 key={index}
@@ -344,33 +364,54 @@ export default function PacientesScreen() {
   );
 }
 
-// componente dos cards de estatísticas
+// componente reutilizável dos cards de estatísticas
+// aqui o ícone recebe o nome, título, valor e subtítulo de cada card
 function StatCard({ icon, title, value, sub }: any) {
   return (
+
+    // card principal da estatística
     <View style={styles.statCard}>
+
+      {/* caixa do ícone */}
       <View style={styles.statIconBox}>
+
+        {/* ícone do card */}
         <Ionicons name={icon} size={21} color="#0C706E" />
       </View>
 
+      {/* área dos textos */}
       <View style={styles.statTextBox}>
+
+        {/* título da estatística */}
         <Text style={styles.statTitle}>{title}</Text>
+
+        {/* valor principal */}
         <Text style={styles.statValue}>{value}</Text>
+
+        {/* texto complementar */}
         <Text style={styles.statSub}>{sub}</Text>
       </View>
     </View>
   );
 }
 
+// criação centralizada dos estilos da tela
+// aqui ficam todas as estilizações da interface organizadas por seção
 const styles = StyleSheet.create({
+
+  // fundo principal da tela
+  // ocupa toda a altura disponível
   background: {
     flex: 1,
   },
 
+  // fundo decorativo da tela
   backgroundDecor: {
     ...StyleSheet.absoluteFillObject,
     overflow: 'hidden',
   },
 
+  // círculo decorativo superior esquerdo
   blurCircleOne: {
     position: 'absolute',
     width: 420,
@@ -381,6 +422,7 @@ const styles = StyleSheet.create({
     left: -120,
   },
 
+  // círculo decorativo inferior direito
   blurCircleTwo: {
     position: 'absolute',
     width: 520,
@@ -391,6 +433,7 @@ const styles = StyleSheet.create({
     bottom: -160,
   },
 
+  // círculo decorativo central
   blurCircleThree: {
     position: 'absolute',
     width: 300,
@@ -401,12 +444,14 @@ const styles = StyleSheet.create({
     top: 120,
   },
 
+  // área principal da tela
   screen: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'transparent',
   },
 
+  // menu lateral
   sidebar: {
     width: 245,
     backgroundColor: '#FFFFFF',
@@ -414,6 +459,7 @@ const styles = StyleSheet.create({
     borderRightColor: '#E6ECEA',
   },
 
+  // área da logo
   logoBox: {
     height: 118,
     backgroundColor: '#0C706E',
@@ -424,28 +470,33 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 18,
   },
 
+  // símbolo da psicologia
   psi: {
     fontSize: 50,
     color: '#FFFFFF',
     fontWeight: '700',
   },
 
+  // texto principal da logo
   logoText: {
     fontSize: 30,
     color: '#FFFFFF',
     fontWeight: '700',
   },
 
+  // subtítulo da logo
   logoSub: {
     fontSize: 12,
     color: '#EAF6F2',
     marginTop: 2,
   },
 
+  // área do menu
   menuArea: {
     paddingTop: 18,
   },
 
+  // item do menu
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -457,46 +508,43 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 
+  // item ativo do menu
   menuActive: {
     backgroundColor: '#EAF6F2',
   },
 
+  // texto do menu
   menuText: {
     fontSize: 15,
     color: '#4B5F68',
     fontWeight: '400',
   },
 
+  // texto do menu ativo
   menuTextActive: {
     color: '#0C706E',
     fontWeight: '600',
   },
 
-  logout: {
-    position: 'absolute',
-    bottom: 28,
-    left: 26,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 13,
-  },
-
+  // conteúdo principal
   content: {
     flex: 1,
     paddingHorizontal: 34,
     paddingTop: 30,
   },
 
+  // espaçamento interno do conteúdo
   contentContainer: {
     paddingBottom: 34,
   },
 
-  // aqui eu ajustei o espaçamento do mobile pra não ficar tudo grudado no topo
+  // conteúdo no mobile
   contentMobile: {
     paddingHorizontal: 16,
     paddingTop: 48,
   },
 
+  // linha superior
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -505,15 +553,18 @@ const styles = StyleSheet.create({
     gap: 18,
   },
 
+  // linha superior no mobile
   topRowMobile: {
     flexDirection: 'column',
     gap: 10,
   },
 
+  // área do título
   titleBox: {
     flex: 1,
   },
 
+  // título principal
   pageTitle: {
     fontSize: 30,
     fontWeight: '600',
@@ -521,54 +572,25 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
 
-  // no mobile eu deixei o título um pouco menor pra caber melhor
+  // título principal no mobile
   pageTitleMobile: {
     fontSize: 28,
   },
 
+  // subtítulo da página
   pageSubtitle: {
     fontSize: 15,
     color: '#6B7C83',
     lineHeight: 21,
   },
 
+  // subtítulo no mobile
   pageSubtitleMobile: {
     fontSize: 14,
     lineHeight: 20,
   },
 
-  userBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 11,
-  },
-
-  avatarUser: {
-    width: 43,
-    height: 43,
-    borderRadius: 22,
-    backgroundColor: '#DDEDEA',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  avatarUserText: {
-    fontWeight: '600',
-    color: '#0C706E',
-  },
-
-  userName: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#152322',
-  },
-
-  userRole: {
-    fontSize: 12,
-    color: '#6B7C83',
-    marginTop: 2,
-  },
-
+  // card de permissão
   permissionCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
@@ -580,6 +602,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 
+  // ícone de permissão
   permissionIcon: {
     width: 42,
     height: 42,
@@ -589,10 +612,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  // área do texto da permissão
   permissionTextBox: {
     flex: 1,
   },
 
+  // título da permissão
   permissionTitle: {
     fontSize: 14,
     fontWeight: '600',
@@ -600,12 +625,14 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
 
+  // descrição da permissão
   permissionDescription: {
     fontSize: 13,
     color: '#6B7C83',
     lineHeight: 18,
   },
 
+  // barra de pesquisa
   searchLarge: {
     height: 48,
     borderWidth: 1,
@@ -619,23 +646,26 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 
+  // campo de texto da pesquisa
   searchInput: {
     flex: 1,
     fontSize: 14,
     color: '#152322',
   },
 
+  // linha do card de estatística
   statsRow: {
     flexDirection: 'row',
     gap: 12,
     marginBottom: 18,
   },
 
-  // no mobile os cards ficam um embaixo do outro pra não apertar
+  // linha do card no mobile
   statsRowMobile: {
     flexDirection: 'column',
   },
 
+  // card de estatística
   statCard: {
     flex: 1,
     minHeight: 76,
@@ -649,6 +679,7 @@ const styles = StyleSheet.create({
     borderColor: '#E0E9E6',
   },
 
+  // área do ícone do card
   statIconBox: {
     width: 44,
     height: 44,
@@ -658,16 +689,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  // área do texto do card
   statTextBox: {
     flex: 1,
   },
 
+  // título do card
   statTitle: {
     fontSize: 12,
     color: '#6B7C83',
     fontWeight: '400',
   },
 
+  // valor do card
   statValue: {
     fontSize: 22,
     fontWeight: '600',
@@ -675,12 +709,14 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
 
+  // subtítulo do card
   statSub: {
     fontSize: 12,
     color: '#6B7C83',
     marginTop: 2,
   },
 
+  // card principal da lista
   listCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 18,
@@ -690,6 +726,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
 
+  // cabeçalho da lista
   listHeader: {
     minHeight: 70,
     backgroundColor: '#EAF6F2',
@@ -701,23 +738,27 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 
+  // cabeçalho da lista no mobile
   listHeaderMobile: {
     alignItems: 'flex-start',
     flexDirection: 'column',
   },
 
+  // título da lista
   listTitle: {
     fontSize: 18,
     fontWeight: '600',
     color: '#0C706E',
   },
 
+  // subtítulo da lista
   listSubtitle: {
     fontSize: 12,
     color: '#6B7C83',
     marginTop: 2,
   },
 
+  // badge da lista
   listBadge: {
     minHeight: 32,
     borderRadius: 18,
@@ -730,12 +771,14 @@ const styles = StyleSheet.create({
     gap: 6,
   },
 
+  // texto da badge
   listBadgeText: {
     fontSize: 12,
     fontWeight: '500',
     color: '#0C706E',
   },
 
+  // linha do paciente
   patientRow: {
     borderBottomWidth: 1,
     borderBottomColor: '#EEF2F1',
@@ -746,12 +789,13 @@ const styles = StyleSheet.create({
     gap: 14,
   },
 
-  // no mobile a linha vira coluna pra ficar mais organizada
+  // linha do paciente no mobile
   patientRowMobile: {
     flexDirection: 'column',
     alignItems: 'flex-start',
   },
 
+  // avatar do paciente
   avatar: {
     width: 52,
     height: 52,
@@ -761,133 +805,152 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  // texto do avatar
   avatarText: {
     fontSize: 16,
     fontWeight: '600',
     color: '#0C706E',
   },
 
-  patientInfo: {
-    flex: 1,
-    minWidth: 180,
-  },
+    // área de informação do paciente
+    patientInfo: {
+      flex: 1,
+      minWidth: 180,
+    },
 
-  // no mobile as informações ocupam a largura inteira do card
-  patientInfoMobile: {
-    width: '100%',
-    minWidth: 0,
-  },
+    // informação ocupando toda a largura no mobile
+    patientInfoMobile: {
+      width: '100%',
+      minWidth: 0,
+    },
 
-  patientName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#152322',
-    marginBottom: 2,
-  },
+    // nome do paciente
+    patientName: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: '#152322',
+      marginBottom: 2,
+    },
 
-  patientMeta: {
-    fontSize: 12,
-    color: '#5B6D75',
-    marginTop: 2,
-    lineHeight: 18,
-  },
+    // informação secundária do paciente
+    patientMeta: {
+      fontSize: 12,
+      color: '#5B6D75',
+      marginTop: 2,
+      lineHeight: 18,
+    },
 
-  metaRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginTop: 9,
-  },
+    // organização da tag de informação em linha
+    metaRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+      marginTop: 9,
+    },
 
-  metaPill: {
-    minHeight: 30,
-    borderRadius: 15,
-    backgroundColor: '#F8FCFA',
-    borderWidth: 1,
-    borderColor: '#E0E9E6',
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
+    // estilização da tag de informação
+    metaPill: {
+      minHeight: 30,
+      borderRadius: 15,
+      backgroundColor: '#F8FCFA',
+      borderWidth: 1,
+      borderColor: '#E0E9E6',
+      paddingHorizontal: 10,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+    },
 
-  metaPillText: {
-    fontSize: 12,
-    color: '#64748B',
-  },
+    // texto da tag
+    metaPillText: {
+      fontSize: 12,
+      color: '#64748B',
+    },
 
-  statusBadge: {
-    alignSelf: 'center',
-    paddingHorizontal: 11,
-    paddingVertical: 6,
-    borderRadius: 18,
-  },
+    // badge de status
+    statusBadge: {
+      alignSelf: 'center',
+      paddingHorizontal: 11,
+      paddingVertical: 6,
+      borderRadius: 18,
+    },
 
-  // no mobile deixei o status alinhado no começo
-  statusBadgeMobile: {
-    alignSelf: 'flex-start',
-    marginTop: 2,
-  },
+    // alinhamento do status no começo no mobile
+    statusBadgeMobile: {
+      alignSelf: 'flex-start',
+      marginTop: 2,
+    },
 
-  statusText: {
-    fontSize: 12,
-    color: '#0F766E',
-    fontWeight: '500',
-  },
+      // texto do status
+    statusText: {
+      fontSize: 12,
+      color: '#0F766E',
+      fontWeight: '500',
+    },
 
-  statusWarningText: {
-    color: '#92400E',
-  },
+    // cor do texto para status de atenção
+    statusWarningText: {
+      color: '#92400E',
+    },
 
-  statusInactiveText: {
-    color: '#991B1B',
-  },
+    // cor do texto para status inativo
+    statusInactiveText: {
+      color: '#991B1B',
+    },
 
-  activeBadge: {
-    backgroundColor: '#E3F7EE',
-  },
+    // cor do badge ativo
+    activeBadge: {
+      backgroundColor: '#E3F7EE',
+    },
 
-  warningBadge: {
-    backgroundColor: '#FFF3CC',
-  },
+    // cor do badge de atenção
+    warningBadge: {
+      backgroundColor: '#FFF3CC',
+    },
 
-  inactiveBadge: {
-    backgroundColor: '#FFE5E5',
-  },
+    // cor do badge inativo
+    inactiveBadge: {
+      backgroundColor: '#FFE5E5',
+    },
 
-  detailsButton: {
-    height: 40,
-    paddingHorizontal: 13,
-    borderRadius: 11,
-    borderWidth: 1,
-    borderColor: '#0C706E',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 7,
-    backgroundColor: '#FFFFFF',
-  },
+    // botão de detalhes
+    detailsButton: {
+      height: 40,
+      paddingHorizontal: 13,
+      borderRadius: 11,
+      borderWidth: 1,
+      borderColor: '#0C706E',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 7,
+      backgroundColor: '#FFFFFF',
+    },
 
-  detailsButtonMobile: {
-    width: '100%',
-    justifyContent: 'center',
-    marginTop: 4,
-  },
+    // botão ocupando toda a largura no mobile
+    detailsButtonMobile: {
+      width: '100%',
+      justifyContent: 'center',
+      marginTop: 4,
+    },
 
-  detailsButtonText: {
-    fontSize: 13,
-    fontWeight: '500',
-    color: '#0C706E',
-  },
+    // texto do botão de detalhes
+    detailsButtonText: {
+      fontSize: 13,
+      fontWeight: '500',
+      color: '#0C706E',
+    },
 
-  footerInfo: {
-    minHeight: 54,
-    backgroundColor: '#F8FCFA',
-    paddingHorizontal: 18,
-    justifyContent: 'center',
-  },
+    // área de informação do rodapé
+    footerInfo: {
+      minHeight: 54,
+      backgroundColor: '#F8FCFA',
+      paddingHorizontal: 18,
+      justifyContent: 'center',
+    },
 
-  footerInfoText: {
-    color: '#6B7C83',
-    fontSize: 13,
-  },
-});
+    // texto da informação do rodapé
+    footerInfoText: {
+      color: '#6B7C83',
+      fontSize: 13,
+    },
+  });

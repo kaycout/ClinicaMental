@@ -1,4 +1,4 @@
-// aqui eu importo o react e o useState para controlar os dados da tela de login
+// importa o react e o useState para controlar os dados da tela de login
 import React, { useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -11,6 +11,7 @@ import {
   useWindowDimensions,
   TouchableOpacity,
 } from 'react-native';
+
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -164,9 +165,6 @@ export default function LoginScreen() {
                   <Text style={styles.optionText}>Lembrar de mim</Text>
                 </TouchableOpacity>
 
-                <Pressable onPress={() => router.push('/redefinir-senha')}>
-                  <Text style={styles.forgotText}>Esqueci minha senha</Text>
-                </Pressable>
               </View>
 
               <Pressable style={styles.primaryButton} onPress={handleLogin}>
@@ -174,13 +172,8 @@ export default function LoginScreen() {
               </Pressable>
 
               <View style={styles.signupRow}>
-                <Text style={styles.signupText}>Ainda não tem conta? </Text>
-                <Pressable onPress={() => router.push('/cadastro')}>
-                  <Text style={styles.signupLink}>Cadastre-se</Text>
-                </Pressable>
               </View>
             </View>
-
           </View>
         </View>
       </KeyboardAvoidingView>
